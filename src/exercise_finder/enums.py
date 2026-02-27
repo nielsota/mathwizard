@@ -9,6 +9,7 @@ class ExamLevel(str, enum.Enum):
 class AgentName(str, enum.Enum):
     IMAGES_TO_QUESTION_AGENT = "images_to_question_agent"
     FORMAT_MULTIPART_QUESTION_AGENT = "format_multipart_question_agent"
+    PARSE_PDF_PAGE_AGENT = "parse_pdf_page_agent"
 
 
 class OpenAIModel(str, enum.Enum):

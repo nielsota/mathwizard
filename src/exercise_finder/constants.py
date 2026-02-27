@@ -23,3 +23,11 @@ IGNORED_FILES = {
 
 # Session expiration time in seconds (24 hours)
 SESSION_EXPIRATION_SECONDS = 24 * 60 * 60
+
+# Number of intro pages to skip when parsing exam PDFs (cover page, instructions, etc.)
+PDF_EXAM_INTRO_PAGES_TO_SKIP = 2
+
+# Minimum content thresholds for PDF parsing (percentage of page dimensions)
+# Regions smaller than these thresholds are skipped as likely hallucinations
+MIN_CONTINUATION_CONTENT_PCT = 10.0  # Minimum height for continuation regions
+MIN_FIGURE_DIMENSION_PCT = 15.0       # Minimum width AND height for figures
