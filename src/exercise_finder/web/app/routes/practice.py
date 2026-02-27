@@ -7,7 +7,7 @@ from fastapi.responses import HTMLResponse  # type: ignore[import-not-found]
 from fastapi.templating import Jinja2Templates  # type: ignore[import-not-found]
 from starlette.requests import Request  # type: ignore[import-not-found]
 
-from exercise_finder.pydantic_models import PracticeExerciseSet, MultipartQuestionOutput
+from exercise_finder.models import PracticeExerciseSet, MultipartQuestionOutput
 import exercise_finder.paths as paths
 from ..auth import require_authentication
 

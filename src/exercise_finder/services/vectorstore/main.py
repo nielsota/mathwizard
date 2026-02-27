@@ -7,7 +7,7 @@ from typing import Any
 from openai import OpenAI # type: ignore[import-not-found]
 
 from exercise_finder.config import get_openai_client
-from exercise_finder.pydantic_models import QuestionRecord, QuestionRecordVectorStoreAttributes
+from exercise_finder.models import QuestionRecord, QuestionRecordVectorStoreAttributes
 import exercise_finder.paths as paths
 
 from .helpers import (
@@ -100,7 +100,7 @@ def add_yaml_questions_to_vector_store(
     This preserves per-question metadata via vector-store file attributes.
 
     Inputs:
-    - `exam_dir`: directory containing YAML files (e.g., data/questions-extracted/VW-1025-a-18-1-o/)
+    - `exam_dir`: directory containing YAML files (e.g., data/questions/exams/processed/VW-1025-a-18-1-o/)
     - `index_files_dir`: where we materialize the temporary `.txt` files that get uploaded
 
     Side effects:
@@ -115,7 +115,7 @@ def add_yaml_questions_to_vector_store(
     add_yaml_questions_to_vector_store(
         client=client,
         vector_store_id="vs_...",
-        exam_dir=Path("data/questions-extracted/VW-1025-a-18-1-o/"),
+        exam_dir=Path("data/questions/exams/processed/VW-1025-a-18-1-o/"),
     )
     ```
     """

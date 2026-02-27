@@ -1,59 +1,16 @@
 # mypy: ignore-errors
 from __future__ import annotations
 
-import base64
 from pathlib import Path
 
 import dotenv
 from agents import Agent, ModelSettings, Runner, TResponseInputItem
 
 from exercise_finder.enums import OpenAIModel, AgentName
-from exercise_finder.pydantic_models import QuestionFromImagesOutput
+from exercise_finder.models import QuestionFromImagesOutput
+from .util import image_path_to_data_url
 
 dotenv.load_dotenv()
-
-
-def _guess_mime_type(path: Path) -> str:
-    """
-    Guess the MIME type of an image file based on its extension.
-    
-    Args:
-        path: Path to the image file
-        
-    Returns:
-        MIME type string (e.g., "image/png")
-        
-    Example:
-        >>> _guess_mime_type(Path("photo.jpg"))
-        'image/jpeg'
-        >>> _guess_mime_type(Path("diagram.png"))
-        'image/png'
-        >>> _guess_mime_type(Path("unknown.xyz"))
-        'application/octet-stream'
-    """
-    suffix = path.suffix.lower()
-    if suffix in {".png"}:
-        return "image/png"
-    if suffix in {".jpg", ".jpeg"}:
-        return "image/jpeg"
-    if suffix in {".webp"}:
-        return "image/webp"
-    return "application/octet-stream"
-
-
-def _image_path_to_data_url(path: Path) -> str:
-    """
-    Convert an image file to a base64-encoded data for API submission.
-    
-    Args:
-        path: Path to the image file
-        
-    Returns:
-        Data string (e.g., "data:image/png;base64,iVBORw0KG...")
-    """
-    mime = _guess_mime_type(path)
-    data = base64.b64encode(path.read_bytes()).decode("ascii")
-    return f"data:{mime};base64,{data}"
 
 
 def get_system_prompt() -> str:
@@ -144,7 +101,7 @@ async def transcribe_question_images(
         }
     ]
     for path in [*page_images, *figure_images]:
-        content.append({"type": "input_image", "image_url": _image_path_to_data_url(path)})
+        content.append({"type": "input_image", "image_url": image_path_to_data_url(path)})
 
     input_items: list[TResponseInputItem] = [{"role": "user", "content": content}]
 

@@ -4,7 +4,7 @@ import json
 import yaml # type: ignore[import-untyped]
 from pathlib import Path
 
-from exercise_finder.pydantic_models import (  # type: ignore
+from exercise_finder.models import (  # type: ignore
     FigureInfo,
     QuestionFromImagesOutput,
     QuestionRecord,

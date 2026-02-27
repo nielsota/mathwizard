@@ -5,7 +5,7 @@ import dotenv
 from agents import Agent, ModelSettings, Runner, TResponseInputItem
 
 from exercise_finder.enums import AgentName, OpenAIModel
-from exercise_finder.pydantic_models import AgentMultipartQuestionOutput
+from exercise_finder.models import AgentMultipartQuestionOutput
 
 dotenv.load_dotenv()
 

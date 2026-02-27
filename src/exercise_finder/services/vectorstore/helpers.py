@@ -7,7 +7,7 @@ from typing import Any
 from openai import OpenAI # type: ignore[import-not-found]
 from loguru import logger
 
-from exercise_finder.pydantic_models import QuestionRecord
+from exercise_finder.models import QuestionRecord
 
 
 def write_index_files(records: list[QuestionRecord], out_dir: Path) -> dict[str, Path]:

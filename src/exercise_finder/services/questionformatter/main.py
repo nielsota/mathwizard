@@ -7,7 +7,7 @@ import yaml  # type: ignore[import-untyped]
 
 from exercise_finder.enums import OpenAIModel
 from exercise_finder.agents.format_multipart import format_multipart_question
-from exercise_finder.pydantic_models import MultipartQuestionOutput, QuestionRecord
+from exercise_finder.models import MultipartQuestionOutput, QuestionRecord
 from exercise_finder.utils.progressbar import create_progress_bar
 import exercise_finder.paths as paths
 

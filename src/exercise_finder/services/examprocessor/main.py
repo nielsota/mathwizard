@@ -9,7 +9,7 @@ from loguru import logger
 
 from exercise_finder.enums import OpenAIModel
 from exercise_finder.utils.progressbar import create_progress_bar
-from exercise_finder.pydantic_models import QuestionRecord, ExamFolderStructure, QuestionFolderStructure
+from exercise_finder.models import QuestionRecord, ExamFolderStructure, QuestionFolderStructure
 from exercise_finder.agents.images_to_question import transcribe_question_images
 
 
@@ -32,7 +32,7 @@ async def process_question(
         QuestionRecord with transcribed text and image paths
         
     Example:
-        >>> exam = ExamFolderStructure.from_exam_dir(Path("data/questions-images/VW-1025-a-18-1-o"))
+        >>> exam = ExamFolderStructure.from_exam_dir(Path("data/questions/exams/raw/VW-1025-a-18-1-o"))
         >>> question = exam.questions[0]
         >>> record = await process_question(
         ...     question=question,
@@ -81,7 +81,7 @@ async def process_exam_dir(*, exam_dir: Path, out_dir: Path, model: OpenAIModel)
     Process an exam directory of per-question images into question YAML files.
     
     Expected folder structure:
-        data/questions-images/<EXAM_STEM>/
+        data/questions/exams/raw/<EXAM_STEM>/
           q01/
             pages/        # required: 1+ images containing the question text
               page1.png
@@ -99,8 +99,8 @@ async def process_exam_dir(*, exam_dir: Path, out_dir: Path, model: OpenAIModel)
         - `page_images`/`figure_images`: relative paths (relative to `exam_dir`)
     
     Example:
-        >>> exam_dir = Path("data/questions-images/VW-1025-a-18-1-o")
-        >>> out_dir = Path("data/questions-extracted")
+        >>> exam_dir = Path("data/questions/exams/raw/VW-1025-a-18-1-o")
+        >>> out_dir = Path("data/questions/exams/processed")
         >>> await process_exam_dir(
         ...     exam_dir=exam_dir,
         ...     out_dir=out_dir,

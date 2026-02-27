@@ -12,7 +12,7 @@ from fastapi.testclient import TestClient  # type: ignore[import-not-found]
 from exercise_finder import paths  # type: ignore[import-not-found]
 from exercise_finder.web.app import create_app  # type: ignore[import-not-found]
 from exercise_finder.config import AppConfig, CognitoConfig # type: ignore[import-not-found]
-from exercise_finder.pydantic_models import MultipartQuestionOutput # type: ignore[import-not-found]
+from exercise_finder.models import MultipartQuestionOutput  # type: ignore[import-not-found]
 
 @pytest.fixture
 def mock_app_config():
@@ -196,7 +196,6 @@ class TestAPIRoutes:
                     title="Test Question Title",
                     stem="Test question",
                     parts=[],
-                    difficulty=3,
                     page_images=["q1/pages/page1.png"],
                     figure_images=["q1/figures/fig1.png"],
                 )

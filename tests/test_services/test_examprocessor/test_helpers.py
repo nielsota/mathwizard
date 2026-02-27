@@ -1,7 +1,7 @@
 """Tests for exam processing - now using Pydantic models directly."""
 from pathlib import Path
 
-from exercise_finder.pydantic_models import (  # type: ignore
+from exercise_finder.models import (  # type: ignore
     ExamFolderStructure,
     QuestionFolderStructure,
 )
