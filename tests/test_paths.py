@@ -50,10 +50,10 @@ class TestDirectoryExistence:
 
 class TestQuestionsExtractedStructure:
     """
-    Test the structure of data/questions-extracted/.
+    Test the structure of data/questions/exams/processed/.
     
     Expected structure:
-        data/questions-extracted/
+        data/questions/exams/processed/
             <exam-id>/
                 q1.yaml
                 q2.yaml
@@ -68,7 +68,7 @@ class TestQuestionsExtractedStructure:
         exam_dirs = [d for d in extracted_dir.iterdir() if d.is_dir()]
         
         # Should have at least one exam
-        assert len(exam_dirs) > 0, "No exam directories found in questions-extracted"
+        assert len(exam_dirs) > 0, "No exam directories found in questions/exams/processed"
 
     def test_extracted_exam_dirs_contain_yaml_files(self):
         """Each exam directory should contain YAML files."""
@@ -103,40 +103,20 @@ class TestQuestionsExtractedStructure:
 
 class TestQuestionsFormattedStructure:
     """
-    Test the structure of data/questions-formatted/.
+    Test the structure of data/questions/exams/curated/.
     
     Expected structure:
-        data/questions-formatted/
-            exams/
-                <exam-id>/
-                    q1.yaml
-                    q2.yaml
-                    ...
-            practice-exercises/
-                <topic>/
-                    _meta.yaml
-                    p1.yaml
-                    p2.yaml
-                    ...
+        data/questions/exams/curated/
+            <exam-id>/
+                q1.yaml
+                q2.yaml
+                ...
     """
-
-    def test_formatted_contains_exams_subdir(self):
-        """Questions formatted should contain 'exams' subdirectory."""
-        formatted_dir = paths.questions_formatted_dir()
-        exams_dir = formatted_dir / "exams"
-        
-        assert exams_dir.exists(), "exams/ subdirectory not found in questions-formatted"
-        assert exams_dir.is_dir()
 
     def test_formatted_exams_contain_yaml_files(self):
         """Each formatted exam directory should contain YAML files."""
         formatted_dir = paths.questions_formatted_dir()
-        exams_dir = formatted_dir / "exams"
-        
-        if not exams_dir.exists():
-            pytest.skip("exams/ directory not found")
-        
-        exam_dirs = [d for d in exams_dir.iterdir() if d.is_dir()]
+        exam_dirs = [d for d in formatted_dir.iterdir() if d.is_dir()]
         
         # Should have at least one exam
         if len(exam_dirs) == 0:
@@ -153,12 +133,7 @@ class TestQuestionsFormattedStructure:
         Examples: q1.yaml, q2.yaml, q03.yaml, q10.yaml
         """
         formatted_dir = paths.questions_formatted_dir()
-        exams_dir = formatted_dir / "exams"
-        
-        if not exams_dir.exists():
-            pytest.skip("exams/ directory not found")
-        
-        exam_dirs = [d for d in exams_dir.iterdir() if d.is_dir()]
+        exam_dirs = [d for d in formatted_dir.iterdir() if d.is_dir()]
         
         if len(exam_dirs) == 0:
             pytest.skip("No formatted exam directories found")
@@ -178,10 +153,10 @@ class TestQuestionsFormattedStructure:
 
 class TestPracticeExercisesStructure:
     """
-    Test the structure of data/questions-formatted/practice-exercises/.
+    Test the structure of data/questions/practice/curated/.
     
     Expected structure:
-        data/questions-formatted/practice-exercises/
+        data/questions/practice/curated/
             <topic>/
                 _meta.yaml
                 p1.yaml
@@ -197,7 +172,7 @@ class TestPracticeExercisesStructure:
         topic_dirs = [d for d in practice_dir.iterdir() if d.is_dir()]
         
         # Should have at least one topic
-        assert len(topic_dirs) > 0, "No topic directories found in practice-exercises"
+        assert len(topic_dirs) > 0, "No topic directories found in questions/practice/curated"
 
     def test_practice_topics_contain_meta_file(self):
         """Each topic directory should contain a _meta.yaml file."""
@@ -268,7 +243,7 @@ class TestPathHelpers:
 
     def test_practice_exercise_dir_builds_correct_path(self):
         """practice_exercise_dir() should build the correct path."""
-        expected = paths.questions_formatted_dir() / "practice-exercises" / "unitcircle"
+        expected = paths.practice_exercises_dir() / "unitcircle"
         actual = paths.practice_exercise_dir("unitcircle")
         
         assert actual == expected
@@ -276,7 +251,7 @@ class TestPathHelpers:
     def test_formatted_exam_dir_builds_correct_path(self):
         """formatted_exam_dir() should build the correct path."""
         exam_id = "VW-1025-a-19-1-o"
-        expected = paths.questions_formatted_dir() / "exams" / exam_id
+        expected = paths.questions_formatted_dir() / exam_id
         actual = paths.formatted_exam_dir(exam_id)
         
         assert actual == expected
@@ -285,7 +260,7 @@ class TestPathHelpers:
         """formatted_question_path() should build the correct path."""
         exam_id = "VW-1025-a-19-1-o"
         question_number = "1"
-        expected = paths.questions_formatted_dir() / "exams" / exam_id / "q1.yaml"
+        expected = paths.questions_formatted_dir() / exam_id / "q1.yaml"
         actual = paths.formatted_question_path(exam_id, question_number)
         
         assert actual == expected

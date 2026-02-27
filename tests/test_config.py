@@ -114,18 +114,19 @@ class TestAppConfig:
 
     def test_default_values(self):
         """Default values should be applied."""
-        # Explicitly pass defaults to override any env vars
-        config = AppConfig(
-            _env_file=None,
-            openai_api_key="sk-test",
-            session_secret_key="secret",
-            use_ssm=False,
-            vector_store_id=None,
-        )
+        # Clear environment to avoid EXAMS_ROOT overrides
+        with patch.dict("os.environ", {}, clear=True):
+            config = AppConfig(
+                _env_file=None,
+                openai_api_key="sk-test",
+                session_secret_key="secret",
+                use_ssm=False,
+                vector_store_id=None,
+            )
         
-        assert config.exams_root == Path("data/questions-images")
-        assert config.use_ssm is False
-        assert config.vector_store_id is None
+            assert config.exams_root == Path("data/questions/exams/raw")
+            assert config.use_ssm is False
+            assert config.vector_store_id is None
 
     def test_missing_required_fields(self):
         """Missing required fields should raise ValidationError."""

@@ -19,7 +19,7 @@ def _process_exam_images(
     model: OpenAIModel = OpenAIModel.GPT_4O,
 ) -> None:
     """Internal helper to process exam images. Can be called programmatically."""
-    # default to data/questions-extracted/
+    # default to data/questions/exams/processed/
     if out_dir is None:
         out_dir = paths.questions_extracted_dir()
 
@@ -41,7 +41,7 @@ def from_images(
     out_dir: Path | None = typer.Option(
         None,
         "--out-dir",
-        help="Output directory for YAML files (default: data/questions-extracted/)",
+        help="Output directory for YAML files (default: data/questions/exams/processed/)",
     ),
     model: OpenAIModel = typer.Option(
         OpenAIModel.GPT_4O,

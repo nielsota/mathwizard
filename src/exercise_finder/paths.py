@@ -10,9 +10,13 @@ Centralized path helpers/constants for this repo.
 
 # Relative directory names (under repo root)
 DATA_DIRNAME = "data"
-QUESTIONS_IMAGES_DIRNAME = "questions-images"
-QUESTIONS_EXTRACTED_DIRNAME = "questions-extracted"
-QUESTIONS_FORMATTED_DIRNAME = "questions-formatted"
+QUESTIONS_ROOT_DIRNAME = "questions"
+EXAMS_DIRNAME = "exams"
+PRACTICE_DIRNAME = "practice"
+RAW_DIRNAME = "raw"
+PROCESSED_DIRNAME = "processed"
+CURATED_DIRNAME = "curated"
+QUESTIONS_PDF_DIRNAME = "pdfs"
 VECTORSTORE_INDEX_DIRNAME = "vectorstore-index"
 
 PAGES_DIRNAME = "pages"
@@ -32,8 +36,28 @@ def data_dir() -> Path:
     return repo_root() / DATA_DIRNAME
 
 
+def questions_root_dir() -> Path:
+    """Directory containing all question-related data."""
+    return data_dir() / QUESTIONS_ROOT_DIRNAME
+
+
+def exams_root_dir() -> Path:
+    """Directory containing all exam-related question data."""
+    return questions_root_dir() / EXAMS_DIRNAME
+
+
+def practice_root_dir() -> Path:
+    """Directory containing all practice-related question data."""
+    return questions_root_dir() / PRACTICE_DIRNAME
+
+
+def questions_pdf_dir() -> Path:
+    """Directory containing exam PDF files."""
+    return exams_root_dir() / QUESTIONS_PDF_DIRNAME
+
+
 def questions_images_root() -> Path:
-    return data_dir() / QUESTIONS_IMAGES_DIRNAME
+    return exams_root_dir() / RAW_DIRNAME
 
 
 def exam_images_dir(exam_id: str) -> Path:
@@ -54,7 +78,8 @@ def exam_asset_under_root(exams_root: Path, exam_id: str, rel_path: str | Path) 
     """
     Resolve a record-relative path like `q03/pages/page4.png` under a provided exams root.
 
-    `exams_root` should be the folder that contains multiple exam folders (e.g. `data/questions-images`).
+    `exams_root` should be the folder that contains multiple exam folders
+    (e.g. `data/questions/exams/raw`).
     """
     return exams_root / exam_id / rel_path
 
@@ -97,7 +122,7 @@ def figure_image_path(exam_id: str, question_number: str | int, filename: str) -
 
 
 def questions_extracted_dir() -> Path:
-    return data_dir() / QUESTIONS_EXTRACTED_DIRNAME
+    return exams_root_dir() / PROCESSED_DIRNAME
 
 
 def questions_extracted_exam_dir(exam_id: str) -> Path:
@@ -106,7 +131,7 @@ def questions_extracted_exam_dir(exam_id: str) -> Path:
     
     Example:
         questions_extracted_exam_dir("VW-1025-a-19-1-o")
-        -> data/questions-extracted/VW-1025-a-19-1-o/
+        -> data/questions/exams/processed/VW-1025-a-19-1-o/
     """
     return questions_extracted_dir() / exam_id
 
@@ -123,7 +148,7 @@ def questions_extracted_yaml(exam_id: str) -> Path:
 
 
 def questions_formatted_dir() -> Path:
-    return data_dir() / QUESTIONS_FORMATTED_DIRNAME
+    return exams_root_dir() / CURATED_DIRNAME
 
 
 def formatted_exam_dir(exam_id: str) -> Path:
@@ -132,9 +157,9 @@ def formatted_exam_dir(exam_id: str) -> Path:
     
     Example:
         formatted_exam_dir("VW-1025-a-19-1-o")
-        -> data/questions-formatted/exams/VW-1025-a-19-1-o/
+        -> data/questions/exams/curated/VW-1025-a-19-1-o/
     """
-    return questions_formatted_dir() / "exams" / exam_id
+    return questions_formatted_dir() / exam_id
 
 
 def formatted_question_path(exam_id: str, question_number: str) -> Path:
@@ -162,13 +187,9 @@ def vectorstore_index_file_path(dataset_name: str, record_id: str) -> Path:
     return vectorstore_dataset_dir(dataset_name) / f"{record_id}.txt"
 
 
-# Practice exercises paths
-PRACTICE_EXERCISES_DIRNAME = "practice-exercises"
-
-
 def practice_exercises_dir() -> Path:
     """Directory containing practice exercise topic directories."""
-    return questions_formatted_dir() / PRACTICE_EXERCISES_DIRNAME
+    return practice_root_dir() / CURATED_DIRNAME
 
 
 def practice_exercise_dir(topic: str) -> Path:
@@ -177,7 +198,7 @@ def practice_exercise_dir(topic: str) -> Path:
     
     Example:
         practice_exercise_dir("unitcircle") 
-        -> data/questions-formatted/practice-exercises/unitcircle/
+        -> data/questions/practice/curated/unitcircle/
     """
     return practice_exercises_dir() / topic
 

@@ -70,7 +70,10 @@ def _add_exam_to_vector_store(exam_dir: Path) -> None:
 
 @app.command("add")
 def add(
-    exam_dir: Path = typer.Argument(..., help="Path to exam directory containing YAML files (e.g., data/questions-extracted/VW-1025-a-18-1-o/)"),
+    exam_dir: Path = typer.Argument(
+        ...,
+        help="Path to exam directory containing YAML files (e.g., data/questions/exams/processed/VW-1025-a-18-1-o/)",
+    ),
 ) -> None:
     """Add questions from an exam directory to the vector store."""
     
@@ -87,7 +90,7 @@ def add_all(
     exams_root: Path = typer.Option(
         paths.questions_extracted_dir(),
         "--exams-root",
-        help="Folder that contains multiple exam folders, e.g. data/questions-extracted",
+        help="Folder that contains multiple exam folders, e.g. data/questions/exams/processed",
     ),
 ) -> None:
     """Add all questions from all exam directories to the vector store."""
@@ -133,7 +136,7 @@ def fetch(
         file_okay=False,
         dir_okay=True,
         readable=True,
-        help="Folder that contains multiple exam folders, e.g. data/questions-images",
+        help="Folder that contains multiple exam folders, e.g. data/questions/exams/raw",
     ),
     max_results: int = typer.Option(5, "--max-results"),
     best: bool = typer.Option(True, "--best", help="Fetch the best match or a random match."),

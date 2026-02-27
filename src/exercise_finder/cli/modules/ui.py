@@ -22,7 +22,7 @@ def start_ui(
         file_okay=False,
         dir_okay=True,
         readable=True,
-        help="Folder that contains multiple exam folders, e.g. data/questions-images",
+        help="Folder that contains multiple exam folders, e.g. data/questions/exams/raw",
     ),
     host: str = typer.Option("127.0.0.1", "--host"),
     port: int = typer.Option(8000, "--port"),

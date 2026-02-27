@@ -12,13 +12,13 @@ echo ""
 
 # 1. Backup old extracted questions
 echo "[1/7] Backing up old extracted questions..."
-if [ -d "data/questions-extracted" ] && [ "$(ls -A data/questions-extracted 2>/dev/null)" ]; then
+if [ -d "data/questions/exams/processed" ] && [ "$(ls -A data/questions/exams/processed 2>/dev/null)" ]; then
     # Create backup directory with timestamp
-    BACKUP_DIR="backups/questions-extracted-$(date +%Y%m%d-%H%M%S)"
+    BACKUP_DIR="backups/questions-exams-processed-$(date +%Y%m%d-%H%M%S)"
     mkdir -p "$BACKUP_DIR"
-    cp -r data/questions-extracted/* "$BACKUP_DIR/"
+    cp -r data/questions/exams/processed/* "$BACKUP_DIR/"
     echo "  ✓ Backed up extracted questions to $BACKUP_DIR/"
-    rm -rf data/questions-extracted/*
+    rm -rf data/questions/exams/processed/*
     echo "  ✓ Removed old extracted questions"
 else
     echo "  → No extracted questions found to backup"
@@ -33,13 +33,13 @@ echo ""
 
 # 3. Backup and delete old formatted files
 echo "[3/7] Backing up and deleting old formatted files..."
-if ls data/questions-formatted/*/q*.json 1> /dev/null 2>&1; then
+if ls data/questions/exams/curated/*/q*.json 1> /dev/null 2>&1; then
     # Create backup directory with timestamp
-    BACKUP_DIR="backups/questions-formatted-$(date +%Y%m%d-%H%M%S)"
+    BACKUP_DIR="backups/questions-exams-curated-$(date +%Y%m%d-%H%M%S)"
     mkdir -p "$BACKUP_DIR"
-    cp -r data/questions-formatted "$BACKUP_DIR/"
+    cp -r data/questions/exams/curated "$BACKUP_DIR/"
     echo "  ✓ Backed up formatted questions to $BACKUP_DIR/"
-    rm -rf data/questions-formatted/*/q*.json
+    rm -rf data/questions/exams/curated/*/q*.json
     echo "  ✓ Removed old formatted JSON files"
 else
     echo "  → No old formatted files found"

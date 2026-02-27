@@ -22,7 +22,7 @@ def mock_app_config():
         _env_file=None,
         openai_api_key="sk-test-key",
         session_secret_key="test-secret-key",
-        exams_root=Path("data/questions-images"),
+        exams_root=Path("data/questions/exams/raw"),
         use_ssm=False,
         vector_store_id="test-vector-store-id",
     )

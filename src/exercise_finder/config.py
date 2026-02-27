@@ -32,7 +32,10 @@ class AppConfig(BaseSettings):
     is_production: bool = Field(default=False, description="Whether the application is in production")
     openai_api_key: str = Field(..., description="OpenAI API key")
     session_secret_key: str = Field(..., description="Secret key for session cookies")
-    exams_root: Path = Field(default=Path("data/questions-images"), description="Root directory for exam images")
+    exams_root: Path = Field(
+        default=Path("data/questions/exams/raw"),
+        description="Root directory for exam images",
+    )
     use_ssm: bool = Field(default=False, description="Use AWS SSM for vector store ID")
     vector_store_id: str | None = Field(default=None, description="OpenAI vector store ID")
 
