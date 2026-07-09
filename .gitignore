@@ -19,5 +19,8 @@ data/
 # Backups
 backups/
 
+# Git worktrees
+.worktrees/
+
 # MAC OS files
 .DS_Store
