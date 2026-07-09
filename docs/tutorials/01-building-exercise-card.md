@@ -28,7 +28,7 @@ HTML is about **structure and meaning**, not appearance. We use semantic tags to
 
 ### Your Task
 
-Create a new file: `src/exercise_finder/web/templates/_exercise_card_simple.html`
+Create a new file: `src/mathwizard/web/templates/_exercise_card_simple.html`
 
 **Write this HTML:**
 
@@ -335,7 +335,7 @@ exercise = {
 
 ### Your Task
 
-Create `src/exercise_finder/web/templates/exercise_card_test.html`:
+Create `src/mathwizard/web/templates/exercise_card_test.html`:
 
 ```html
 <!DOCTYPE html>
@@ -364,11 +364,11 @@ Create `src/exercise_finder/web/templates/exercise_card_test.html`:
 </html>
 ```
 
-Move your CSS to `src/exercise_finder/web/static/exercise_card.css` (same CSS as before)
+Move your CSS to `src/mathwizard/web/static/exercise_card.css` (same CSS as before)
 
 **Test it in your app:**
 
-Add a test route in `src/exercise_finder/web/app/routes.py`:
+Add a test route in `src/mathwizard/web/app/routes.py`:
 
 ```python
 @router.get("/test-card", response_class=HTMLResponse)
@@ -432,7 +432,7 @@ async def test_card(request: Request) -> HTMLResponse:
 
 ### Your Task
 
-Create `src/exercise_finder/web/templates/_exercise_card.html`:
+Create `src/mathwizard/web/templates/_exercise_card.html`:
 
 ```jinja2
 {# 
@@ -529,7 +529,7 @@ async def exercises():
 
 ### Your Task
 
-Update `src/exercise_finder/web/app/routes.py`:
+Update `src/mathwizard/web/app/routes.py`:
 
 ```python
 @router.get("/exercises", response_class=HTMLResponse)
@@ -566,7 +566,7 @@ async def exercises(request: Request, authenticated: bool = Depends(require_auth
     })
 ```
 
-Update `src/exercise_finder/web/templates/exercises.html`:
+Update `src/mathwizard/web/templates/exercises.html`:
 
 ```html
 <!DOCTYPE html>

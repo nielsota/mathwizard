@@ -19,7 +19,7 @@ services:
       # Remove this mount if using IAM role or env vars
       - ~/.aws:/root/.aws:ro
     # Override CMD to enable auto-reload on file changes
-    command: uv run uvicorn exercise_finder.web.app:app_factory --factory --host 0.0.0.0 --port 8000 --reload --reload-dir /app/src
+    command: uv run uvicorn mathwizard.app.main:app --host 0.0.0.0 --port 8000 --reload --reload-dir /app/src
     environment:
       # Ensure Python doesn't buffer output
       - PYTHONUNBUFFERED=1

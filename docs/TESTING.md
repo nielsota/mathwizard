@@ -40,7 +40,7 @@ uv run pytest tests/test_web/ -v
 uv run pytest tests/test_web/test_routes.py::TestPracticeRoutes -v
 
 # Run with coverage
-uv run pytest tests/test_web/ --cov=exercise_finder.web
+uv run pytest tests/test_web/ --cov=mathwizard.web
 ```
 
 **Advantages:**
@@ -141,7 +141,7 @@ docker compose down
 
 def test_new_topic_page_loads(self, client):
     """New topic page should load successfully."""
-    with patch("exercise_finder.web.app.routes.practice.require_authentication"):
+    with patch("mathwizard.web.app.routes.practice.require_authentication"):
         response = client.get("/practice/newtopic")
         assert response.status_code == 200
         
@@ -211,7 +211,7 @@ uv sync --group dev
 **Solution:**
 Make sure you're running from the project root:
 ```bash
-cd /path/to/exercise_finder
+cd /path/to/mathwizard
 ./scripts/dev-local.sh
 ```
 
@@ -232,7 +232,7 @@ docker compose up
 lsof -ti:8000 | xargs kill -9
 
 # Or use a different port
-uv run uvicorn exercise_finder.web.app:app_factory --factory --reload --port 8001
+uv run uvicorn mathwizard.web.app:app_factory --factory --reload --port 8001
 ```
 
 ---
