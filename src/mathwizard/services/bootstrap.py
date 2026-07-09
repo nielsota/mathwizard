@@ -1,18 +1,19 @@
 from pathlib import Path
-from typing import TypedDict
+from typing import NotRequired, TypedDict
 
 import yaml  # type: ignore[import-untyped]
 
 from mathwizard.db.client import DBClient
+from mathwizard.enums import QuestionSource
 
 
 class ExerciseYaml(TypedDict):
     title: str
     stem: str
     parts: list[dict]
-    exam_id: str | None = None
-    calculator_allowed: bool | None = None
-    difficulty: int | None = None
+    tags: NotRequired[list[str]]
+    calculator_allowed: NotRequired[bool | None]
+    difficulty: NotRequired[int | None]
 
 
 def seed_root_user(db: DBClient) -> None:
@@ -32,25 +33,32 @@ def seed_practice_questions(db: DBClient, practice_dir: Path) -> None:
     if not practice_dir.exists():
         return
 
-    existing_exam_ids = {q.exam_id for q in db.list_questions()}
+    existing_practice_keys = {
+        (q.topic, q.title)
+        for q in db.list_questions()
+        if q.source == QuestionSource.PRACTICE
+    }
 
     for topic_dir in sorted(practice_dir.iterdir()):
         if not topic_dir.is_dir() or topic_dir.name.startswith("_"):
             continue
 
         for ex in _load_practice_yaml(topic_dir):
-            if ex.get("exam_id") in existing_exam_ids:
+            practice_key = (topic_dir.name, ex["title"])
+            if practice_key in existing_practice_keys:
                 continue
 
             db.create_question(
                 title=ex["title"],
                 stem=ex["stem"],
                 parts=ex["parts"],
-                exam_id=ex.get("exam_id"),
+                topic=topic_dir.name,
+                source=QuestionSource.PRACTICE,
+                tags=ex.get("tags", []),
                 calculator_allowed=ex.get("calculator_allowed"),
                 difficulty=ex.get("difficulty"),
             )
-            existing_exam_ids.add(ex.get("exam_id"))
+            existing_practice_keys.add(practice_key)
 
 
 def run_all(db: DBClient, practice_dir: Path) -> None:

@@ -2,8 +2,9 @@ from sqlmodel import Session as DBSession
 from sqlmodel import select
 
 from mathwizard.db.mixins.base import NeedsEngine
-from mathwizard.models.db import Question, QuestionPart
+from mathwizard.enums import QuestionSource
 from mathwizard.exceptions import QuestionNotFoundError
+from mathwizard.models.db import Question, QuestionPart
 
 
 class QuestionsMixin(NeedsEngine):
@@ -14,11 +15,17 @@ class QuestionsMixin(NeedsEngine):
         stem: str,
         parts: list[dict],
         *,
+        topic: str,
+        source: QuestionSource = QuestionSource.PRACTICE,
+        tags: list[str] | None = None,
         exam_id: str | None = None,
         calculator_allowed: bool | None = None,
         difficulty: int | None = None,
     ) -> Question:
         question = Question(
+            topic=topic,
+            source=source,
+            tags=tags or [],
             title=title,
             stem=stem,
             exam_id=exam_id,
@@ -37,6 +44,7 @@ class QuestionsMixin(NeedsEngine):
                 ))
             session.commit()
             session.refresh(question)
+            _ = question.parts
         return question
 
     def get_question(self, question_id: int) -> Question:
@@ -60,6 +68,9 @@ class QuestionsMixin(NeedsEngine):
         *,
         title: str | None = None,
         stem: str | None = None,
+        topic: str | None = None,
+        source: QuestionSource | None = None,
+        tags: list[str] | None = None,
         exam_id: str | None = None,
         calculator_allowed: bool | None = None,
         difficulty: int | None = None,
@@ -74,6 +85,12 @@ class QuestionsMixin(NeedsEngine):
                 question.title = title
             if stem is not None:
                 question.stem = stem
+            if topic is not None:
+                question.topic = topic
+            if source is not None:
+                question.source = source
+            if tags is not None:
+                question.tags = tags
             if exam_id is not None:
                 question.exam_id = exam_id
             if calculator_allowed is not None:
