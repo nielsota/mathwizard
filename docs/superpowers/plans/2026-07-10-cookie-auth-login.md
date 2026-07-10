@@ -495,13 +495,7 @@ def make_db(tmp_path: Path) -> DBClient:
 
 def make_settings(tmp_path: Path) -> Settings:
     return Settings(
-        openai_api_key="dummy",
-        session_secret_key="dummy",
         database_url=f"sqlite:///{tmp_path / 'auth-routes.db'}",
-        cognito_domain="unused",
-        cognito_client_id="unused",
-        cognito_client_secret="unused",
-        cognito_user_pool_id="unused",
         cookie_secure=False,
         session_ttl_days=7,
     )
@@ -894,13 +888,7 @@ Add this helper:
 ```python
 def make_settings(tmp_path: Path) -> Settings:
     return Settings(
-        openai_api_key="dummy",
-        session_secret_key="dummy",
         database_url=f"sqlite:///{tmp_path / 'api.db'}",
-        cognito_domain="unused",
-        cognito_client_id="unused",
-        cognito_client_secret="unused",
-        cognito_user_pool_id="unused",
         cookie_secure=False,
         session_ttl_days=7,
     )

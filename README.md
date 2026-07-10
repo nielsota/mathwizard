@@ -11,7 +11,7 @@ uv sync --extra dev
 cd frontend && npm install
 ```
 
-Create a local `.env` file with the required app settings. `database_url` defaults to `sqlite:///data/mathwizard.db`; the remaining auth/API settings are required by startup.
+Optional local settings can go in `.env`. By default, MathWizard uses `sqlite:///data/mathwizard.db`, seeds the `root` user with password `root`, and uses non-secure cookies for local development.
 
 Start both local dev servers with hot reload:
 
