@@ -1,5 +1,7 @@
 from pathlib import Path
 
+import pytest
+
 from mathwizard.db.client import DBClient
 from mathwizard.enums import QuestionSource
 from mathwizard.services.bootstrap import seed_practice_questions
@@ -7,6 +9,14 @@ from mathwizard.services.bootstrap import seed_practice_questions
 
 def make_db(tmp_path: Path) -> DBClient:
     return DBClient(f"sqlite:///{tmp_path / 'bootstrap.db'}")
+
+
+def test_seed_practice_questions_fails_when_directory_is_missing(tmp_path: Path) -> None:
+    practice_dir = tmp_path / "questions" / "practice"
+    db = make_db(tmp_path)
+
+    with pytest.raises(FileNotFoundError, match=str(practice_dir)):
+        seed_practice_questions(db, practice_dir)
 
 
 def test_seed_practice_questions_uses_yaml_topic_not_folder_name(tmp_path: Path) -> None:

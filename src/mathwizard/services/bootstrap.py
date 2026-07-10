@@ -33,7 +33,7 @@ def _load_practice_yaml(topic_dir: Path) -> list[ExerciseYaml]:
 
 def seed_practice_questions(db: DBClient, practice_dir: Path) -> None:
     if not practice_dir.exists():
-        return
+        raise FileNotFoundError(f"Practice question directory not found: {practice_dir}")
 
     existing_question_keys = {
         (q.source, q.topic, q.title)
