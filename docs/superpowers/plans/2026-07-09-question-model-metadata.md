@@ -4,7 +4,7 @@
 
 **Goal:** Add first-class question metadata for `topic`, enum-backed `source`, and `tags` at the database/model layer, while keeping practice questions separate from exam identity.
 
-**Architecture:** Store `topic` as an indexed slug, `source` as a `StrEnum`-backed field, and `tags` as a JSON list on `Question`. Thread these fields through the existing `QuestionsMixin` create/update API and the practice bootstrap seed path only; public API routes, service response schemas, and frontend contracts are intentionally left for a follow-up plan.
+**Architecture:** Store `topic` as an indexed slug, `source` as a `StrEnum`-backed field, and `tags` as a JSON list on `Question`. YAML files are complete question definitions: bootstrap reads `source`, `topic`, and `tags` from each YAML instead of deriving metadata from folder names. Public API routes, service response schemas, and frontend contracts are intentionally left for a follow-up plan.
 
 **Tech Stack:** Python 3.12, SQLModel, SQLAlchemy, SQLite, pytest, PyYAML.
 
@@ -15,9 +15,9 @@
 - Create `src/mathwizard/enums.py`: define `QuestionSource` as a `StrEnum`.
 - Modify `src/mathwizard/models/db.py`: add `topic`, `source`, and `tags` fields to `Question`.
 - Modify `src/mathwizard/db/mixins/questions.py`: accept, persist, and update `topic`, `source`, and `tags`.
-- Modify `src/mathwizard/services/bootstrap.py`: derive `topic` from `data/questions/practice/<topic>/`, seed `source=QuestionSource.PRACTICE`, seed optional YAML `tags`, and do not assign `exam_id` for practice questions.
+- Modify `src/mathwizard/services/bootstrap.py`: read explicit `source`, `topic`, and optional `tags` from each YAML file, and do not assign `exam_id` for practice questions.
 - Create `tests/test_db_questions.py`: verify DB create/update behavior for the new fields.
-- Create `tests/test_bootstrap_questions.py`: verify practice seeding derives `topic`, keeps `exam_id` empty, and persists tags.
+- Create `tests/test_bootstrap_questions.py`: verify practice seeding uses YAML metadata, keeps `exam_id` empty, and persists tags.
 
 Out of scope for this plan:
 
@@ -276,12 +276,14 @@ def make_db(tmp_path: Path) -> DBClient:
     return DBClient(f"sqlite:///{tmp_path / 'bootstrap.db'}")
 
 
-def test_seed_practice_questions_uses_folder_name_as_topic(tmp_path: Path) -> None:
+def test_seed_practice_questions_uses_yaml_topic_not_folder_name(tmp_path: Path) -> None:
     practice_dir = tmp_path / "questions" / "practice"
-    topic_dir = practice_dir / "derivatives"
+    topic_dir = practice_dir / "folder-is-not-metadata"
     topic_dir.mkdir(parents=True)
     (topic_dir / "p1.yaml").write_text(
         "\n".join([
+            "source: practice",
+            "topic: derivatives",
             "title: Machtsfuncties",
             "stem: Bepaal de afgeleide van de volgende functies.",
             "calculator_allowed: false",
@@ -315,6 +317,8 @@ def test_seed_practice_questions_is_idempotent_without_exam_id(tmp_path: Path) -
     topic_dir.mkdir(parents=True)
     (topic_dir / "p1.yaml").write_text(
         "\n".join([
+            "source: practice",
+            "topic: derivatives",
             "title: Machtsfuncties",
             "stem: Bepaal de afgeleide.",
             "parts:",
@@ -342,7 +346,7 @@ Run:
 uv run pytest tests/test_bootstrap_questions.py -v
 ```
 
-Expected: FAIL because `seed_practice_questions()` still deduplicates with `exam_id` and does not pass `topic`, `source`, or `tags` to `db.create_question()` yet.
+Expected: FAIL because `seed_practice_questions()` still deduplicates with `exam_id` and does not read explicit `topic`, `source`, or `tags` from YAML yet.
 
 - [ ] **Step 3: Tighten the YAML type definition**
 
@@ -359,6 +363,8 @@ from mathwizard.enums import QuestionSource
 
 
 class ExerciseYaml(TypedDict):
+    source: str
+    topic: str
     title: str
     stem: str
     parts: list[dict]
@@ -378,10 +384,9 @@ Inside `seed_practice_questions`, replace:
 with:
 
 ```python
-    existing_practice_keys = {
-        (q.topic, q.title)
+    existing_question_keys = {
+        (q.source, q.topic, q.title)
         for q in db.list_questions()
-        if q.source == QuestionSource.PRACTICE
     }
 ```
 
@@ -395,12 +400,13 @@ Then replace the old per-exercise duplicate guard:
 with:
 
 ```python
-            practice_key = (topic_dir.name, ex["title"])
-            if practice_key in existing_practice_keys:
+            source = QuestionSource(ex["source"])
+            question_key = (source, ex["topic"], ex["title"])
+            if question_key in existing_question_keys:
                 continue
 ```
 
-- [ ] **Step 5: Pass folder topic, practice source, and tags during seeding**
+- [ ] **Step 5: Pass YAML source, topic, and tags during seeding**
 
 Modify the `db.create_question(...)` call inside `seed_practice_questions`:
 
@@ -409,13 +415,13 @@ Modify the `db.create_question(...)` call inside `seed_practice_questions`:
                 title=ex["title"],
                 stem=ex["stem"],
                 parts=ex["parts"],
-                topic=topic_dir.name,
-                source=QuestionSource.PRACTICE,
+                topic=ex["topic"],
+                source=source,
                 tags=ex.get("tags", []),
                 calculator_allowed=ex.get("calculator_allowed"),
                 difficulty=ex.get("difficulty"),
             )
-            existing_practice_keys.add(practice_key)
+            existing_question_keys.add(question_key)
 ```
 
 Do not pass `exam_id` for practice questions.
@@ -528,6 +534,6 @@ This plan intentionally stops before those changes so the database contract can 
 
 ## Self-Review
 
-- Spec coverage: The plan adds `topic`, enum-backed `source`, and `tags`; persists them through DB create/update; derives practice `topic` from the folder slug; keeps practice `exam_id` empty; and makes practice seeding idempotent without `exam_id`. API, service response, frontend, filtering, and RAG work are explicitly deferred.
+- Spec coverage: The plan adds `topic`, enum-backed `source`, and `tags`; persists them through DB create/update; reads practice metadata explicitly from YAML; keeps practice `exam_id` empty; and makes seeding idempotent without `exam_id`. API, service response, frontend, filtering, and RAG work are explicitly deferred.
 - Placeholder scan: No placeholder steps remain; every code-changing step includes concrete code and every verification step includes an exact command and expected result.
 - Type consistency: The model fields are `topic: str`, `source: QuestionSource`, and `tags: list[str]`; `create_question`, `update_question`, tests, and bootstrap all use those same names.
