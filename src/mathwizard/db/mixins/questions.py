@@ -55,11 +55,22 @@ class QuestionsMixin(NeedsEngine):
             _ = question.parts
             return question
 
-    def list_questions(self) -> list[Question]:
+    def list_questions(
+        self,
+        *,
+        topic: str | None = None,
+        source: QuestionSource | None = None,
+    ) -> list[Question]:
+        statement = select(Question).order_by(Question.id)
+        if topic is not None:
+            statement = statement.where(Question.topic == topic)
+        if source is not None:
+            statement = statement.where(Question.source == source)
+
         with DBSession(self.engine) as session:
-            questions = session.exec(select(Question)).all()
-            for q in questions:
-                _ = q.parts
+            questions = session.exec(statement).all()
+            for question in questions:
+                _ = question.parts
             return list(questions)
 
     def update_question(
