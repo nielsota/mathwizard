@@ -9,9 +9,6 @@ wheels/
 # Virtual environments
 .venv
 
-# Data
-data/
-
 # environment variables
 .env
 .env.*
@@ -24,3 +21,19 @@ backups/
 
 # MAC OS files
 .DS_Store
+
+# all pdf files
+*.pdf
+
+# all images
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.bmp
+*.tiff
+*.ico
+*.webp
+*.svg
+*.eps
+*.ai

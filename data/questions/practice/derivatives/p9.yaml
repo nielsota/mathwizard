@@ -1,0 +1,21 @@
+source: practice
+topic: derivatives
+tags:
+- differentieren
+- productregel
+- quotientregel
+- kettingregel
+- exponentieel
+- logaritme
+- goniometrie
+calculator_allowed: false
+difficulty: 4
+parts:
+- points: 4
+  text: \(f(x) = x^2e^{-x}\)
+- points: 4
+  text: \(g(x) = \frac{\ln(x)}{x}\)
+- points: 4
+  text: \(h(x) = \sqrt{\sin(x) + \cos(x)}\)
+stem: Bepaal de afgeleide van de volgende functies.
+title: Gemengde opgaven I

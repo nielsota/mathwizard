@@ -1,0 +1,18 @@
+source: practice
+topic: parametric
+tags:
+- parametrisch
+calculator_allowed: false
+difficulty: 1
+parts:
+- points: 2
+  text: \(y = 3x + 1\)
+- points: 2
+  text: \(y = -2x + 5\)
+- points: 3
+  text: \(2x + 3y = 6\)
+- points: 3
+  text: \(x - 4y = 8\)
+stem: "Schrijf de volgende lijnvergelijkingen om naar een vectorvergelijking van de vorm \\(\\begin{pmatrix} x \\\\ y \\end{pmatrix} = \\vec{p} + t\\vec{r}\\)."
+title: Van lijnvergelijking naar vectorvergelijking
+

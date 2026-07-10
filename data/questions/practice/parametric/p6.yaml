@@ -1,0 +1,12 @@
+source: practice
+topic: parametric
+tags:
+- parametrisch
+calculator_allowed: false
+difficulty: 5
+parts:
+- points: 6
+  text: Bepaal de hoek tussen de twee lijnen in graden.
+stem: "Gegeven zijn de lijnen \\(l: y = \\frac{1}{3}\\sqrt{3} \\cdot x + 1\\) en \\(m: y = 2\\)."
+title: Hoek tussen twee lijnen
+

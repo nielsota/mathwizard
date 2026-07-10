@@ -1,0 +1,17 @@
+source: practice
+topic: unitcircle
+tags:
+- eenheidscirkel
+- goniometrie
+calculator_allowed: false
+difficulty: 2
+parts:
+- points: 3
+  text: \(\sin(x) = -\frac{1}{2}\)
+- points: 3
+  text: \(\cos(x) = -\frac{1}{2}\)
+- points: 3
+  text: \(\sin(x) = -\frac{\sqrt{3}}{2}\)
+stem: Los de volgende vergelijkingen op voor \(0 \leq x \leq 2\pi\). Leg bij elk onderdeel
+  uit welke symmetrie je gebruikt.
+title: 'Symmetrie: Negatieve waarden'

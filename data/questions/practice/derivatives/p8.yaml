@@ -1,0 +1,19 @@
+source: practice
+topic: derivatives
+tags:
+- differentieren
+- goniometrie
+- tangens
+- productregel
+- kettingregel
+calculator_allowed: false
+difficulty: 3
+parts:
+- points: 3
+  text: \(f(x) = \tan(x)\)
+- points: 3
+  text: \(g(x) = x\tan(x)\)
+- points: 3
+  text: \(h(x) = \tan(x^2 + 1)\)
+stem: Bepaal de afgeleide van de volgende functies.
+title: Tangens en cotangens

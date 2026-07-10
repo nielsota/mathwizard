@@ -1,0 +1,17 @@
+source: practice
+topic: unitcircle
+tags:
+- eenheidscirkel
+- goniometrie
+calculator_allowed: false
+difficulty: 1
+parts:
+- points: 2
+  text: \(\sin(x) = \frac{1}{2}\)
+- points: 2
+  text: \(\sin(x) = \frac{\sqrt{3}}{2}\)
+- points: 2
+  text: \(\sin(x) = \frac{\sqrt{2}}{2}\)
+stem: Los de volgende vergelijkingen op voor \(0 \leq x \leq 2\pi\). Geef alle oplossingen
+  exact in radialen.
+title: 'Basis: Sinus vergelijkingen'

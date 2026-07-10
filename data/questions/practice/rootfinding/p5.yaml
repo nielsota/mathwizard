@@ -1,0 +1,19 @@
+source: practice
+topic: rootfinding
+tags:
+- wortels
+- vergelijkingen
+calculator_allowed: false
+difficulty: 4
+parts:
+- points: 3
+  text: \(\sin^2(x) + \cos(x) = 1\)
+- points: 3
+  text: \(\cos(2x) = \cos^2(x)\)
+- points: 3
+  text: \(\sin(x)\cos(x) = \frac{1}{2}\)
+- points: 3
+  text: \(\tan^2(x) - 3 = 0\)
+stem: "Los de volgende vergelijkingen op voor \\(0 \\leq x < 2\\pi\\). Bij deze opgaven moet je eerst een goniometrische identiteit toepassen voordat de vergelijking oplosbaar wordt. Denk aan: \\(\\sin^2(x) + \\cos^2(x) = 1\\), \\(\\cos(2x) = 2\\cos^2(x) - 1\\), en \\(\\sin(2x) = 2\\sin(x)\\cos(x)\\)."
+title: Goniometrische vergelijkingen (niveau+)
+

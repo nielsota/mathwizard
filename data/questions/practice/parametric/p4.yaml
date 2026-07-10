@@ -1,0 +1,14 @@
+source: practice
+topic: parametric
+tags:
+- parametrisch
+calculator_allowed: false
+difficulty: 3
+parts:
+- points: 3
+  text: Schrijf beide lijnen om naar een vectorvergelijking.
+- points: 4
+  text: Bepaal de hoek tussen de twee lijnen in graden.
+stem: "Gegeven zijn de lijnen \\(l: y = \\sqrt{3}x + 2\\) en \\(m: y = 5\\)."
+title: Hoek tussen twee lijnen
+

@@ -1,0 +1,16 @@
+source: practice
+topic: goniometry
+tags:
+- goniometrie
+calculator_allowed: false
+difficulty: 4
+parts:
+- points: 4
+  text: \(\cos(\alpha) = -\frac{3}{5}\) en \(\alpha\) ligt in het tweede kwadrant.
+- points: 4
+  text: \(\sin(\alpha) = -\frac{5}{13}\) en \(\alpha\) ligt in het derde kwadrant.
+- points: 5
+  text: \(\tan(\alpha) = \frac{4}{3}\) en \(\alpha\) ligt in het derde kwadrant.
+stem: "Bepaal de exacte waarden van \\(\\sin(\\alpha)\\), \\(\\cos(\\alpha)\\) en \\(\\tan(\\alpha)\\)."
+title: Goniometrie in alle kwadranten
+

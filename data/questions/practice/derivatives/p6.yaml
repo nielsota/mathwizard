@@ -1,0 +1,19 @@
+source: practice
+topic: derivatives
+tags:
+- differentieren
+- exponentieel
+- logaritme
+- kettingregel
+- productregel
+calculator_allowed: false
+difficulty: 2
+parts:
+- points: 3
+  text: \(f(x) = xe^x\)
+- points: 3
+  text: \(g(x) = e^{x^2}\)
+- points: 3
+  text: \(h(x) = \ln(x^2 + 1)\)
+stem: Bepaal de afgeleide van de volgende functies.
+title: Exponentiële en logaritmische functies

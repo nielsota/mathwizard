@@ -1,0 +1,16 @@
+source: practice
+topic: rootfinding
+tags:
+- wortels
+- vergelijkingen
+calculator_allowed: false
+difficulty: 1
+parts:
+- points: 1
+  text: \(x^2 + 2x - 3 = 0\)
+- points: 1
+  text: \(x^2 - 4x= 0\)
+- points: 1
+  text: \(x^2 - 9 = 0\)
+stem: "Los de volgende vergelijkingen op. Ze zijn allemaal kwadratisch — de hoogste macht van \\(x\\) is steeds 2. Maar kijk goed: elke vergelijking ziet er net anders uit. Welke termen zijn aanwezig? Welke ontbreken? Leer deze vormen herkennen, want dat helpt je bij het kiezen van de juiste aanpak."
+title: Kwadratische vergelijkingen

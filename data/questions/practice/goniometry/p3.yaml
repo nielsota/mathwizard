@@ -1,0 +1,18 @@
+source: practice
+topic: goniometry
+tags:
+- goniometrie
+calculator_allowed: false
+difficulty: 2
+parts:
+- points: 4
+  text: \(\cos(\alpha) = \frac{3}{5}\)
+- points: 4
+  text: \(\cos(\alpha) = \frac{5}{13}\)
+- points: 4
+  text: \(\sin(\alpha) = \frac{15}{17}\)
+- points: 4
+  text: \(\sin(\alpha) = \frac{7}{25}\)
+stem: "Gegeven is dat \\(0 < \\alpha < \\frac{\\pi}{2}\\). Bepaal exact \\(\\tan(\\alpha)\\)."
+title: Tangens bepalen
+

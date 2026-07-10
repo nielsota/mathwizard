@@ -1,0 +1,17 @@
+source: practice
+topic: unitcircle
+tags:
+- eenheidscirkel
+- goniometrie
+calculator_allowed: false
+difficulty: 3
+parts:
+- points: 4
+  text: \(\cos(x) = -\frac{\sqrt{2}}{2}\)
+- points: 4
+  text: \(\sin(x) = -\frac{1}{2}\)
+- points: 4
+  text: \(\cos(x) = \frac{1}{2}\)
+stem: Los de volgende vergelijkingen op voor \(0 \leq x \leq 4\pi\). Beschrijf bij
+  elk onderdeel welke symmetrieën en periodiciteit je gebruikt.
+title: 'Synthese: Alle symmetrieën'

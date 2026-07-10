@@ -1,0 +1,12 @@
+source: practice
+topic: parametric
+tags:
+- parametrisch
+calculator_allowed: false
+difficulty: 4
+parts:
+- points: 6
+  text: Bepaal de hoek tussen de twee lijnen in graden.
+stem: "Gegeven zijn de lijnen \\(l: y = x + 1\\) en \\(m: y = 4\\)."
+title: Hoek tussen twee lijnen
+
