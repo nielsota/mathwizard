@@ -46,24 +46,34 @@ export default function Practice() {
   useEffect(() => {
     if (!topic) return
 
+    const controller = new AbortController()
+    let active = true
+
     setLoading(true)
     setError('')
     setPracticeSet(null)
 
-    fetch(`/api/v1/practice/${topic}`)
+    fetch(`/api/v1/practice/${topic}`, { signal: controller.signal })
       .then(async resp => {
         if (!resp.ok) throw new Error(`HTTP ${resp.status}`)
         return resp.json()
       })
       .then((data: QuestionListResponse) => {
+        if (!active) return
         setPracticeSet(data)
         setLoading(false)
       })
       .catch(e => {
+        if (!active) return
         setError(String(e))
         setPracticeSet(null)
         setLoading(false)
       })
+
+    return () => {
+      active = false
+      controller.abort()
+    }
   }, [topic])
 
   return (
