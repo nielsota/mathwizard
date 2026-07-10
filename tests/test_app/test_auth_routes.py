@@ -98,6 +98,8 @@ def test_logout_revokes_session_and_clears_cookie(tmp_path: Path) -> None:
         json={"username": "root", "password": "secret"},
     )
     assert login.status_code == 200
+    session_token = client.cookies.get(SESSION_COOKIE_NAME)
+    assert session_token is not None
 
     logout = client.post("/auth/logout")
 
@@ -106,3 +108,7 @@ def test_logout_revokes_session_and_clears_cookie(tmp_path: Path) -> None:
 
     me = client.get("/auth/me")
     assert me.status_code == 401
+
+    client.cookies.set(SESSION_COOKIE_NAME, session_token)
+    stale_me = client.get("/auth/me")
+    assert stale_me.status_code == 401

@@ -17,8 +17,6 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None]:
     settings = get_settings()
     db = DBClient(settings.database_url)
 
-    app.state.settings = settings
-
     bootstrap.run_all(db, settings.practice_dir)
     app.state.auth_service = AuthService(db, settings)
     app.state.question_service = QuestionService(db)
