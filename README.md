@@ -1,62 +1,105 @@
-# Exercise Finder (MathWizard)
+# MathWizard
 
-Quick command reference using the `mw` CLI.
+MathWizard is a FastAPI and React app for finding and practicing math exercises. The backend stores question records with explicit metadata, seeds practice questions from YAML, and exposes a typed practice-question API. The frontend renders the practice flow with MathJax and exercise metadata.
 
-## Data layout
+## Quick Start
 
-Questions data is organized under `data/questions/`:
-
-```
-data/questions/
-  exams/
-    raw/        # question images (qNN/pages, qNN/figures)
-    processed/  # extracted YAML (qN.yaml per exam)
-    curated/    # formatted YAML (qN.yaml per exam)
-    pdfs/       # source exam PDFs
-  practice/
-    curated/    # practice sets (_meta.yaml + pN.yaml)
-```
-
-## Workflow Steps
-
-### 1. Extract questions from exam images
-
-Parse exam images and compile to JSONL:
+Install backend and frontend dependencies:
 
 ```bash
-uv run mw extract from-images --exam-dir data/questions/exams/raw/VW-1025-a-18-1-o
-uv run mw extract from-images --exam-dir data/questions/exams/raw/VW-1025-a-18-2-o
-uv run mw extract from-images --exam-dir data/questions/exams/raw/VW-1025-a-19-1-o
+uv sync --extra dev
+cd frontend && npm install
 ```
 
-This writes to `data/questions/exams/processed/` by default.
+Create a local `.env` file with the required app settings. `database_url` defaults to `sqlite:///data/mathwizard.db`; the remaining auth/API settings are required by startup.
 
-### 2. Create and populate vector store
+Start both local dev servers with hot reload:
 
-**Create vector store (do once):**
 ```bash
-uv run mw vectorstore create --name examstore24122025
+./scripts/dev_deploy.sh
 ```
 
-Note the returned vector store ID (e.g., `vs_694b9b4403e881918fd7b5c04a301771`)
+The backend runs at http://localhost:8000 and the frontend runs at http://localhost:3000.
 
-**Add extracted questions to vector store:**
+You can also start them separately:
+
 ```bash
-uv run mw vectorstore add 
+uv run uvicorn mathwizard.app.main:app --reload --host 0.0.0.0 --port 8000
+cd frontend && npm run dev -- --host 0.0.0.0
 ```
 
-Processes all YAML files in `data/questions/exams/processed/` by default.
+## Practice Questions
 
-### 3. Query and use
+Practice questions live in `data/questions/practice/`. Each `p*.yaml` file is a complete question definition and must include its own metadata instead of relying on folder names:
 
-**CLI search:**
+```yaml
+source: practice
+topic: derivatives
+tags:
+- differentieren
+- machtsregel
+title: Machtsfuncties
+stem: Bepaal de afgeleide van de volgende functies.
+parts:
+- text: \(f(x) = 3x^7 - 2x^5 + x^3\)
+  points: 3
+```
+
+On startup, the backend seeds practice questions from this directory into the configured database. Missing practice seed data fails loudly so the app does not silently serve an empty practice API.
+
+## API
+
+Health check:
+
 ```bash
-uv run mw vectorstore fetch --vector-store-id <INSERT_ID> --query "parametric equations" --exam-dir data/questions/exams/raw/VW-1025-a-18-1-o
+curl http://localhost:8000/
 ```
 
-**Web UI (recommended):**
+Practice questions by topic:
+
 ```bash
-uv run mw ui start --vector-store-id <INSERT_ID> --exams-root data/questions/exams/raw
+curl "http://localhost:8000/api/v1/practice/derivatives"
 ```
 
-Access at http://localhost:8000 for interactive search with image display.
+The practice endpoint returns a generic question list response:
+
+```json
+{
+  "source": "practice",
+  "topic": "derivatives",
+  "questions": []
+}
+```
+
+Questions are sorted by difficulty by default. Disable that sorting with:
+
+```bash
+curl "http://localhost:8000/api/v1/practice/derivatives?sort_by_difficulty=false"
+```
+
+## Development Checks
+
+Run backend tests:
+
+```bash
+uv run --extra dev pytest -v
+```
+
+Run frontend build and lint:
+
+```bash
+cd frontend && npm run build && npm run lint
+```
+
+## Project Layout
+
+```text
+src/mathwizard/
+  app/       FastAPI app, dependencies, and routes
+  db/        SQLModel database client and mixins
+  models/    Database and API request/response models
+  services/  Bootstrap and question service logic
+frontend/    React, TypeScript, and Vite frontend
+data/        Tracked practice question YAML and local database files
+tests/       Backend unit and route tests
+```
