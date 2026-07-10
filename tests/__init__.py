@@ -1,2 +1,2 @@
-"""Test suite for exercise-finder."""
+"""Test suite for mathwizard."""
 

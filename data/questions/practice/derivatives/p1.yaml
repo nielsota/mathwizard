@@ -1,0 +1,16 @@
+source: practice
+topic: derivatives
+tags:
+- differentieren
+- machtsregel
+calculator_allowed: false
+difficulty: 1
+parts:
+- points: 3
+  text: \(f(x) = 3x^7 - 2x^5 + x^3\)
+- points: 3
+  text: \(g(x) = \frac{2}{x^3} + \frac{5}{x^2}\)
+- points: 3
+  text: \(h(x) = 4\sqrt[3]{x^2} - 3\sqrt{x}\)
+stem: Bepaal de afgeleide van de volgende functies.
+title: Machtsfuncties

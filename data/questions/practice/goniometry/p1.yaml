@@ -1,0 +1,18 @@
+source: practice
+topic: goniometry
+tags:
+- goniometrie
+calculator_allowed: false
+difficulty: 1
+parts:
+- points: 3
+  text: \(\cos(\alpha) = \frac{3}{5}\)
+- points: 3
+  text: \(\cos(\alpha) = \frac{5}{13}\)
+- points: 3
+  text: \(\cos(\alpha) = \frac{8}{17}\)
+- points: 3
+  text: \(\cos(\alpha) = \frac{7}{25}\)
+stem: "Gegeven is dat \\(0 < \\alpha < \\frac{\\pi}{2}\\). Bepaal exact \\(\\sin(\\alpha)\\)."
+title: Van cosinus naar sinus
+

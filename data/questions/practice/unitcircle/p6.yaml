@@ -1,0 +1,16 @@
+source: practice
+topic: unitcircle
+tags:
+- eenheidscirkel
+- goniometrie
+calculator_allowed: false
+difficulty: 2
+parts:
+- points: 2
+  text: \(0 \leq x \leq \pi\)
+- points: 2
+  text: \(0 \leq x \leq 2\pi\)
+- points: 2
+  text: \(0 \leq x \leq 4\pi\)
+stem: 'Los de vergelijking \(\sin(x) = \frac{\sqrt{3}}{2}\) op voor de volgende intervallen:'
+title: Verschillende intervallen

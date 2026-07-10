@@ -1,0 +1,17 @@
+source: practice
+topic: derivatives
+tags:
+- differentieren
+- kettingregel
+- machtsregel
+calculator_allowed: false
+difficulty: 2
+parts:
+- points: 3
+  text: \(f(x) = (3x^2 - 4x + 1)^5\)
+- points: 3
+  text: \(g(x) = \sqrt{x^3 + 2x}\)
+- points: 3
+  text: \(h(x) = \frac{1}{(x^2 + 1)^3}\)
+stem: Bepaal de afgeleide van de volgende functies.
+title: Kettingregel I

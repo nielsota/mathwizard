@@ -1,0 +1,19 @@
+source: practice
+topic: rootfinding
+tags:
+- wortels
+- vergelijkingen
+calculator_allowed: false
+difficulty: 4
+parts:
+- points: 3
+  text: \(\sqrt{x+5} - \sqrt{x} = 1\)
+- points: 3
+  text: \(\sqrt{x} + \sqrt{x+3} = 3\)
+- points: 3
+  text: \(\sqrt{2x+1} = \sqrt{x} + 1\)
+- points: 4
+  text: \(\sqrt{\sqrt{x} + 3} = 2\)
+stem: "Los de volgende vergelijkingen op. Deze opgaven vereisen een extra stap: je moet eerst herschrijven of isoleren voordat je kunt kwadrateren. Let op: soms moet je twee keer kwadrateren. Controleer altijd je antwoorden!"
+title: Wortelvergelijkingen (niveau+)
+

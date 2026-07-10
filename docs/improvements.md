@@ -2,8 +2,8 @@
 
 ## What’s happening now (likely)
 
-- Your vector store is built from raw PDFs in `data/questions/` (see `src/exercise_finder/vectordb/main.py`).
-- `FileSearchTool(..., include_search_results=True)` feeds the model **search result chunks** from those PDFs (see `src/exercise_finder/agents/question.py`).
+- Your vector store is built from raw PDFs in `data/questions/` (see `src/mathwizard/vectordb/main.py`).
+- `FileSearchTool(..., include_search_results=True)` feeds the model **search result chunks** from those PDFs (see `src/mathwizard/agents/question.py`).
 - Vector-store search results are typically *chunked excerpts* of the underlying file, not the full document, and a single question can easily span multiple chunks/pages.
 - Your system prompt doesn’t require “verbatim full question” output, so the model often copies only the best-matching excerpt and returns a partial question.
 

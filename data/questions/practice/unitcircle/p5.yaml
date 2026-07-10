@@ -1,0 +1,17 @@
+source: practice
+topic: unitcircle
+tags:
+- eenheidscirkel
+- goniometrie
+calculator_allowed: false
+difficulty: 3
+parts:
+- points: 3
+  text: \(\cos(x) = -\frac{1}{2}\)
+- points: 3
+  text: \(\sin(x) = -\frac{\sqrt{2}}{2}\)
+- points: 3
+  text: \(\cos(x) = -\frac{\sqrt{3}}{2}\)
+stem: Bepaal eerst in welke kwadranten de functie negatief is, los dan de vergelijkingen
+  op voor \(0 \leq x \leq 2\pi\).
+title: Kwadrantenanalyse

@@ -38,7 +38,7 @@ Required in `.env`:
 OPENAI_API_KEY=sk-...
 SESSION_SECRET_KEY=your-secret-key
 AUTH_PASSWORD=your-password
-EXAMS_ROOT=data/questions-images
+EXAMS_ROOT=data/questions/exams/raw
 ```
 
 ---

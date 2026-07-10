@@ -1,0 +1,19 @@
+source: practice
+topic: rootfinding
+tags:
+- wortels
+- vergelijkingen
+calculator_allowed: false
+difficulty: 3
+parts:
+- points: 2
+  text: \(\sin^2(x) - 1 = 0\)
+- points: 3
+  text: \(\cos^2(x) + \cos(x) - 2 = 0\)
+- points: 3
+  text: \(2\sin^2(x) - \sin(x) - 1 = 0\)
+- points: 2
+  text: \(\sin^2(x) + \sin(x) = 0\)
+stem: "Los de volgende vergelijkingen op voor \\(0 \\leq x < 2\\pi\\). Herken je de kwadratische structuur? Tip: stel \\(u = \\sin(x)\\) of \\(u = \\cos(x)\\) en los eerst de kwadratische vergelijking in \\(u\\) op. Vergeet niet dat \\(-1 \\leq \\sin(x) \\leq 1\\) en \\(-1 \\leq \\cos(x) \\leq 1\\)."
+title: Goniometrische vergelijkingen
+

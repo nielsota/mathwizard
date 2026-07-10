@@ -1,0 +1,19 @@
+source: practice
+topic: rootfinding
+tags:
+- wortels
+- vergelijkingen
+calculator_allowed: false
+difficulty: 2
+parts:
+- points: 2
+  text: \(\sqrt{x} + 3 = 7\)
+- points: 2
+  text: \(\sqrt{x} - 2x = -1\)
+- points: 3
+  text: \(\sqrt{x + 5} = x - 1\)
+- points: 3
+  text: \(\frac{\sqrt{x}}{x+1} = \frac{2}{5}\)
+stem: "Los de volgende vergelijkingen op. Let op: bij wortelvergelijkingen moet je altijd je antwoord controleren! Door het kwadrateren kun je 'schijnoplossingen' krijgen die niet voldoen aan de oorspronkelijke vergelijking."
+title: Wortelvergelijkingen
+

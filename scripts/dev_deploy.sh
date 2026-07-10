@@ -1,46 +1,56 @@
 #!/bin/bash
 set -e
 
-echo "🚀 Starting local development environment with hot-reload..."
+ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+BACKEND_PID=""
+FRONTEND_PID=""
+
+cleanup() {
+    echo ""
+    echo "Stopping local development servers..."
+
+    if [ -n "$BACKEND_PID" ] && kill -0 "$BACKEND_PID" 2>/dev/null; then
+        kill "$BACKEND_PID"
+    fi
+
+    if [ -n "$FRONTEND_PID" ] && kill -0 "$FRONTEND_PID" 2>/dev/null; then
+        kill "$FRONTEND_PID"
+    fi
+
+    wait 2>/dev/null || true
+}
+
+trap cleanup EXIT INT TERM
+
+cd "$ROOT_DIR"
+
+echo "Starting local development environment with hot reload..."
 echo ""
 
 # Check if .env exists
 if [ ! -f .env ]; then
-    echo "⚠️  Warning: .env not found. Create it from .env.example"
+    echo "Warning: .env not found. Create it from .env.example"
     echo ""
 fi
 
-# Option to rebuild the image
-if [ "$1" == "--rebuild" ] || [ "$1" == "-r" ]; then
-    echo "🔨 Rebuilding Docker image..."
-    docker compose build --no-cache
-    echo ""
-fi
-
-# Stop any existing containers
-echo "🛑 Stopping existing containers..."
-docker compose down
+echo "Starting backend at http://localhost:8000..."
+uv run uvicorn mathwizard.app.main:app --reload --host 0.0.0.0 --port 8000 &
+BACKEND_PID=$!
 echo ""
 
-# Start the container in detached mode
-echo "🐳 Starting container with hot-reload..."
-docker compose up -d
+echo "Starting frontend at http://localhost:3000..."
+(
+    cd frontend
+    npm run dev -- --host 0.0.0.0
+) &
+FRONTEND_PID=$!
 echo ""
 
-# Wait a moment for the container to start
-sleep 2
-
-# Show the status
-echo "✅ Container is running!"
-echo ""
-echo "📍 Access the app at: http://localhost:8000"
-echo "🔄 Hot-reload is enabled - changes to src/ will auto-restart"
-echo "📋 View logs with: docker compose logs -f"
-echo "🛑 Stop with: docker compose down"
+echo "Local development servers are running."
+echo "Backend:  http://localhost:8000"
+echo "Frontend: http://localhost:3000"
+echo "Press Ctrl+C to stop both servers."
 echo ""
 
-# Follow logs (Ctrl+C to exit, container keeps running)
-echo "📋 Following logs (Ctrl+C to exit)..."
-echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-docker compose logs -f
+wait "$BACKEND_PID" "$FRONTEND_PID"
 

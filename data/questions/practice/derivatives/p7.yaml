@@ -1,0 +1,19 @@
+source: practice
+topic: derivatives
+tags:
+- differentieren
+- kettingregel
+- goniometrie
+- exponentieel
+- logaritme
+calculator_allowed: false
+difficulty: 3
+parts:
+- points: 4
+  text: \(f(x) = \sin^3(2x)\)
+- points: 4
+  text: \(g(x) = e^{\sin(x)}\)
+- points: 4
+  text: \(h(x) = \ln(\cos(x))\)
+stem: Bepaal de afgeleide van de volgende functies.
+title: Kettingregel II

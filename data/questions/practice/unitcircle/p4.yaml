@@ -1,0 +1,15 @@
+source: practice
+topic: unitcircle
+tags:
+- eenheidscirkel
+- goniometrie
+calculator_allowed: false
+difficulty: 2
+parts:
+- points: 4
+  text: \(\sin(x) = \frac{\sqrt{2}}{2}\)
+- points: 4
+  text: \(\cos(x) = \frac{\sqrt{2}}{2}\)
+stem: Los de volgende vergelijkingen op voor \(0 \leq x \leq 4\pi\). Leg uit hoe periodiciteit
+  je helpt.
+title: 'Uitgebreid interval: Periodiciteit'

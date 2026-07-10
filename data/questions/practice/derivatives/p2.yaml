@@ -1,0 +1,18 @@
+source: practice
+topic: derivatives
+tags:
+- differentieren
+- goniometrie
+- productregel
+- quotientregel
+calculator_allowed: false
+difficulty: 2
+parts:
+- points: 3
+  text: \(f(x) = x^3\sin(x)\)
+- points: 3
+  text: \(g(x) = \cos(x) - x\sin(x)\)
+- points: 3
+  text: \(h(x) = \frac{\sin(x)}{x^2}\)
+stem: Bepaal de afgeleide van de volgende functies.
+title: Goniometrische functies I

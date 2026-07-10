@@ -1,0 +1,18 @@
+source: practice
+topic: derivatives
+tags:
+- differentieren
+- goniometrie
+- kettingregel
+- productregel
+calculator_allowed: false
+difficulty: 3
+parts:
+- points: 3
+  text: \(f(x) = \sin(3x^2)\)
+- points: 3
+  text: \(g(x) = \cos^2(x)\)
+- points: 3
+  text: \(h(x) = \sin(x)\cos(x)\)
+stem: Bepaal de afgeleide van de volgende functies.
+title: Goniometrische functies II

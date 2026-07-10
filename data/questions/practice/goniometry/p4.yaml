@@ -1,0 +1,16 @@
+source: practice
+topic: goniometry
+tags:
+- goniometrie
+calculator_allowed: false
+difficulty: 3
+parts:
+- points: 4
+  text: "\\(\\cos(\\alpha) = \\frac{20}{29}\\). Bepaal exact \\(\\sin(\\alpha)\\) en \\(\\tan(\\alpha)\\)."
+- points: 4
+  text: "\\(\\sin(\\alpha) = \\frac{40}{41}\\). Bepaal exact \\(\\cos(\\alpha)\\) en \\(\\tan(\\alpha)\\)."
+- points: 5
+  text: "\\(\\tan(\\alpha) = \\frac{3}{4}\\). Bepaal exact \\(\\sin(\\alpha)\\) en \\(\\cos(\\alpha)\\)."
+stem: "Gegeven is dat \\(0 < \\alpha < \\frac{\\pi}{2}\\)."
+title: Goniometrische verhoudingen
+

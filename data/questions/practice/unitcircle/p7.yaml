@@ -1,0 +1,17 @@
+source: practice
+topic: unitcircle
+tags:
+- eenheidscirkel
+- goniometrie
+calculator_allowed: false
+difficulty: 2
+parts:
+- points: 2
+  text: \(\sin(x) = 1\)
+- points: 2
+  text: \(\cos(x) = 1\)
+- points: 2
+  text: \(\sin(x) = -1\)
+stem: 'Los de volgende vergelijkingen op voor \(0 \leq x \leq 4\pi\). Let op: dit
+  zijn grensgevallen!'
+title: Bijzondere waarden
