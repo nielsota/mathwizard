@@ -42,6 +42,6 @@ class QuestionPart(SQLModel, table=True):
     question_id: int = Field(foreign_key="question.id")
     label: str
     text: str
-    points: int = 0
+    points: int
 
     question: Question = Relationship(back_populates="parts")

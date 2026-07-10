@@ -56,7 +56,7 @@ def seed_practice_questions(db: DBClient, practice_dir: Path) -> None:
                 parts=ex["parts"],
                 topic=ex["topic"],
                 source=source,
-                tags=ex.get("tags", []),
+                tags=ex.get("tags"),
                 calculator_allowed=ex.get("calculator_allowed"),
                 difficulty=ex.get("difficulty"),
             )

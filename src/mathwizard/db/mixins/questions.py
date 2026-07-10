@@ -25,12 +25,12 @@ class QuestionsMixin(NeedsEngine):
         question = Question(
             topic=topic,
             source=source,
-            tags=tags or [],
             title=title,
             stem=stem,
             exam_id=exam_id,
             calculator_allowed=calculator_allowed,
             difficulty=difficulty,
+            **({"tags": tags} if tags is not None else {}),
         )
         with DBSession(self.engine) as session:
             session.add(question)
@@ -40,7 +40,7 @@ class QuestionsMixin(NeedsEngine):
                     question_id=question.id,
                     label=part.get("label", chr(ord("a") + i)),
                     text=part["text"],
-                    points=part.get("points", 0),
+                    points=part["points"],
                 ))
             session.commit()
             session.refresh(question)
@@ -118,7 +118,7 @@ class QuestionsMixin(NeedsEngine):
                         question_id=question_id,
                         label=part.get("label", chr(ord("a") + i)),
                         text=part["text"],
-                        points=part.get("points", 0),
+                        points=part["points"],
                     ))
 
             session.commit()
