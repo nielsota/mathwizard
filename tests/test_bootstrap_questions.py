@@ -9,12 +9,14 @@ def make_db(tmp_path: Path) -> DBClient:
     return DBClient(f"sqlite:///{tmp_path / 'bootstrap.db'}")
 
 
-def test_seed_practice_questions_uses_folder_name_as_topic(tmp_path: Path) -> None:
+def test_seed_practice_questions_uses_yaml_topic_not_folder_name(tmp_path: Path) -> None:
     practice_dir = tmp_path / "questions" / "practice"
-    topic_dir = practice_dir / "derivatives"
+    topic_dir = practice_dir / "folder-is-not-metadata"
     topic_dir.mkdir(parents=True)
     (topic_dir / "p1.yaml").write_text(
         "\n".join([
+            "source: practice",
+            "topic: derivatives",
             "title: Machtsfuncties",
             "stem: Bepaal de afgeleide van de volgende functies.",
             "calculator_allowed: false",
@@ -48,6 +50,8 @@ def test_seed_practice_questions_is_idempotent_without_exam_id(tmp_path: Path) -
     topic_dir.mkdir(parents=True)
     (topic_dir / "p1.yaml").write_text(
         "\n".join([
+            "source: practice",
+            "topic: derivatives",
             "title: Machtsfuncties",
             "stem: Bepaal de afgeleide.",
             "parts:",
@@ -74,6 +78,8 @@ def test_seed_practice_questions_ignores_matching_exam_question(tmp_path: Path) 
     topic_dir.mkdir(parents=True)
     (topic_dir / "p1.yaml").write_text(
         "\n".join([
+            "source: practice",
+            "topic: derivatives",
             "title: Machtsfuncties",
             "stem: Bepaal de afgeleide.",
             "parts:",
