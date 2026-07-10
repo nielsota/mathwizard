@@ -17,6 +17,10 @@ class Settings(BaseSettings):
     session_secret_key: str
     database_url: str = "sqlite:///data/mathwizard.db"
     repo_root: Path = Field(default_factory=_repo_root)
+    session_ttl_days: int = 7
+    cookie_secure: bool = False
+    bootstrap_username: str = "root"
+    bootstrap_password: str = "root"
 
     cognito_domain: str
     cognito_client_id: str
