@@ -28,6 +28,21 @@ uv run uvicorn mathwizard.app.main:app --reload --host 0.0.0.0 --port 8000
 cd frontend && npm run dev -- --host 0.0.0.0
 ```
 
+## Authentication
+
+MathWizard uses first-party cookie authentication. On startup, the backend seeds a bootstrap user from `.env` settings:
+
+```text
+bootstrap_username=root
+bootstrap_password=root
+session_ttl_days=7
+cookie_secure=false
+```
+
+Login happens through `POST /auth/login`. Successful login sets an `HttpOnly` `mw_session` cookie. The frontend restores sessions with `GET /auth/me` and logs out with `POST /auth/logout`.
+
+For production, set `cookie_secure=true` so browsers only send the session cookie over HTTPS.
+
 ## Practice Questions
 
 Practice questions live in `data/questions/practice/`. Each `p*.yaml` file is a complete question definition and must include its own metadata instead of relying on folder names:
