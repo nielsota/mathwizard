@@ -60,7 +60,7 @@ export default function Login({ onLogin }: LoginProps) {
             Log in om oefenopgaven, examenmateriaal en je MathWizard werkruimte te openen.
           </p>
 
-          <form className="login-form" onSubmit={handleSubmit}>
+          <form className="login-form" onSubmit={handleSubmit} aria-busy={loading}>
             <label className="login-label">
               Gebruikersnaam
               <input
@@ -84,9 +84,13 @@ export default function Login({ onLogin }: LoginProps) {
               />
             </label>
 
-            {error && <div className="login-error">{error}</div>}
+            {error && (
+              <div className="login-error" role="alert">
+                {error}
+              </div>
+            )}
 
-            <button className="login-button" type="submit" disabled={loading}>
+            <button className="login-button" type="submit" disabled={loading} aria-busy={loading}>
               <span>{loading ? 'Sessie openen...' : 'Sessie openen'}</span>
               <span aria-hidden="true">→</span>
             </button>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import Header from './components/Header'
 import ExamSearch from './pages/ExamSearch'
@@ -39,13 +39,21 @@ function App() {
     }
   }, [])
 
-  async function handleLogout() {
-    await fetch('/auth/logout', {
-      method: 'POST',
-      credentials: 'include',
-    })
+  const handleUnauthorized = useCallback(() => {
     setUser(null)
-    navigate('/login')
+    navigate('/login', { replace: true, state: { from: location } })
+  }, [location, navigate])
+
+  async function handleLogout() {
+    try {
+      await fetch('/auth/logout', {
+        method: 'POST',
+        credentials: 'include',
+      })
+    } finally {
+      setUser(null)
+      navigate('/login')
+    }
   }
 
   function handleLogin(nextUser: UserResponse) {
@@ -70,11 +78,11 @@ function App() {
           />
           <Route
             path="/"
-            element={user ? <ExamSearch /> : <Navigate to="/login" replace state={{ from: location }} />}
+            element={user ? <ExamSearch onUnauthorized={handleUnauthorized} /> : <Navigate to="/login" replace state={{ from: location }} />}
           />
           <Route
             path="/practice/:topic"
-            element={user ? <Practice /> : <Navigate to="/login" replace state={{ from: location }} />}
+            element={user ? <Practice onUnauthorized={handleUnauthorized} /> : <Navigate to="/login" replace state={{ from: location }} />}
           />
         </Routes>
       </main>

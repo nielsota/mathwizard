@@ -32,7 +32,11 @@ const TOPIC_META: Record<string, { title: string; subtitle: string; icon: string
   },
 }
 
-export default function Practice() {
+interface PracticeProps {
+  onUnauthorized: () => void
+}
+
+export default function Practice({ onUnauthorized }: PracticeProps) {
   const { topic } = useParams<{ topic: string }>()
   const [practiceSet, setPracticeSet] = useState<QuestionListResponse | null>(null)
   const [loading, setLoading] = useState(true)
@@ -58,11 +62,15 @@ export default function Practice() {
       credentials: 'include',
     })
       .then(async resp => {
+        if (resp.status === 401) {
+          onUnauthorized()
+          return null
+        }
         if (!resp.ok) throw new Error(`HTTP ${resp.status}`)
         return resp.json()
       })
-      .then((data: QuestionListResponse) => {
-        if (!active) return
+      .then((data: QuestionListResponse | null) => {
+        if (!active || data === null) return
         setPracticeSet(data)
         setLoading(false)
       })
@@ -77,7 +85,7 @@ export default function Practice() {
       active = false
       controller.abort()
     }
-  }, [topic])
+  }, [onUnauthorized, topic])
 
   return (
     <div className="page-enter">
