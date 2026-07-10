@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import type { UserResponse } from '../types/api'
 import './Header.css'
 
 const practiceTopics = [
@@ -10,7 +11,12 @@ const practiceTopics = [
   { path: '/practice/goniometrie', label: 'Goniometrie' },
 ]
 
-export default function Header() {
+interface HeaderProps {
+  user: UserResponse
+  onLogout: () => void
+}
+
+export default function Header({ user, onLogout }: HeaderProps) {
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
   const location = useLocation()
@@ -71,6 +77,13 @@ export default function Header() {
           >
             Examenopgaven zoeken
           </Link>
+
+          <div className="mw-auth">
+            <span className="mw-user">{user.username}</span>
+            <button className="mw-logout" type="button" onClick={onLogout}>
+              Uitloggen
+            </button>
+          </div>
         </nav>
       </div>
     </header>

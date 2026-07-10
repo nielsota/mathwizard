@@ -53,7 +53,10 @@ export default function Practice() {
     setError('')
     setPracticeSet(null)
 
-    fetch(`/api/v1/practice/${topic}`, { signal: controller.signal })
+    fetch(`/api/v1/practice/${topic}`, {
+      signal: controller.signal,
+      credentials: 'include',
+    })
       .then(async resp => {
         if (!resp.ok) throw new Error(`HTTP ${resp.status}`)
         return resp.json()

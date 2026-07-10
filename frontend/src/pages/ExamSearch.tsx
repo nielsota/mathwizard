@@ -24,6 +24,7 @@ export default function ExamSearch() {
       const resp = await fetch('/api/v1/fetch', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify(payload),
       })
 
