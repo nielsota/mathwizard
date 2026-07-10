@@ -48,6 +48,7 @@ export default function Practice() {
 
     setLoading(true)
     setError('')
+    setPracticeSet(null)
 
     fetch(`/api/v1/practice/${topic}`)
       .then(async resp => {
@@ -60,6 +61,7 @@ export default function Practice() {
       })
       .catch(e => {
         setError(String(e))
+        setPracticeSet(null)
         setLoading(false)
       })
   }, [topic])
@@ -71,7 +73,7 @@ export default function Practice() {
         <div>
           <h1 className="practice-title">{meta?.title ?? topic}</h1>
           <p className="practice-subtitle">{meta?.subtitle ?? ''}</p>
-          {practiceSet && !loading && (
+          {practiceSet && !loading && !error && (
             <div className="practice-summary">
               <span>{questions.length} opgaven</span>
               <span>{totalMarks} punten</span>
@@ -92,7 +94,7 @@ export default function Practice() {
         <div className="search-error">{error}</div>
       )}
 
-      {practiceSet && !loading && (
+      {practiceSet && !loading && !error && (
         <div className="practice-list">
           {questions.length > 0 ? (
             questions.map(question => (

@@ -10,10 +10,13 @@ interface ExerciseCardProps {
 export default function ExerciseCard({ exercise }: ExerciseCardProps) {
   const [expanded, setExpanded] = useState(false)
   const difficultyLabel = exercise.difficulty ? `Niveau ${exercise.difficulty}` : 'Niveau onbekend'
+  const bodyId = `exercise-${exercise.id}-body`
+  const visibleTags = exercise.tags.filter(tag => tag !== exercise.topic)
+  const toggleExpanded = () => setExpanded(current => !current)
 
   return (
     <article className={`ex-card ${expanded ? 'ex-card--expanded' : ''}`}>
-      <header className="ex-card-header" onClick={() => setExpanded(!expanded)}>
+      <header className="ex-card-header" onClick={toggleExpanded}>
         <div className="ex-card-title-row">
           <span className="ex-card-number">Opgave {exercise.number}</span>
           {exercise.title && <span className="ex-card-title">{exercise.title}</span>}
@@ -29,8 +32,15 @@ export default function ExerciseCard({ exercise }: ExerciseCardProps) {
             {exercise.calculator_allowed ? 'Rekenmachine' : 'Zonder rekenmachine'}
           </span>
           <button
+            type="button"
             className="ex-card-toggle"
             aria-label={expanded ? 'Inklappen' : 'Uitklappen'}
+            aria-expanded={expanded}
+            aria-controls={bodyId}
+            onClick={event => {
+              event.stopPropagation()
+              toggleExpanded()
+            }}
           >
             <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
               <path
@@ -46,11 +56,11 @@ export default function ExerciseCard({ exercise }: ExerciseCardProps) {
       </header>
 
       {expanded && (
-        <div className="ex-card-body">
+        <div className="ex-card-body" id={bodyId}>
           <div className="ex-card-divider" />
           <div className="ex-card-tags" aria-label="Opgave labels">
             <span className="ex-tag ex-tag--topic">{exercise.topic}</span>
-            {exercise.tags.map(tag => (
+            {visibleTags.map(tag => (
               <span className="ex-tag" key={tag}>{tag}</span>
             ))}
           </div>
