@@ -1,13 +1,32 @@
+from datetime import datetime, timezone
+
 from sqlalchemy import Column, Enum, JSON
 from sqlmodel import SQLModel, Field, Relationship
 
 from mathwizard.enums import QuestionSource
 
 
+def _utcnow() -> datetime:
+    return datetime.now(timezone.utc).replace(tzinfo=None)
+
+
 class User(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
-    username: str = Field(unique=True)
-    password: str
+    username: str = Field(unique=True, index=True)
+    password_hash: str
+    sessions: list["Session"] = Relationship(back_populates="user")
+
+
+class Session(SQLModel, table=True):
+    __tablename__ = "sessions"
+
+    id: str = Field(primary_key=True)
+    user_id: int = Field(foreign_key="user.id", index=True)
+    created_at: datetime = Field(default_factory=_utcnow)
+    expires_at: datetime
+    revoked_at: datetime | None = None
+
+    user: User = Relationship(back_populates="sessions")
 
 
 class Question(SQLModel, table=True):

@@ -2,15 +2,15 @@ from sqlmodel import Session as DBSession
 from sqlmodel import select
 
 from mathwizard.db.mixins.base import NeedsEngine
-from mathwizard.models.db import User
 from mathwizard.exceptions import UserNotFoundError
+from mathwizard.models.db import User
 
 
 class UserMixin(NeedsEngine):
 
-    def create_user(self, username: str, password: str) -> User:
+    def create_user(self, username: str, password_hash: str) -> User:
         with DBSession(self.engine) as session:
-            user = User(username=username, password=password)
+            user = User(username=username, password_hash=password_hash)
             session.add(user)
             session.commit()
             session.refresh(user)
