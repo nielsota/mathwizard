@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import ExerciseCard from '../components/ExerciseCard'
-import type { PracticeSet } from '../types/api'
+import type { QuestionListResponse } from '../types/api'
 import './Practice.css'
 
 const TOPIC_META: Record<string, { title: string; subtitle: string; icon: string }> = {
@@ -34,11 +34,14 @@ const TOPIC_META: Record<string, { title: string; subtitle: string; icon: string
 
 export default function Practice() {
   const { topic } = useParams<{ topic: string }>()
-  const [practiceSet, setPracticeSet] = useState<PracticeSet | null>(null)
+  const [practiceSet, setPracticeSet] = useState<QuestionListResponse | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
   const meta = topic ? TOPIC_META[topic] : null
+  const questions = practiceSet?.questions ?? []
+  const totalMarks = questions.reduce((sum, ex) => sum + ex.max_marks, 0)
+  const tagCount = new Set(questions.flatMap(ex => ex.tags)).size
 
   useEffect(() => {
     if (!topic) return
@@ -51,7 +54,7 @@ export default function Practice() {
         if (!resp.ok) throw new Error(`HTTP ${resp.status}`)
         return resp.json()
       })
-      .then((data: PracticeSet) => {
+      .then((data: QuestionListResponse) => {
         setPracticeSet(data)
         setLoading(false)
       })
@@ -68,6 +71,13 @@ export default function Practice() {
         <div>
           <h1 className="practice-title">{meta?.title ?? topic}</h1>
           <p className="practice-subtitle">{meta?.subtitle ?? ''}</p>
+          {practiceSet && !loading && (
+            <div className="practice-summary">
+              <span>{questions.length} opgaven</span>
+              <span>{totalMarks} punten</span>
+              <span>{tagCount} labels</span>
+            </div>
+          )}
         </div>
       </header>
 
@@ -84,9 +94,9 @@ export default function Practice() {
 
       {practiceSet && !loading && (
         <div className="practice-list">
-          {practiceSet.exercises.length > 0 ? (
-            practiceSet.exercises.map(ex => (
-              <ExerciseCard key={ex.number} exercise={ex} />
+          {questions.length > 0 ? (
+            questions.map(question => (
+              <ExerciseCard key={question.id} exercise={question} />
             ))
           ) : (
             <div className="practice-empty">

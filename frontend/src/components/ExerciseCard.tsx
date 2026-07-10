@@ -1,14 +1,15 @@
 import { useState } from 'react'
 import { MathJax } from 'better-react-mathjax'
-import type { PracticeExercise } from '../types/api'
+import type { QuestionResponse } from '../types/api'
 import './ExerciseCard.css'
 
 interface ExerciseCardProps {
-  exercise: PracticeExercise
+  exercise: QuestionResponse
 }
 
 export default function ExerciseCard({ exercise }: ExerciseCardProps) {
   const [expanded, setExpanded] = useState(false)
+  const difficultyLabel = exercise.difficulty ? `Niveau ${exercise.difficulty}` : 'Niveau onbekend'
 
   return (
     <article className={`ex-card ${expanded ? 'ex-card--expanded' : ''}`}>
@@ -18,7 +19,8 @@ export default function ExerciseCard({ exercise }: ExerciseCardProps) {
           {exercise.title && <span className="ex-card-title">{exercise.title}</span>}
         </div>
         <div className="ex-card-meta">
-          {exercise.max_marks && (
+          <span className="ex-badge ex-badge--difficulty">{difficultyLabel}</span>
+          {exercise.max_marks > 0 && (
             <span className="ex-badge ex-badge--marks">
               {exercise.max_marks}p
             </span>
@@ -46,6 +48,12 @@ export default function ExerciseCard({ exercise }: ExerciseCardProps) {
       {expanded && (
         <div className="ex-card-body">
           <div className="ex-card-divider" />
+          <div className="ex-card-tags" aria-label="Opgave labels">
+            <span className="ex-tag ex-tag--topic">{exercise.topic}</span>
+            {exercise.tags.map(tag => (
+              <span className="ex-tag" key={tag}>{tag}</span>
+            ))}
+          </div>
           <MathJax dynamic>
             <div
               className="ex-card-stem"

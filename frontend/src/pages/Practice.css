@@ -38,6 +38,26 @@
   margin: 0;
 }
 
+.practice-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.practice-summary span {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 11px;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--navy);
+  font-size: 12px;
+  font-weight: 600;
+  box-shadow: 0 2px 10px rgba(3, 34, 84, 0.04);
+}
+
 /* List */
 .practice-list {
   display: grid;

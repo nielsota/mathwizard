@@ -1,10 +1,6 @@
-export interface QuestionPart {
-  text: string;
-}
-
 export interface FormattedQuestion {
   stem: string;
-  parts: QuestionPart[];
+  parts: SearchQuestionPart[];
 }
 
 export interface FetchResponse {
@@ -23,20 +19,36 @@ export interface FetchRequest {
   max_results: number;
 }
 
-export interface PracticeExercise {
+export interface SearchQuestionPart {
+  text: string;
+}
+
+export type QuestionSource = 'practice' | 'exam' | 'generated';
+
+export interface QuestionPart {
+  label: string;
+  text: string;
+  points: number;
+}
+
+export interface QuestionResponse {
+  id: number;
   number: number;
-  exam_id: string;
+  source: QuestionSource;
+  topic: string;
+  tags: string[];
   title: string;
   question_text: string;
   parts: string[];
-  max_marks?: number;
-  calculator_allowed: boolean;
-  difficulty?: string;
+  part_details: QuestionPart[];
+  max_marks: number;
+  calculator_allowed?: boolean | null;
+  difficulty?: number | null;
   figure_images: string[];
 }
 
-export interface PracticeSet {
-  title: string;
-  subtitle: string;
-  exercises: PracticeExercise[];
+export interface QuestionListResponse {
+  source: QuestionSource;
+  topic?: string | null;
+  questions: QuestionResponse[];
 }

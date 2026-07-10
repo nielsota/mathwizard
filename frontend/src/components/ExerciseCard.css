@@ -85,6 +85,12 @@
   border: 1px solid #fecdca;
 }
 
+.ex-badge--difficulty {
+  background: #f6f8fb;
+  color: var(--navy);
+  border: 1px solid var(--border);
+}
+
 /* Toggle chevron */
 .ex-card-toggle {
   width: 30px;
@@ -127,6 +133,33 @@
   height: 1px;
   background: var(--border-light);
   margin-bottom: 18px;
+}
+
+.ex-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.ex-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: var(--blue-wash);
+  color: var(--navy);
+  border: 1px solid var(--blue-light);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.ex-tag--topic {
+  background: var(--navy);
+  border-color: var(--navy);
+  color: var(--peach);
 }
 
 .ex-card-stem {
