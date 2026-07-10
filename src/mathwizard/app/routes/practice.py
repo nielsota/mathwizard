@@ -2,6 +2,7 @@ from typing import Annotated
 
 from fastapi import APIRouter, Query
 
+from mathwizard.app.auth import CurrentUserDep
 from mathwizard.app.dependencies import QuestionServiceDep
 from mathwizard.enums import QuestionSource
 from mathwizard.models.question import (
@@ -17,6 +18,7 @@ router = APIRouter(prefix="/api/v1/practice", tags=["practice"])
 def get_practice_topic(
     topic: str,
     question_service: QuestionServiceDep,
+    current_user: CurrentUserDep,
     sort_by_difficulty: Annotated[bool, Query()] = True,
 ) -> QuestionListResponse:
     return question_service.list_questions(
