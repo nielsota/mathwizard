@@ -7,7 +7,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict  # type: ignore[i
 
 
 def _repo_root() -> Path:
-    return Path(__file__).resolve().parents[3]
+    return Path(__file__).resolve().parents[2]
 
 
 class Settings(BaseSettings):
