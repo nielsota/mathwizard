@@ -5,10 +5,8 @@ from pwdlib import PasswordHash
 from pwdlib.hashers.bcrypt import BcryptHasher
 
 from mathwizard.db.client import DBClient
-from mathwizard.exceptions import AuthenticationError
-from mathwizard.exceptions import UserNotFoundError
-from mathwizard.models.auth import LoginRequest
-from mathwizard.models.auth import UserResponse
+from mathwizard.exceptions import AuthenticationError, UserNotFoundError
+from mathwizard.models.auth import LoginRequest, UserResponse
 from mathwizard.models.db import User
 from mathwizard.settings import Settings
 
@@ -42,6 +40,10 @@ class AuthService:
     def __init__(self, db: DBClient, settings: Settings) -> None:
         self.db = db
         self.settings = settings
+
+    @property
+    def session_cookie_name(self) -> str:
+        return self.settings.session_cookie_name
 
     def login(self, body: LoginRequest) -> LoginResult:
         user = self.db.get_user_by_username(body.username)

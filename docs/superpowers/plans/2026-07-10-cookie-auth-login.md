@@ -395,6 +395,7 @@ Add these fields to `Settings` in `src/mathwizard/settings.py` after `repo_root`
 
 ```python
     session_ttl_days: int = 7
+    session_cookie_name: str = "mw_session"
     cookie_secure: bool = False
     bootstrap_username: str = "root"
     bootstrap_password: str = "root"
@@ -483,8 +484,8 @@ from pathlib import Path
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
+from mathwizard.app.auth import router
 from mathwizard.db.client import DBClient
-from mathwizard.app.auth import SESSION_COOKIE_NAME, router
 from mathwizard.services.auth import AuthService, hash_password
 from mathwizard.settings import Settings
 
@@ -515,7 +516,8 @@ def seed_user(db: DBClient) -> None:
 def test_login_sets_cookie_and_me_returns_user(tmp_path: Path) -> None:
     db = make_db(tmp_path)
     seed_user(db)
-    client = make_client(db, make_settings(tmp_path))
+    settings = make_settings(tmp_path)
+    client = make_client(db, settings)
 
     response = client.post(
         "/auth/login",
@@ -525,7 +527,7 @@ def test_login_sets_cookie_and_me_returns_user(tmp_path: Path) -> None:
     assert response.status_code == 200
     assert response.json() == {"id": 1, "username": "root"}
     cookie = response.headers["set-cookie"]
-    assert f"{SESSION_COOKIE_NAME}=" in cookie
+    assert f"{settings.session_cookie_name}=" in cookie
     assert "HttpOnly" in cookie
     assert "SameSite=lax" in cookie
 
@@ -566,7 +568,8 @@ def test_unknown_user_and_wrong_password_share_error(tmp_path: Path) -> None:
 def test_logout_revokes_session_and_clears_cookie(tmp_path: Path) -> None:
     db = make_db(tmp_path)
     seed_user(db)
-    client = make_client(db, make_settings(tmp_path))
+    settings = make_settings(tmp_path)
+    client = make_client(db, settings)
     login = client.post(
         "/auth/login",
         json={"username": "root", "password": "secret"},
@@ -576,7 +579,7 @@ def test_logout_revokes_session_and_clears_cookie(tmp_path: Path) -> None:
     logout = client.post("/auth/logout")
 
     assert logout.status_code == 204
-    assert f"{SESSION_COOKIE_NAME}=" in logout.headers["set-cookie"]
+    assert f"{settings.session_cookie_name}=" in logout.headers["set-cookie"]
 
     me = client.get("/auth/me")
     assert me.status_code == 401
@@ -629,10 +632,8 @@ from pwdlib import PasswordHash
 from pwdlib.hashers.bcrypt import BcryptHasher
 
 from mathwizard.db.client import DBClient
-from mathwizard.exceptions import AuthenticationError
-from mathwizard.exceptions import UserNotFoundError
-from mathwizard.models.auth import LoginRequest
-from mathwizard.models.auth import UserResponse
+from mathwizard.exceptions import AuthenticationError, UserNotFoundError
+from mathwizard.models.auth import LoginRequest, UserResponse
 from mathwizard.models.db import User
 from mathwizard.settings import Settings
 
@@ -657,6 +658,7 @@ def verify_password(plain: str, hashed: str) -> bool:
 
 
 def user_response(user: User) -> UserResponse:
+    assert user.id is not None
     return UserResponse(id=user.id, username=user.username)
 
 
@@ -664,6 +666,10 @@ class AuthService:
     def __init__(self, db: DBClient, settings: Settings) -> None:
         self.db = db
         self.settings = settings
+
+    @property
+    def session_cookie_name(self) -> str:
+        return self.settings.session_cookie_name
 
     def login(self, body: LoginRequest) -> LoginResult:
         user = self.db.get_user_by_username(body.username)
@@ -730,7 +736,7 @@ Replace `src/mathwizard/app/auth.py`:
 ```python
 from typing import Annotated
 
-from fastapi import APIRouter, Cookie, Depends, HTTPException, Response, status
+from fastapi import APIRouter, Depends, HTTPException, Request, Response, status
 
 from mathwizard.app.dependencies import AuthServiceDep
 from mathwizard.exceptions import AuthenticationError
@@ -738,18 +744,17 @@ from mathwizard.models.auth import LoginRequest, UserResponse
 from mathwizard.models.db import User
 from mathwizard.services.auth import user_response
 
-SESSION_COOKIE_NAME = "mw_session"
-
 
 def _set_session_cookie(
     response: Response,
     *,
+    cookie_name: str,
     token: str,
     max_age_seconds: int,
     secure: bool,
 ) -> None:
     response.set_cookie(
-        key=SESSION_COOKIE_NAME,
+        key=cookie_name,
         value=token,
         max_age=max_age_seconds,
         httponly=True,
@@ -759,9 +764,10 @@ def _set_session_cookie(
 
 
 def get_current_user(
+    request: Request,
     auth_service: AuthServiceDep,
-    session_token: str | None = Cookie(default=None, alias=SESSION_COOKIE_NAME),
 ) -> User:
+    session_token = request.cookies.get(auth_service.session_cookie_name)
     try:
         return auth_service.get_current_user(session_token)
     except AuthenticationError as exc:
@@ -791,6 +797,7 @@ def login(
         ) from exc
     _set_session_cookie(
         response,
+        cookie_name=auth_service.session_cookie_name,
         token=result.session_token,
         max_age_seconds=result.max_age_seconds,
         secure=result.cookie_secure,
@@ -800,12 +807,14 @@ def login(
 
 @router.post("/logout", status_code=status.HTTP_204_NO_CONTENT)
 def logout(
+    request: Request,
     response: Response,
     auth_service: AuthServiceDep,
-    session_token: str | None = Cookie(default=None, alias=SESSION_COOKIE_NAME),
 ) -> None:
+    cookie_name = auth_service.session_cookie_name
+    session_token = request.cookies.get(cookie_name)
     auth_service.logout(session_token)
-    response.delete_cookie(SESSION_COOKIE_NAME)
+    response.delete_cookie(cookie_name)
 
 
 @router.get("/me", response_model=UserResponse)
@@ -1663,10 +1672,11 @@ MathWizard uses first-party cookie authentication. On startup, the backend seeds
 bootstrap_username=root
 bootstrap_password=root
 session_ttl_days=7
+session_cookie_name=mw_session
 cookie_secure=false
 ```
 
-Login happens through `POST /auth/login`. Successful login sets an `HttpOnly` `mw_session` cookie. The frontend restores sessions with `GET /auth/me` and logs out with `POST /auth/logout`.
+Login happens through `POST /auth/login`. Successful login sets an `HttpOnly` cookie named by `session_cookie_name`. The frontend restores sessions with `GET /auth/me` and logs out with `POST /auth/logout`.
 
 For production, set `cookie_secure=true` so browsers only send the session cookie over HTTPS.
 ````
@@ -1678,7 +1688,7 @@ Add this section to `frontend/README.md`:
 ```markdown
 ## Authentication
 
-The Vite dev server proxies both `/api` and `/auth` to the FastAPI backend. The login page posts to `/auth/login`, and authenticated API requests use `credentials: 'include'` so the browser sends the `mw_session` cookie.
+The Vite dev server proxies both `/api` and `/auth` to the FastAPI backend. The login page posts to `/auth/login`, and authenticated API requests use `credentials: 'include'` so the browser sends the configured session cookie.
 ```
 
 - [ ] **Step 3: Run full backend tests**
@@ -1754,4 +1764,4 @@ git commit -m "Document cookie authentication"
 - FastAPI coverage: Routes use app-state service dependencies, response models, explicit HTTP 401 failures, and `HttpOnly` cookie handling. The protected route uses a reusable current-user dependency, and no route handler receives `DBClient`.
 - Frontend coverage: Vite proxies `/auth`, the app restores sessions, unauthenticated users are routed to `/login`, authenticated fetches include credentials, and the header displays logout controls. The login page uses the `frontend-design` direction with a MathWizard-specific notebook/proof composition instead of a generic centered form.
 - Placeholder scan: No TBDs or vague “add tests” steps remain; code-changing steps include exact snippets and commands.
-- Type consistency: Backend `UserResponse` maps to frontend `UserResponse`; `LoginRequest` maps to frontend `LoginRequest`; `SESSION_COOKIE_NAME` is consistently `mw_session`; DB model `password_hash` matches mixin/bootstrap/auth-service code.
+- Type consistency: Backend `UserResponse` maps to frontend `UserResponse`; `LoginRequest` maps to frontend `LoginRequest`; `Settings.session_cookie_name` defaults to `mw_session`; DB model `password_hash` matches mixin/bootstrap/auth-service code.

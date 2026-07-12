@@ -16,6 +16,7 @@ class Settings(BaseSettings):
     database_url: str = "sqlite:///data/mathwizard.db"
     repo_root: Path = Field(default_factory=_repo_root)
     session_ttl_days: int = 7
+    session_cookie_name: str = "mw_session"
     cookie_secure: bool = False
     bootstrap_username: str = "root"
     bootstrap_password: str = "root"

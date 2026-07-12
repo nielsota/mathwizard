@@ -1,26 +1,24 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Cookie, Depends, HTTPException, Response, status
+from fastapi import APIRouter, Depends, HTTPException, Request, Response, status
 
 from mathwizard.app.dependencies import AuthServiceDep
 from mathwizard.exceptions import AuthenticationError
-from mathwizard.models.auth import LoginRequest
-from mathwizard.models.auth import UserResponse
+from mathwizard.models.auth import LoginRequest, UserResponse
 from mathwizard.models.db import User
 from mathwizard.services.auth import user_response
-
-SESSION_COOKIE_NAME = "mw_session"
 
 
 def _set_session_cookie(
     response: Response,
     *,
+    cookie_name: str,
     token: str,
     max_age_seconds: int,
     secure: bool,
 ) -> None:
     response.set_cookie(
-        key=SESSION_COOKIE_NAME,
+        key=cookie_name,
         value=token,
         max_age=max_age_seconds,
         httponly=True,
@@ -30,9 +28,10 @@ def _set_session_cookie(
 
 
 def get_current_user(
+    request: Request,
     auth_service: AuthServiceDep,
-    session_token: str | None = Cookie(default=None, alias=SESSION_COOKIE_NAME),
 ) -> User:
+    session_token = request.cookies.get(auth_service.session_cookie_name)
     try:
         return auth_service.get_current_user(session_token)
     except AuthenticationError as exc:
@@ -62,6 +61,7 @@ def login(
         ) from exc
     _set_session_cookie(
         response,
+        cookie_name=auth_service.session_cookie_name,
         token=result.session_token,
         max_age_seconds=result.max_age_seconds,
         secure=result.cookie_secure,
@@ -71,12 +71,14 @@ def login(
 
 @router.post("/logout", status_code=status.HTTP_204_NO_CONTENT)
 def logout(
+    request: Request,
     response: Response,
     auth_service: AuthServiceDep,
-    session_token: str | None = Cookie(default=None, alias=SESSION_COOKIE_NAME),
 ) -> None:
+    cookie_name = auth_service.session_cookie_name
+    session_token = request.cookies.get(cookie_name)
     auth_service.logout(session_token)
-    response.delete_cookie(SESSION_COOKIE_NAME)
+    response.delete_cookie(cookie_name)
 
 
 @router.get("/me", response_model=UserResponse)

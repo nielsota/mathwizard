@@ -36,10 +36,11 @@ MathWizard uses first-party cookie authentication. On startup, the backend seeds
 bootstrap_username=root
 bootstrap_password=root
 session_ttl_days=7
+session_cookie_name=mw_session
 cookie_secure=false
 ```
 
-Login happens through `POST /auth/login`. Successful login sets an `HttpOnly` `mw_session` cookie. The frontend restores sessions with `GET /auth/me` and logs out with `POST /auth/logout`.
+Login happens through `POST /auth/login`. Successful login sets an `HttpOnly` cookie named by `session_cookie_name`. The frontend restores sessions with `GET /auth/me` and logs out with `POST /auth/logout`.
 
 For production, set `cookie_secure=true` so browsers only send the session cookie over HTTPS.
 

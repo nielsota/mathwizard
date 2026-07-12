@@ -3,7 +3,7 @@ from pathlib import Path
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
-from mathwizard.app.auth import SESSION_COOKIE_NAME, router
+from mathwizard.app.auth import router
 from mathwizard.db.client import DBClient
 from mathwizard.services.auth import AuthService, hash_password
 from mathwizard.settings import Settings
@@ -35,7 +35,8 @@ def seed_user(db: DBClient) -> None:
 def test_login_sets_cookie_and_me_returns_user(tmp_path: Path) -> None:
     db = make_db(tmp_path)
     seed_user(db)
-    client = make_client(db, make_settings(tmp_path))
+    settings = make_settings(tmp_path)
+    client = make_client(db, settings)
 
     response = client.post(
         "/auth/login",
@@ -45,7 +46,7 @@ def test_login_sets_cookie_and_me_returns_user(tmp_path: Path) -> None:
     assert response.status_code == 200
     assert response.json() == {"id": 1, "username": "root"}
     cookie = response.headers["set-cookie"]
-    assert f"{SESSION_COOKIE_NAME}=" in cookie
+    assert f"{settings.session_cookie_name}=" in cookie
     assert "HttpOnly" in cookie
     assert "SameSite=lax" in cookie
 
@@ -86,23 +87,49 @@ def test_unknown_user_and_wrong_password_share_error(tmp_path: Path) -> None:
 def test_logout_revokes_session_and_clears_cookie(tmp_path: Path) -> None:
     db = make_db(tmp_path)
     seed_user(db)
-    client = make_client(db, make_settings(tmp_path))
+    settings = make_settings(tmp_path)
+    client = make_client(db, settings)
     login = client.post(
         "/auth/login",
         json={"username": "root", "password": "secret"},
     )
     assert login.status_code == 200
-    session_token = client.cookies.get(SESSION_COOKIE_NAME)
+    session_token = client.cookies.get(settings.session_cookie_name)
     assert session_token is not None
 
     logout = client.post("/auth/logout")
 
     assert logout.status_code == 204
-    assert f"{SESSION_COOKIE_NAME}=" in logout.headers["set-cookie"]
+    assert f"{settings.session_cookie_name}=" in logout.headers["set-cookie"]
 
     me = client.get("/auth/me")
     assert me.status_code == 401
 
-    client.cookies.set(SESSION_COOKIE_NAME, session_token)
+    client.cookies.set(settings.session_cookie_name, session_token)
     stale_me = client.get("/auth/me")
     assert stale_me.status_code == 401
+
+
+def test_auth_routes_use_configured_session_cookie_name(tmp_path: Path) -> None:
+    db = make_db(tmp_path)
+    seed_user(db)
+    settings = Settings(
+        database_url=f"sqlite:///{tmp_path / 'auth-routes.db'}",
+        session_cookie_name="custom_session",
+        cookie_secure=False,
+        session_ttl_days=7,
+    )
+    client = make_client(db, settings)
+
+    response = client.post(
+        "/auth/login",
+        json={"username": "root", "password": "secret"},
+    )
+
+    assert response.status_code == 200
+    assert "custom_session=" in response.headers["set-cookie"]
+    assert client.cookies.get("custom_session") is not None
+    assert client.cookies.get("mw_session") is None
+
+    me = client.get("/auth/me")
+    assert me.status_code == 200

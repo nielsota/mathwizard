@@ -30,7 +30,7 @@ npm run lint
 
 ## Authentication
 
-The Vite dev server proxies both `/api` and `/auth` to the FastAPI backend. The login page posts to `/auth/login`, and authenticated API requests use `credentials: 'include'` so the browser sends the `mw_session` cookie.
+The Vite dev server proxies both `/api` and `/auth` to the FastAPI backend. The login page posts to `/auth/login`, and authenticated API requests use `credentials: 'include'` so the browser sends the configured session cookie.
 
 ## API Contract
 
