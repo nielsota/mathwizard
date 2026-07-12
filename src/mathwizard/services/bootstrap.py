@@ -5,6 +5,8 @@ import yaml  # type: ignore[import-untyped]
 
 from mathwizard.db.client import DBClient
 from mathwizard.enums import QuestionSource
+from mathwizard.services.auth import hash_password
+from mathwizard.settings import get_settings
 
 
 class ExerciseYaml(TypedDict):
@@ -18,9 +20,9 @@ class ExerciseYaml(TypedDict):
     difficulty: NotRequired[int | None]
 
 
-def seed_root_user(db: DBClient) -> None:
-    if db.get_user_by_username("root") is None:
-        db.create_user("root", "root")
+def seed_root_user(db: DBClient, *, username: str, password: str) -> None:
+    if db.get_user_by_username(username) is None:
+        db.create_user(username, hash_password(password))
 
 
 def _load_practice_yaml(topic_dir: Path) -> list[ExerciseYaml]:
@@ -64,5 +66,10 @@ def seed_practice_questions(db: DBClient, practice_dir: Path) -> None:
 
 
 def run_all(db: DBClient, practice_dir: Path) -> None:
-    seed_root_user(db)
+    settings = get_settings()
+    seed_root_user(
+        db,
+        username=settings.bootstrap_username,
+        password=settings.bootstrap_password,
+    )
     seed_practice_questions(db, practice_dir)

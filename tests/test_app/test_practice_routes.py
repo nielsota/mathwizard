@@ -3,21 +3,43 @@ from pathlib import Path
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
-from mathwizard.app.routes.practice import router
+from mathwizard.app.auth import router as auth_router
+from mathwizard.app.routes.practice import router as practice_router
 from mathwizard.db.client import DBClient
 from mathwizard.enums import QuestionSource
+from mathwizard.services.auth import AuthService, hash_password
 from mathwizard.services.question import QuestionService
+from mathwizard.settings import Settings
 
 
 def make_db(tmp_path: Path) -> DBClient:
     return DBClient(f"sqlite:///{tmp_path / 'api.db'}")
 
 
-def make_client(db: DBClient) -> TestClient:
+def make_settings(tmp_path: Path) -> Settings:
+    return Settings(
+        database_url=f"sqlite:///{tmp_path / 'api.db'}",
+        cookie_secure=False,
+        session_ttl_days=7,
+    )
+
+
+def make_client(db: DBClient, tmp_path: Path) -> TestClient:
     app = FastAPI()
+    app.state.auth_service = AuthService(db, make_settings(tmp_path))
     app.state.question_service = QuestionService(db)
-    app.include_router(router)
+    app.include_router(auth_router)
+    app.include_router(practice_router)
     return TestClient(app)
+
+
+def authenticate(client: TestClient, db: DBClient) -> None:
+    db.create_user("root", hash_password("secret"))
+    response = client.post(
+        "/auth/login",
+        json={"username": "root", "password": "secret"},
+    )
+    assert response.status_code == 200
 
 
 def seed_question(
@@ -39,11 +61,22 @@ def seed_question(
     )
 
 
+def test_get_practice_topic_requires_authentication(tmp_path: Path) -> None:
+    db = make_db(tmp_path)
+    client = make_client(db, tmp_path)
+
+    response = client.get("/api/v1/practice/derivatives")
+
+    assert response.status_code == 401
+    assert response.json()["detail"] == "Not authenticated"
+
+
 def test_get_practice_topic_returns_service_response(tmp_path: Path) -> None:
     db = make_db(tmp_path)
     seed_question(db, topic="derivatives", title="Hard", difficulty=5)
     seed_question(db, topic="derivatives", title="Easy", difficulty=1)
-    client = make_client(db)
+    client = make_client(db, tmp_path)
+    authenticate(client, db)
 
     response = client.get("/api/v1/practice/derivatives")
 
@@ -61,7 +94,8 @@ def test_get_practice_topic_can_disable_difficulty_sort(tmp_path: Path) -> None:
     db = make_db(tmp_path)
     seed_question(db, topic="derivatives", title="Hard", difficulty=5)
     seed_question(db, topic="derivatives", title="Easy", difficulty=1)
-    client = make_client(db)
+    client = make_client(db, tmp_path)
+    authenticate(client, db)
 
     response = client.get("/api/v1/practice/derivatives?sort_by_difficulty=false")
 

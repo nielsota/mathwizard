@@ -5,7 +5,11 @@ import './ExamSearch.css'
 
 type Status = 'idle' | 'loading' | 'done' | 'error'
 
-export default function ExamSearch() {
+interface ExamSearchProps {
+  onUnauthorized: () => void
+}
+
+export default function ExamSearch({ onUnauthorized }: ExamSearchProps) {
   const [query, setQuery] = useState('')
   const [maxResults, setMaxResults] = useState(5)
   const [results, setResults] = useState<FetchResponse | null>(null)
@@ -24,8 +28,14 @@ export default function ExamSearch() {
       const resp = await fetch('/api/v1/fetch', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify(payload),
       })
+
+      if (resp.status === 401) {
+        onUnauthorized()
+        return
+      }
 
       const text = await resp.text()
       if (!resp.ok) throw new Error(text || `HTTP ${resp.status}`)
@@ -37,7 +47,7 @@ export default function ExamSearch() {
       setError(String(e))
       setStatus('error')
     }
-  }, [])
+  }, [onUnauthorized])
 
   const handleSearch = (mode: 'best' | 'random') => {
     doFetch({ query, max_results: maxResults, mode })

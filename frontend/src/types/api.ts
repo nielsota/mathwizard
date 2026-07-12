@@ -52,3 +52,13 @@ export interface QuestionListResponse {
   topic?: string | null;
   questions: QuestionResponse[];
 }
+
+export interface LoginRequest {
+  username: string;
+  password: string;
+}
+
+export interface UserResponse {
+  id: number;
+  username: string;
+}
