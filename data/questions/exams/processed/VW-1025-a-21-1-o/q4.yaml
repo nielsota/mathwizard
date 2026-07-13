@@ -1,0 +1,45 @@
+exam:
+  id: VW-1025-a-21-1-o
+  level: VWO
+  tijdvak: 1
+  year: 2021
+figure:
+  description: 'Figuur 1: Vierkant \( OABC \) met punten \( P \) en \( Q \), en vectoren
+    \( \overrightarrow{CP} \), \( \overrightarrow{CA} \), \( \overrightarrow{CQ} \).
+    Figuur 2: Vierkant \( OABC \), lijnstuk \( PB \), en vector \( \overrightarrow{QM}
+    \).'
+  missing: false
+  present: true
+figure_images:
+- q4/figures/figure 7.png
+- q4/figures/figure 6.png
+id: VW-1025-a-21-1-o-q4
+page_images:
+- q4/pages/page 6.png
+question_number: '4'
+question_text: 'Gegeven is het vierkant \( OABC \) met hoekpunten \( O(0,0) \), \(
+  A(1,0) \), \( B(1,1) \) en \( C(0,1) \). Verder zijn gegeven het punt \( P(p,0)
+  \) en het punt \( Q\left(\frac{1}{p},0\right) \), met \( 0 < p < 1 \).
+
+
+  In figuur 1 zijn de vectoren \( \overrightarrow{CP} \), \( \overrightarrow{CA} \)
+  en \( \overrightarrow{CQ} \) voor een willekeurige waarde van \( p \) weergegeven.
+
+
+  8. Bewijs dat voor elke waarde van \( p \) de hoek tussen de vectoren \( \overrightarrow{CP}
+  \) en \( \overrightarrow{CA} \) gelijk is aan de hoek tussen de vectoren \( \overrightarrow{CA}
+  \) en \( \overrightarrow{CQ} \).
+
+
+  \( M \) is het midden van lijnstuk \( PB \). Zie figuur 2, waarin ook lijnstuk \(
+  PB \) en vector \( \overrightarrow{QM} \) zijn getekend.
+
+
+  9. In figuur 2 is \( p \) zo gekozen dat vector \( \overrightarrow{QM} \) loodrecht
+  staat op lijnstuk \( PB \). Bereken deze waarde van \( p \). Geef je eindantwoord
+  in twee decimalen.'
+source_images:
+- q4/pages/page 6.png
+- q4/figures/figure 7.png
+- q4/figures/figure 6.png
+title: Een vierkant en vier vectoren

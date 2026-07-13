@@ -1,0 +1,49 @@
+exam:
+  id: VW-1025-a-21-1-o
+  level: VWO
+  tijdvak: 1
+  year: 2021
+figure:
+  description: A graph with a parabola and a vertical line intersecting at points
+    R, S, and Q, with coordinates given in relation to point P.
+  missing: false
+  present: true
+figure_images:
+- q5/figures/figure 8.png
+id: VW-1025-a-21-1-o-q5
+page_images:
+- q5/pages/page 7.png
+question_number: '5'
+question_text: 'De beweging van een punt \( P \) wordt beschreven door de volgende
+  bewegingsvergelijkingen:
+
+  \[
+
+  \begin{cases}
+
+  x(t) = t^2 \\
+
+  y(t) = t^2 - 2t
+
+  \end{cases}
+
+  \]
+
+  Gegeven is de lijn met vergelijking \( x = a \), waarbij \( a > 0 \).
+
+  Deze lijn snijdt de \( x \)-as in punt \( Q \) en de baan van \( P \) in de punten
+  \( R \) en \( S \), waarbij de \( y \)-coördinaat van \( S \) groter is dan de \(
+  y \)-coördinaat van \( R \).
+
+  Zie de figuur.
+
+
+  Als \( a \) onbegrensd toeneemt, nadert de verhouding \( \frac{QR}{QS} \) tot een
+  limiet.
+
+
+  Bereken exact deze limiet.'
+source_images:
+- q5/pages/page 7.png
+- q5/figures/figure 8.png
+title: Limiet van een verhouding

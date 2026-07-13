@@ -1,0 +1,22 @@
+calculator_allowed: null
+exam_id: VW-1025-a-18-1-o
+figure_images:
+- q1/figures/figure1.png
+page_images:
+- q1/pages/page1.png
+parts:
+- label: '1.'
+  points: 0
+  text: Bereken exact de snelheid waarmee $P$ door punt $A$ gaat.
+- label: '2.'
+  points: 0
+  text: 'Voor elke waarde van $t$ bevindt $P$ zich op de kromme met vergelijking:
+
+    \[ (x+y)^2 = 4y \]
+
+    Bewijs dit.'
+stem: "De beweging van een punt $P$ wordt gegeven door de volgende bewegingsvergelijkingen:\n\
+  \\[\n\\begin{cases} \n  x(t) = 1 - t^2 \\\\\n  y(t) = (1 + t)^2\n\\end{cases}\n\\\
+  ]\n\nIn de figuur is de baan van $P$ weergegeven.\n\nDe baan van $P$ snijdt de $y$-as\
+  \ in de oorsprong $O$ en in punt $A$. Zie de figuur."
+title: Beweging van een punt P

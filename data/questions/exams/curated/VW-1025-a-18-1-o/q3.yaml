@@ -1,0 +1,24 @@
+calculator_allowed: null
+exam_id: VW-1025-a-18-1-o
+figure_images:
+- q3/figures/fig1.png
+- q3/figures/fig2.png
+page_images:
+- q3/pages/page4.png
+parts:
+- label: '6'
+  points: 0
+  text: Bereken exact de coördinaten van het zwaartepunt van deze drie puntmassa's.
+- label: '7'
+  points: 0
+  text: De cirkel \( d \) met middelpunt \( N \) raakt de \( y \)-as in de oorsprong
+    \( O \) en raakt cirkel \( c \) zoals weergegeven in figuur 2. Deze figuur staat
+    ook op de uitwerkbijlage. Bereken exact de straal van cirkel \( d \). Je kunt
+    hierbij gebruikmaken van de figuur op de uitwerkbijlage.
+stem: 'Gegeven is cirkel \( c \) met middelpunt \( M(14, 8) \) en straal 10. Deze
+  cirkel snijdt de \( x \)-as in de punten \( A \) en \( B \) met \( x_A < x_B \).
+  Zie figuur 1.
+
+  In \( A \) bevindt zich een puntmassa met massa 3, in \( B \) een puntmassa met
+  massa 1 en in \( M \) een puntmassa met massa 2.'
+title: Zwaartepunt en straal van een cirkel

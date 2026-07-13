@@ -1,0 +1,22 @@
+calculator_allowed: null
+exam_id: VW-1025-a-19-1-o
+figure_images: []
+page_images:
+- q1/pages/page1.png
+parts:
+- label: '1.'
+  points: 0
+  text: Bereken exact de coördinaten van deze snijpunten.
+stem: 'Gegeven is cirkel \( c \) met middelpunt \( (1, 7) \) en straal \( 5 \).
+
+  \[
+
+  \begin{pmatrix} x \\ y \end{pmatrix} = t \cdot \begin{pmatrix} 1 \\ 2 \end{pmatrix}
+
+  \]
+
+  is een vectorvoorstelling van een lijn \( k \) door de oorsprong.
+
+
+  Lijn \( k \) snijdt cirkel \( c \) in twee punten.'
+title: Snijpunten van lijn k met cirkel c

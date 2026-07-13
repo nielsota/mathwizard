@@ -1,0 +1,40 @@
+exam:
+  id: VW-1025-a-19-1-o
+  level: VWO
+  tijdvak: 1
+  year: 2019
+figure:
+  description: Figure 1 shows a graph with shaded area under the curve \( f(x) = \sqrt{x}
+    \) and vertical lines at \( x = a \) and \( x = b \). Figure 2 illustrates the
+    solid of revolution (afgeknotte paraboloïde), and figure 3 shows it rotated a
+    quarter turn, highlighting the height \( h \).
+  missing: false
+  present: true
+figure_images:
+- q8/figures/fig1.png
+- q8/figures/fig3.png
+- q8/figures/fig2.png
+id: VW-1025-a-19-1-o-q8
+page_images:
+- q8/pages/page10.png
+question_number: '8'
+question_text: "De functie \\( f \\) is gegeven door \\( f(x) = \\sqrt{x} \\). De\
+  \ grafiek van \\( f \\) is getekend in figuur 1, samen met de lijnen met vergelijkingen\
+  \ \\( x = a \\) en \\( x = b \\), waarbij \\( 0 < a < b \\). Midden tussen de punten\
+  \ \\((a, 0)\\) en \\((b, 0)\\) ligt het punt \\((m, 0)\\). De grafiek van \\( f\
+  \ \\), de \\( x \\)-as en de twee verticale lijnen sluiten een gebied in. Dit gebied,\
+  \ in figuur 1 met grijs aangegeven, wordt gewenteld om de \\( x \\)-as. Het omwentelingslichaam\
+  \ is een zogenaamde afgeknotte paraboloïde. Deze is afgebeeld in figuur 2. Bij de\
+  \ omwenteling beschrijft elk punt van de grafiek een cirkel. De oppervlakte van\
+  \ de cirkel die beschreven wordt door het punt \\((m, \\sqrt{m})\\) noemen we \\\
+  ( A \\). De cirkelschijf met deze oppervlakte is met donkergrijs aangegeven in figuur\
+  \ 2. In figuur 3 staat de afgeknotte paraboloïde een kwarts slag gedraaid. In die\
+  \ figuur is ook de hoogte \\( h \\) van de afgeknotte paraboloïde aangegeven. \n\
+  \nVoor de inhoud \\( V \\) van de afgeknotte paraboloïde geldt de formule: \n\\\
+  [ V = h \\cdot A \\] \n\nBewijs dit."
+source_images:
+- q8/pages/page10.png
+- q8/figures/fig1.png
+- q8/figures/fig3.png
+- q8/figures/fig2.png
+title: Afgeknotte paraboloïde

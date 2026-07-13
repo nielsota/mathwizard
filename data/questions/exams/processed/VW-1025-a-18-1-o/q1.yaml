@@ -1,0 +1,26 @@
+exam:
+  id: VW-1025-a-18-1-o
+  level: VWO
+  tijdvak: 1
+  year: 2018
+figure:
+  description: Curved trajectory diagram showing path of point P intersecting y-axis
+    at origin O and point A.
+  missing: false
+  present: true
+figure_images:
+- q1/figures/figure1.png
+id: VW-1025-a-18-1-o-q1
+page_images:
+- q1/pages/page1.png
+question_number: '1'
+question_text: "De beweging van een punt $P$ wordt gegeven door de volgende bewegingsvergelijkingen:\n\
+  \\[\n\\begin{cases} \n  x(t) = 1 - t^2 \\\\\n  y(t) = (1 + t)^2\n\\end{cases}\n\\\
+  ]\n\nIn de figuur is de baan van $P$ weergegeven.\n\nDe baan van $P$ snijdt de $y$-as\
+  \ in de oorsprong $O$ en in punt $A$. Zie de figuur.\n\n1. Bereken exact de snelheid\
+  \ waarmee $P$ door punt $A$ gaat.\n\nVoor elke waarde van $t$ bevindt $P$ zich op\
+  \ de kromme met vergelijking:\n\\[\n(x+y)^2 = 4y\n\\]\n\n2. Bewijs dit."
+source_images:
+- q1/pages/page1.png
+- q1/figures/figure1.png
+title: Bewegend punt

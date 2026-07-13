@@ -1,0 +1,79 @@
+calculator_allowed: null
+exam_id: VW-1025-a-21-1-o
+figure_images:
+- q3/figures/figure 5.png
+page_images:
+- q3/pages/page 4.png
+- q3/pages/page 5.png
+parts:
+- label: a
+  points: 0
+  text: Bereken deze afstand \( d \).
+- label: b
+  points: 0
+  text: 'Om de plaats van het epicentrum te bepalen worden de meetgegevens van verschillende
+    meetstations gecombineerd. In een bepaald gebied staan twee meetstations: S en
+    T. Meetstation T ligt 192 km oostelijker en 128 km noordelijker dan meetstation
+    S. Uit de metingen in meetstation S volgt dat het epicentrum van de aardbeving
+    op een afstand van 240 km van dit meetstation S ligt. Uit de metingen in meetstation
+    T volgt dat het epicentrum op 80 km van dit meetstation T ligt. Op grond van deze
+    gegevens zijn er twee mogelijke plaatsen van het epicentrum aan te wijzen. Om
+    deze plaatsen te bepalen worden de meetstations in een assenstelsel geplaatst,
+    waarbij meetstation S in de oorsprong ligt. De coördinaten van meetstation T zijn
+    dan \((192, 128)\). Zie de figuur.
+
+
+    Bereken algebraïsch de coördinaten van de twee mogelijke plaatsen van het epicentrum
+    in kilometers. Geef de coördinaten in je eindantwoord als gehele getallen.'
+- label: c
+  points: 0
+  text: 'De zwaarte van een aardbeving wordt uitgedrukt in een getal: de magnitude.
+    Een zware aardbeving heeft een grote magnitude, een lichte aardbeving heeft een
+    kleine magnitude. De United States Geological Survey heeft voor verschillende
+    magnitudes onderzocht hoe vaak aardbevingen met die magnitude in een bepaald gebied
+    voorkwamen. Zie de tabel.
+
+
+    De onderzoekers Gutenberg en Richter hebben een model ontwikkeld om het aantal
+    aardbevingen per jaar in een gebied te voorspellen. Dit model is van de vorm:
+
+    \[
+
+    N = 10^{a-bM}
+
+    \]
+
+    Hierin is \( M \) de magnitude en \( N \) het te verwachten aantal aardbevingen
+    per jaar met deze magnitude \( M \) of groter. De waarden \( a \) en \( b \) zijn
+    constanten.
+
+
+    Uit de tabel kun je afleiden dat er gemiddeld 285,5 aardbevingen per jaar zijn
+    met een magnitude van 6,0 of groter. Ook kun je afleiden dat er gemiddeld 4,5
+    aardbevingen per jaar zijn met een magnitude van 7,5 of groter.
+
+    Met behulp van deze twee gegevens is het mogelijk de waarden van \( a \) en \(
+    b \) uit te rekenen. Vervolgens kun je met dat model een voorspelling doen van
+    het aantal aardbevingen per jaar met een magnitude van 6,5 of groter.
+
+
+    Onderzoek hoeveel die voorspelling afwijkt van de gegevens in de tabel. Geef je
+    eindantwoord als geheel getal.'
+stem: 'Een aardbeving ontstaat op een plek in de aarde. Het punt recht boven die plek,
+  op het aardoppervlak, heet het epicentrum van die aardbeving. We bekijken in deze
+  opgave een model over aardbevingen, waarbij we ervan uitgaan dat de aardbeving in
+  het epicentrum ontstaat.
+
+
+  Bij een aardbeving ontstaan verschillende typen golven in de aarde: primaire golven
+  en secundaire golven. Primaire golven zijn sneller dan secundaire golven. We nemen
+  in deze opgave aan dat een primaire golf een constante snelheid van 6 km/s heeft
+  en een secundaire golf een constante snelheid van 3,5 km/s.
+
+
+  Een seismograaf is een meetinstrument waarmee je primaire en secundaire golven van
+  elkaar kunt onderscheiden. Bij een bepaalde aardbeving registreert een seismograaf
+  in een meetstation dat de eerste secundaire golf 17 seconden na de eerste primaire
+  golf bij het meetstation aankomt. Met deze gegevens kun je de afstand \( d \) (in
+  km) van de seismograaf tot het epicentrum van de aardbeving bepalen.'
+title: 'Aardbevingen: afstand, locatie epicentrum en magnitude-model'

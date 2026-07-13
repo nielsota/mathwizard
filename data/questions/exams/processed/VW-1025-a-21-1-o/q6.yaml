@@ -1,0 +1,26 @@
+exam:
+  id: VW-1025-a-21-1-o
+  level: VWO
+  tijdvak: 1
+  year: 2021
+figure:
+  description: Graph of the function \( f_1 \) showing a curve with an oblique asymptote.
+  missing: false
+  present: true
+figure_images:
+- q6/figures/figure 9.png
+id: VW-1025-a-21-1-o-q6
+page_images:
+- q6/pages/page 8.png
+question_number: '6'
+question_text: "Voor \\( p > 0 \\) wordt de functie \\( f_p \\) gegeven door:  \n\\\
+  [ f_p(x) = \\frac{x^3 + 4p}{x^2} \\]  \nIn de figuur is de grafiek van \\( f_1 \\\
+  ) weergegeven.  \n\nDe grafiek van \\( f_1 \\) heeft een scheve asymptoot.  \n\\\
+  [  \\text{3p 11} \\quad \\text{Bewijs dat de grafiek van } f_1 \\text{ boven deze\
+  \ scheve asymptoot ligt.} \\]\n\nVoor elke waarde van \\( p > 0 \\) heeft de grafiek\
+  \ van \\( f_p \\) één top.  \n\\[  \\text{5p 12} \\quad \\text{Bewijs dat er een\
+  \ lijn is waarop al deze toppen liggen.} \\]"
+source_images:
+- q6/pages/page 8.png
+- q6/figures/figure 9.png
+title: Gebroken functie met een parameter

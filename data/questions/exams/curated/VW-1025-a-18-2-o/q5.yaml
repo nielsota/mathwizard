@@ -1,0 +1,21 @@
+calculator_allowed: null
+exam_id: VW-1025-a-18-2-o
+figure_images:
+- q5/figures/fig1.png
+page_images:
+- q5/pages/page6.png
+parts: []
+stem: 'De functie \( f \) is gegeven door \( f(x) = x^2 \).
+
+  De raaklijn aan de grafiek van \( f \) in een punt \( P(p, p^2) \) met \( p > 0
+  \) snijdt de \( x \)-as in een punt \( A \).
+
+  \( V \) is het vlakdeel dat wordt ingesloten door de grafiek van \( f \) en de lijn
+  \( OP \).
+
+  Zie de figuur.
+
+
+  Bewijs dat de oppervlakte van driehoek \( OAP \) anderhalf keer zo groot is als
+  de oppervlakte van \( V \).'
+title: Oppervlakte driehoek OAP en V bij f(x)=x^2

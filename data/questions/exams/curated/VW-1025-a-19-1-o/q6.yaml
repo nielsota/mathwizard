@@ -1,0 +1,55 @@
+calculator_allowed: null
+exam_id: VW-1025-a-19-1-o
+figure_images:
+- q6/figures/fig1.png
+- q6/figures/fig2.png
+page_images:
+- q6/pages/page8.png
+parts:
+- label: a
+  points: 0
+  text: Bereken exact de \( x \)-coÃ¶rdinaten van \( A \) en \( B \).
+- label: b
+  points: 0
+  text: 'Voor elke waarde van \( p \) is de functie \( f_p \) gegeven door:
+
+    \[
+
+    f_p(x) = \frac{\cos(x)}{p - \sin^2(x)}
+
+    \]
+
+
+    Onderzoek of er waarden van \( p \) zijn waarvoor de grafiek van \( f_p \) perforaties
+    heeft.'
+- label: c
+  points: 0
+  text: 'In de rest van de opgave beperken we ons tot waarden van \( p \) waarvoor
+    geldt: \( p \neq 0 \).
+
+
+    De punten op de grafiek van \( f_p \) met \( x \)-coÃ¶rdinaten \( 0 \), \( \pi
+    \) en \( 2\pi \) noemen we respectievelijk \( P \), \( Q \) en \( R \).
+
+
+    In figuur 2 is voor een waarde van \( p \) de grafiek van \( f_p \) weergegeven.
+    Ook zijn de lijnstukken \( PQ \) en \( QR \) weergegeven.
+
+
+    Er zijn waarden van \( p \) waarvoor \( PQ \) en \( QR \) loodrecht op elkaar
+    staan. Bereken exact deze waarden van \( p \).'
+stem: 'De functie \( f \) is gegeven door:
+
+  \[
+
+  f(x) = \frac{\cos(x)}{-\sin^2(x)}
+
+  \]
+
+  Lijn \( k \) is de lijn met vergelijking \( y = \sqrt{2} \).
+
+
+  Lijn \( k \) en de grafiek van \( f \) hebben oneindig veel snijpunten. De punten
+  \( A \) en \( B \) zijn de twee snijpunten met de kleinste positieve \( x \)-coÃ¶rdinaten.
+  Deze zijn in figuur 1 aangegeven.'
+title: 'Functies f en f_p: snijpunten, perforaties en loodrechte lijnstukken'

@@ -1,0 +1,149 @@
+calculator_allowed: null
+exam_id: VW-1025-a-18-2-o
+figure_images:
+- q3/figures/fig1.png
+page_images:
+- q3/pages/page4.png
+parts:
+- label: '6'
+  points: 0
+  text: 'Bewijs dat voor elke toegestane waarde van \( x \) geldt:
+
+    \[
+
+    \frac{f_a(x) + f_{\frac{1}{a}}(x)}{2} = f_1(x)
+
+    \]
+
+    Voor elke positieve waarde van \( a \) geldt:
+
+    - de grafiek van \( f_a \) snijdt de \( x \)-as in precies één punt \( S \) (met
+    x-coördinaat \( x_S \));
+
+    - de grafiek van \( f_a \) heeft één top \( T \) (met x-coördinaat \( x_T \)).
+
+
+    In de figuur zijn voor een waarde van \( a \) de grafiek van \( f_a \) en de punten
+    \( S \) en \( T \) weergegeven.'
+- label: '7'
+  points: 0
+  text: Bewijs dat voor elke positieve waarde van \( a \) de verhouding \( \frac{x_S}{x_T}
+    \) constant is.
+- label: c
+  points: 0
+  text: ''
+- label: d
+  points: 0
+  text: ''
+- label: e
+  points: 0
+  text: ''
+- label: f
+  points: 0
+  text: ''
+- label: g
+  points: 0
+  text: ''
+- label: h
+  points: 0
+  text: ''
+- label: i
+  points: 0
+  text: ''
+- label: j
+  points: 0
+  text: ''
+- label: k
+  points: 0
+  text: ''
+- label: l
+  points: 0
+  text: ''
+- label: m
+  points: 0
+  text: ''
+- label: n
+  points: 0
+  text: ''
+- label: o
+  points: 0
+  text: ''
+- label: p
+  points: 0
+  text: ''
+- label: q
+  points: 0
+  text: ''
+- label: r
+  points: 0
+  text: ''
+- label: s
+  points: 0
+  text: ''
+- label: t
+  points: 0
+  text: ''
+- label: u
+  points: 0
+  text: ''
+- label: v
+  points: 0
+  text: ''
+- label: w
+  points: 0
+  text: ''
+- label: x
+  points: 0
+  text: ''
+- label: y
+  points: 0
+  text: ''
+- label: z
+  points: 0
+  text: ''
+- label: '{'
+  points: 0
+  text: ''
+- label: '|'
+  points: 0
+  text: ''
+- label: '}'
+  points: 0
+  text: ''
+- label: '~'
+  points: 0
+  text: ''
+- label: "\x7F"
+  points: 0
+  text: ''
+- label: "\x80"
+  points: 0
+  text: ''
+- label: "\x81"
+  points: 0
+  text: ''
+- label: "\x82"
+  points: 0
+  text: ''
+- label: "\x83"
+  points: 0
+  text: ''
+- label: "\x84"
+  points: 0
+  text: ''
+- label: '    '
+  points: 0
+  text: ''
+- label: "\x86"
+  points: 0
+  text: ''
+- label: "\x87"
+  points: 0
+  text: ''
+- label: "\x88"
+  points: 0
+  text: ''
+stem: Voor \( a > 0 \) wordt de functie \( f_a \) gegeven door \( f_a(x) = x - x \ln(ax)
+  \).
+title: Voor \( a > 0 \) wordt de functie \( f_a \) gegeven door \( f_a(x) = x - x
+  \ln(ax) \).

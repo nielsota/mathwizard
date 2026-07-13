@@ -1,0 +1,41 @@
+exam:
+  id: VW-1025-a-18-1-o
+  level: VWO
+  tijdvak: 1
+  year: 2018
+figure:
+  description: Figure 1 shows a circle c intersecting the x-axis at points A and B,
+    with a point M in the center. Figure 2 shows circle d, with center N, tangent
+    to both the y-axis at the origin O and circle c.
+  missing: false
+  present: true
+figure_images:
+- q3/figures/fig1.png
+- q3/figures/fig2.png
+id: VW-1025-a-18-1-o-q3
+page_images:
+- q3/pages/page4.png
+question_number: '3'
+question_text: 'Gegeven is cirkel \( c \) met middelpunt \( M(14, 8) \) en straal
+  10. Deze cirkel snijdt de \( x \)-as in de punten \( A \) en \( B \) met \( x_A
+  < x_B \). Zie figuur 1.
+
+  In \( A \) bevindt zich een puntmassa met massa 3, in \( B \) een puntmassa met
+  massa 1 en in \( M \) een puntmassa met massa 2.
+
+
+  6. Bereken exact de coördinaten van het zwaartepunt van deze drie puntmassa''s.
+
+
+  De cirkel \( d \) met middelpunt \( N \) raakt de \( y \)-as in de oorsprong \(
+  O \) en raakt cirkel \( c \) zoals weergegeven in figuur 2. Deze figuur staat ook
+  op de uitwerkbijlage.
+
+
+  7. Bereken exact de straal van cirkel \( d \). Je kunt hierbij gebruikmaken van
+  de figuur op de uitwerkbijlage.'
+source_images:
+- q3/pages/page4.png
+- q3/figures/fig1.png
+- q3/figures/fig2.png
+title: Zwaartepunt en rakende cirkels

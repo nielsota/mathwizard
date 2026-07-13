@@ -6,7 +6,7 @@ import yaml  # type: ignore[import-untyped]
 from mathwizard.db.client import DBClient
 from mathwizard.enums import QuestionSource
 from mathwizard.services.auth import hash_password
-from mathwizard.settings import get_settings
+from mathwizard.settings import Settings
 
 
 class ExerciseYaml(TypedDict):
@@ -20,11 +20,6 @@ class ExerciseYaml(TypedDict):
     difficulty: NotRequired[int | None]
 
 
-def seed_root_user(db: DBClient, *, username: str, password: str) -> None:
-    if db.get_user_by_username(username) is None:
-        db.create_user(username, hash_password(password))
-
-
 def _load_practice_yaml(topic_dir: Path) -> list[ExerciseYaml]:
     exercises = []
     for f in sorted(topic_dir.glob("p*.yaml")):
@@ -33,84 +28,93 @@ def _load_practice_yaml(topic_dir: Path) -> list[ExerciseYaml]:
     return exercises
 
 
-def seed_practice_questions(db: DBClient, practice_dir: Path) -> None:
-    if not practice_dir.exists():
-        raise FileNotFoundError(f"Practice question directory not found: {practice_dir}")
+class BootstrapService:
+    def __init__(self, db: DBClient, settings: Settings) -> None:
+        self.db = db
+        self.settings = settings
 
-    existing_practice_question_ids = {}
-    existing_practice_question_ids_by_source_title = {}
-    for question in db.list_questions(source=QuestionSource.PRACTICE):
-        if question.id is None:
-            raise RuntimeError(
-                f"Persisted practice question has no id: {question.topic}/{question.title}"
+    def seed_root_user(self) -> None:
+        username = self.settings.bootstrap_username
+        if self.db.get_user_by_username(username) is None:
+            self.db.create_user(username, hash_password(self.settings.bootstrap_password))
+
+    def seed_practice_questions(self) -> None:
+        practice_dir = self.settings.practice_dir
+        if not practice_dir.exists():
+            raise FileNotFoundError(
+                f"Practice question directory not found: {practice_dir}"
             )
-        existing_practice_question_ids[
-            (question.source, question.topic, question.title)
-        ] = question.id
-        source_title_key = (question.source, question.title)
-        existing_practice_question_ids_by_source_title.setdefault(
-            source_title_key,
-            [],
-        ).append(question.id)
 
-    for topic_dir in sorted(practice_dir.iterdir()):
-        if not topic_dir.is_dir() or topic_dir.name.startswith("_"):
-            continue
-
-        for ex in _load_practice_yaml(topic_dir):
-            source = QuestionSource(ex["source"])
-            question_key = (source, ex["topic"], ex["title"])
-            existing_question_id = existing_practice_question_ids.get(question_key)
-            if existing_question_id is None:
-                source_title_key = (source, ex["title"])
-                matching_question_ids = existing_practice_question_ids_by_source_title.get(
-                    source_title_key,
-                    [],
-                )
-                if len(matching_question_ids) == 1:
-                    existing_question_id = matching_question_ids[0]
-            if existing_question_id is not None:
-                db.replace_question(
-                    existing_question_id,
-                    title=ex["title"],
-                    stem=ex["stem"],
-                    parts=ex["parts"],
-                    topic=ex["topic"],
-                    source=source,
-                    tags=ex.get("tags", []),
-                    calculator_allowed=ex.get("calculator_allowed"),
-                    difficulty=ex.get("difficulty"),
-                )
-                existing_practice_question_ids[question_key] = existing_question_id
-                continue
-
-            question = db.create_question(
-                title=ex["title"],
-                stem=ex["stem"],
-                parts=ex["parts"],
-                topic=ex["topic"],
-                source=source,
-                tags=ex.get("tags"),
-                calculator_allowed=ex.get("calculator_allowed"),
-                difficulty=ex.get("difficulty"),
-            )
+        existing_practice_question_ids = {}
+        existing_practice_question_ids_by_source_title = {}
+        for question in self.db.list_questions(source=QuestionSource.PRACTICE):
             if question.id is None:
                 raise RuntimeError(
-                    f"Created practice question has no id: {ex['topic']}/{ex['title']}"
+                    f"Persisted practice question has no id: {question.topic}/{question.title}"
                 )
-            existing_practice_question_ids[question_key] = question.id
-            source_title_key = (source, ex["title"])
+            existing_practice_question_ids[
+                (question.source, question.topic, question.title)
+            ] = question.id
+            source_title_key = (question.source, question.title)
             existing_practice_question_ids_by_source_title.setdefault(
                 source_title_key,
                 [],
             ).append(question.id)
 
+        for topic_dir in sorted(practice_dir.iterdir()):
+            if not topic_dir.is_dir() or topic_dir.name.startswith("_"):
+                continue
 
-def run_all(db: DBClient, practice_dir: Path) -> None:
-    settings = get_settings()
-    seed_root_user(
-        db,
-        username=settings.bootstrap_username,
-        password=settings.bootstrap_password,
-    )
-    seed_practice_questions(db, practice_dir)
+            for ex in _load_practice_yaml(topic_dir):
+                source = QuestionSource(ex["source"])
+                question_key = (source, ex["topic"], ex["title"])
+                existing_question_id = existing_practice_question_ids.get(question_key)
+                if existing_question_id is None:
+                    source_title_key = (source, ex["title"])
+                    matching_question_ids = (
+                        existing_practice_question_ids_by_source_title.get(
+                            source_title_key,
+                            [],
+                        )
+                    )
+                    if len(matching_question_ids) == 1:
+                        existing_question_id = matching_question_ids[0]
+                if existing_question_id is not None:
+                    self.db.replace_question(
+                        existing_question_id,
+                        title=ex["title"],
+                        stem=ex["stem"],
+                        parts=ex["parts"],
+                        topic=ex["topic"],
+                        source=source,
+                        tags=ex.get("tags", []),
+                        calculator_allowed=ex.get("calculator_allowed"),
+                        difficulty=ex.get("difficulty"),
+                    )
+                    existing_practice_question_ids[question_key] = existing_question_id
+                    continue
+
+                question = self.db.create_question(
+                    title=ex["title"],
+                    stem=ex["stem"],
+                    parts=ex["parts"],
+                    topic=ex["topic"],
+                    source=source,
+                    tags=ex.get("tags"),
+                    calculator_allowed=ex.get("calculator_allowed"),
+                    difficulty=ex.get("difficulty"),
+                )
+                if question.id is None:
+                    raise RuntimeError(
+                        f"Created practice question has no id: {ex['topic']}/{ex['title']}"
+                    )
+                existing_practice_question_ids[question_key] = question.id
+                source_title_key = (source, ex["title"])
+                existing_practice_question_ids_by_source_title.setdefault(
+                    source_title_key,
+                    [],
+                ).append(question.id)
+
+    def run_all(self) -> None:
+        self.seed_root_user()
+        self.seed_practice_questions()

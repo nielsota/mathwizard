@@ -1,0 +1,48 @@
+exam:
+  id: VW-1025-a-19-1-o
+  level: VWO
+  tijdvak: 1
+  year: 2019
+figure:
+  description: A graph showing curves labeled \( f \) and \( g \) with shaded region
+    between \( p \) and \( 2p \) on the x-axis.
+  missing: false
+  present: true
+figure_images:
+- q5/figures/fig1.png
+id: VW-1025-a-19-1-o-q5
+page_images:
+- q5/pages/page7.png
+question_number: '5'
+question_text: 'De functies \( f \) en \( g \) worden gegeven door:
+
+  \[
+
+  f(x) = x \ln(x) - x + 1 \\
+
+  g(x) = f''(x)
+
+  \]
+
+
+  5p \hspace{1em} 8 \ Bereken exact de \( x \)-coördinaten van de snijpunten van de
+  grafieken van \( f \) en \( g \).
+
+
+  Er is één waarde van \( p \) waarvoor geldt:
+
+  \[
+
+  \int_{p}^{2p} g(x) \, dx = 0
+
+  \]
+
+  Voor deze waarde van \( p \) is de situatie in de figuur geschetst.
+
+
+  7p \hspace{1em} 9 \ Bereken exact deze waarde van \( p \). Schrijf je eindantwoord
+  in de vorm \( p = ae \), waarbij \( a \) een getal is.'
+source_images:
+- q5/pages/page7.png
+- q5/figures/fig1.png
+title: Een logaritmische functie en haar afgeleide

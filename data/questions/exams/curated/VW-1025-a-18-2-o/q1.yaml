@@ -1,0 +1,160 @@
+calculator_allowed: null
+exam_id: VW-1025-a-18-2-o
+figure_images:
+- q1/figures/fig1.png
+page_images:
+- q1/pages/page1.png
+parts:
+- label: '1.'
+  points: 0
+  text: 'Bewijs dat voor \( x \neq 0 \) geldt: \( f(x) = h(x) \).'
+- label: '2.'
+  points: 0
+  text: 'Verder is de functie \( g \) gegeven door \( g(x) = \frac{4x^2 + x}{x} \).
+
+
+    Er is een lijn \( k \) die voor \( x \neq 0 \) samenvalt met de grafiek van \(
+    g \).
+
+
+    In figuur 1 zijn de grafieken van \( f \) en \( g \) weergegeven.
+
+    Punt \( P(0, 1) \) is de perforatie van beide grafieken.
+
+    In figuur 2 zijn de grafiek van \( h \) en lijn \( k \) weergegeven en ook hun
+    snijpunt \( P \).
+
+
+    Er geldt:
+
+    - de grafieken van \( f \) en \( g \) staan in hun perforatie \( P \) loodrecht
+    op elkaar als
+
+    - de grafiek van \( h \) en lijn \( k \) in hun snijpunt \( P \) loodrecht op
+    elkaar staan.
+
+
+    2. Bewijs dat de grafieken van \( f \) en \( g \) in hun perforatie \( P \) loodrecht
+    op elkaar staan.'
+- label: c
+  points: 0
+  text: ''
+- label: d
+  points: 0
+  text: ''
+- label: e
+  points: 0
+  text: ''
+- label: f
+  points: 0
+  text: ''
+- label: g
+  points: 0
+  text: ''
+- label: h
+  points: 0
+  text: ''
+- label: i
+  points: 0
+  text: ''
+- label: j
+  points: 0
+  text: ''
+- label: k
+  points: 0
+  text: ''
+- label: l
+  points: 0
+  text: ''
+- label: m
+  points: 0
+  text: ''
+- label: n
+  points: 0
+  text: ''
+- label: o
+  points: 0
+  text: ''
+- label: p
+  points: 0
+  text: ''
+- label: q
+  points: 0
+  text: ''
+- label: r
+  points: 0
+  text: ''
+- label: s
+  points: 0
+  text: ''
+- label: t
+  points: 0
+  text: ''
+- label: u
+  points: 0
+  text: ''
+- label: v
+  points: 0
+  text: ''
+- label: w
+  points: 0
+  text: ''
+- label: x
+  points: 0
+  text: ''
+- label: y
+  points: 0
+  text: ''
+- label: z
+  points: 0
+  text: ''
+- label: '{'
+  points: 0
+  text: ''
+- label: '|'
+  points: 0
+  text: ''
+- label: '}'
+  points: 0
+  text: ''
+- label: '~'
+  points: 0
+  text: ''
+- label: "\x7F"
+  points: 0
+  text: ''
+- label: "\x80"
+  points: 0
+  text: ''
+- label: "\x81"
+  points: 0
+  text: ''
+- label: "\x82"
+  points: 0
+  text: ''
+- label: "\x83"
+  points: 0
+  text: ''
+- label: "\x84"
+  points: 0
+  text: ''
+- label: '    '
+  points: 0
+  text: ''
+- label: "\x86"
+  points: 0
+  text: ''
+- label: "\x87"
+  points: 0
+  text: ''
+- label: "\x88"
+  points: 0
+  text: ''
+stem: 'De functie \( f \) is gegeven door \( f(x) = \frac{-2 + 2\sqrt{x+1}}{x} \).
+
+
+  Ook is gegeven de functie \( h \) door \( h(x) = \frac{2}{1+\sqrt{x+1}} \).
+
+
+  Voor \( x \neq 0 \) geldt: \( f(x) = h(x) \).'
+title: Functies f, h en g en loodrechte grafieken bij perforatie P

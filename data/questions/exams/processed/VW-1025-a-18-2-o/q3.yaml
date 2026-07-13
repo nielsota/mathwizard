@@ -1,0 +1,46 @@
+exam:
+  id: VW-1025-a-18-2-o
+  level: VWO
+  tijdvak: 2
+  year: 2018
+figure:
+  description: Graph of the function \( f_a \) with marked points \( S \) and \( T
+    \) on a coordinate system.
+  missing: false
+  present: true
+figure_images:
+- q3/figures/fig1.png
+id: VW-1025-a-18-2-o-q3
+page_images:
+- q3/pages/page4.png
+question_number: '3'
+question_text: 'Voor \( a > 0 \) wordt de functie \( f_a \) gegeven door \( f_a(x)
+  = x - x \ln(ax) \).
+
+
+  6 Bewijs dat voor elke toegestane waarde van \( x \) geldt:
+
+  \[
+
+  \frac{f_a(x) + f_{\frac{1}{a}}(x)}{2} = f_1(x)
+
+  \]
+
+  Voor elke positieve waarde van \( a \) geldt:
+
+  - de grafiek van \( f_a \) snijdt de \( x \)-as in precies één punt \( S \) (met
+  x-coördinaat \( x_S \));
+
+  - de grafiek van \( f_a \) heeft één top \( T \) (met x-coördinaat \( x_T \)).
+
+
+  In de figuur zijn voor een waarde van \( a \) de grafiek van \( f_a \) en de punten
+  \( S \) en \( T \) weergegeven.
+
+
+  7 Bewijs dat voor elke positieve waarde van \( a \) de verhouding \( \frac{x_S}{x_T}
+  \) constant is.'
+source_images:
+- q3/pages/page4.png
+- q3/figures/fig1.png
+title: Constante verhouding

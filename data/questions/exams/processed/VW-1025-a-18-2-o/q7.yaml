@@ -1,0 +1,49 @@
+exam:
+  id: VW-1025-a-18-2-o
+  level: VWO
+  tijdvak: 2
+  year: 2018
+figure:
+  description: Figure 1 shows a circle within a square with points and intersections
+    labeled. Figure 2 highlights two gray circular sectors within the square and circle.
+  missing: false
+  present: true
+figure_images:
+- q7/figures/fig1.png
+- q7/figures/fig2.png
+id: VW-1025-a-18-2-o-q7
+page_images:
+- q7/pages/page8.png
+question_number: '7'
+question_text: 'Gegeven is het vierkant \( OABC \) met \( O(0, 0), A(4, 0) \) en \(
+  C(0, 4) \).
+
+  Het snijpunt van \( OB \) en \( AC \) is het punt \( S \).
+
+  Het punt \( M(3, 2) \) is het middelpunt van een cirkel door \( A \) en \( B \).
+
+  De punten \( F \) en \( G \) zijn de snijpunten van deze cirkel met \( CS \) respectievelijk
+  \( OS \). Zie figuur 1.
+
+
+  Er geldt: \( F \) is het midden van \( CS \).
+
+
+  Bewijs dat \( F \) inderdaad het midden is van \( CS \).
+
+
+  Verder geldt: \( G \) is het midden van \( OS \).
+
+  In figuur 2 zijn de cirkelsectoren \( BMF \) en \( GMA \) grijs gemaakt.
+
+
+  De oppervlakte van deze twee sectoren samen is gelijk aan de helft van de oppervlakte
+  van de cirkel.
+
+
+  Bewijs dit.'
+source_images:
+- q7/pages/page8.png
+- q7/figures/fig1.png
+- q7/figures/fig2.png
+title: Buiten een vierkant

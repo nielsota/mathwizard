@@ -1,0 +1,75 @@
+calculator_allowed: null
+exam_id: VW-1025-a-21-1-o
+figure_images:
+- q4/figures/figure 7.png
+- q4/figures/figure 6.png
+page_images:
+- q4/pages/page 6.png
+parts:
+- label: '8'
+  points: 0
+  text: Bewijs dat voor elke waarde van \( p \) de hoek tussen de vectoren \( \overrightarrow{CP}
+    \) en \( \overrightarrow{CA} \) gelijk is aan de hoek tussen de vectoren \( \overrightarrow{CA}
+    \) en \( \overrightarrow{CQ} \).
+- label: '9'
+  points: 0
+  text: 'Het punt \( M \) is het midden van lijnstuk \(PB\). Zie figuur 2, waarin
+    ook lijnstuk \(PB\) en vector \( \overrightarrow{QM} \) zijn getekend.
+
+
+    In figuur 2 is \( p \) zo gekozen dat vector \( \overrightarrow{QM} \) loodrecht
+    staat op lijnstuk \( PB \). Bereken deze waarde van \( p \). Geef je eindantwoord
+    in twee decimalen.'
+- label: c
+  points: 0
+  text: ''
+- label: d
+  points: 0
+  text: ''
+- label: e
+  points: 0
+  text: ''
+- label: f
+  points: 0
+  text: ''
+- label: g
+  points: 0
+  text: ''
+- label: h
+  points: 0
+  text: ''
+- label: i
+  points: 0
+  text: ''
+- label: j
+  points: 0
+  text: ''
+- label: k
+  points: 0
+  text: ''
+- label: l
+  points: 0
+  text: ''
+- label: m
+  points: 0
+  text: ''
+- label: n
+  points: 0
+  text: ''
+- label: o
+  points: 0
+  text: ''
+- label: p
+  points: 0
+  text: ''
+- label: q
+  points: 0
+  text: ''
+stem: 'Gegeven is het vierkant \( OABC \) met hoekpunten \( O(0,0) \), \( A(1,0) \),
+  \( B(1,1) \) en \( C(0,1) \). Verder zijn gegeven het punt \( P(p,0) \) en het punt
+  \( Q\left(\frac{1}{p},0\right) \), met \( 0 < p < 1 \).
+
+
+  In figuur 1 zijn de vectoren \( \overrightarrow{CP} \), \( \overrightarrow{CA} \)
+  en \( \overrightarrow{CQ} \) voor een willekeurige waarde van \( p \) weergegeven.'
+title: Vierkant \(OABC\) met punten \(P\) en \(Q\)

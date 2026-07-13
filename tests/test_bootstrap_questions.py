@@ -4,11 +4,21 @@ import pytest
 
 from mathwizard.db.client import DBClient
 from mathwizard.enums import QuestionSource
-from mathwizard.services.bootstrap import seed_practice_questions
+from mathwizard.services.bootstrap import BootstrapService
+from mathwizard.settings import Settings
 
 
 def make_db(tmp_path: Path) -> DBClient:
     return DBClient(f"sqlite:///{tmp_path / 'bootstrap.db'}")
+
+
+def make_service(tmp_path: Path) -> BootstrapService:
+    db = make_db(tmp_path)
+    settings = Settings(
+        database_url=f"sqlite:///{tmp_path / 'bootstrap.db'}",
+        repo_root=tmp_path,
+    )
+    return BootstrapService(db, settings)
 
 
 def write_practice_question(path: Path, lines: list[str]) -> None:
@@ -16,15 +26,14 @@ def write_practice_question(path: Path, lines: list[str]) -> None:
 
 
 def test_seed_practice_questions_fails_when_directory_is_missing(tmp_path: Path) -> None:
-    practice_dir = tmp_path / "questions" / "practice"
-    db = make_db(tmp_path)
+    svc = make_service(tmp_path)
 
-    with pytest.raises(FileNotFoundError, match=str(practice_dir)):
-        seed_practice_questions(db, practice_dir)
+    with pytest.raises(FileNotFoundError, match="practice"):
+        svc.seed_practice_questions()
 
 
 def test_seed_practice_questions_uses_yaml_topic_not_folder_name(tmp_path: Path) -> None:
-    practice_dir = tmp_path / "questions" / "practice"
+    practice_dir = tmp_path / "data" / "questions" / "practice"
     topic_dir = practice_dir / "folder-is-not-metadata"
     topic_dir.mkdir(parents=True)
     (topic_dir / "p1.yaml").write_text(
@@ -44,11 +53,11 @@ def test_seed_practice_questions_uses_yaml_topic_not_folder_name(tmp_path: Path)
             "",
         ])
     )
-    db = make_db(tmp_path)
+    svc = make_service(tmp_path)
 
-    seed_practice_questions(db, practice_dir)
+    svc.seed_practice_questions()
 
-    questions = db.list_questions()
+    questions = svc.db.list_questions()
     assert len(questions) == 1
     assert questions[0].topic == "derivatives"
     assert questions[0].source == QuestionSource.PRACTICE
@@ -59,7 +68,7 @@ def test_seed_practice_questions_uses_yaml_topic_not_folder_name(tmp_path: Path)
 
 
 def test_seed_practice_questions_is_idempotent_without_exam_id(tmp_path: Path) -> None:
-    practice_dir = tmp_path / "questions" / "practice"
+    practice_dir = tmp_path / "data" / "questions" / "practice"
     topic_dir = practice_dir / "derivatives"
     topic_dir.mkdir(parents=True)
     (topic_dir / "p1.yaml").write_text(
@@ -74,12 +83,12 @@ def test_seed_practice_questions_is_idempotent_without_exam_id(tmp_path: Path) -
             "",
         ])
     )
-    db = make_db(tmp_path)
+    svc = make_service(tmp_path)
 
-    seed_practice_questions(db, practice_dir)
-    seed_practice_questions(db, practice_dir)
+    svc.seed_practice_questions()
+    svc.seed_practice_questions()
 
-    questions = db.list_questions()
+    questions = svc.db.list_questions()
     assert len(questions) == 1
     assert questions[0].topic == "derivatives"
     assert questions[0].title == "Machtsfuncties"
@@ -89,7 +98,7 @@ def test_seed_practice_questions_is_idempotent_without_exam_id(tmp_path: Path) -
 def test_seed_practice_questions_updates_matching_practice_question_from_yaml(
     tmp_path: Path,
 ) -> None:
-    practice_dir = tmp_path / "questions" / "practice"
+    practice_dir = tmp_path / "data" / "questions" / "practice"
     topic_dir = practice_dir / "derivatives"
     topic_dir.mkdir(parents=True)
     question_path = topic_dir / "p1.yaml"
@@ -109,9 +118,9 @@ def test_seed_practice_questions_updates_matching_practice_question_from_yaml(
             "  points: 2",
         ],
     )
-    db = make_db(tmp_path)
+    svc = make_service(tmp_path)
 
-    seed_practice_questions(db, practice_dir)
+    svc.seed_practice_questions()
     write_practice_question(
         question_path,
         [
@@ -133,9 +142,9 @@ def test_seed_practice_questions_updates_matching_practice_question_from_yaml(
         ],
     )
 
-    seed_practice_questions(db, practice_dir)
+    svc.seed_practice_questions()
 
-    questions = db.list_questions(source=QuestionSource.PRACTICE)
+    questions = svc.db.list_questions(source=QuestionSource.PRACTICE)
     assert len(questions) == 1
     question = questions[0]
     assert question.stem == "Bepaal opnieuw de afgeleide."
@@ -151,7 +160,7 @@ def test_seed_practice_questions_updates_matching_practice_question_from_yaml(
 def test_seed_practice_questions_updates_unique_source_title_topic_rename(
     tmp_path: Path,
 ) -> None:
-    practice_dir = tmp_path / "questions" / "practice"
+    practice_dir = tmp_path / "data" / "questions" / "practice"
     topic_dir = practice_dir / "goniometrie"
     topic_dir.mkdir(parents=True)
     question_path = topic_dir / "p1.yaml"
@@ -167,9 +176,9 @@ def test_seed_practice_questions_updates_unique_source_title_topic_rename(
             "  points: 3",
         ],
     )
-    db = make_db(tmp_path)
+    svc = make_service(tmp_path)
 
-    seed_practice_questions(db, practice_dir)
+    svc.seed_practice_questions()
     write_practice_question(
         question_path,
         [
@@ -185,9 +194,9 @@ def test_seed_practice_questions_updates_unique_source_title_topic_rename(
         ],
     )
 
-    seed_practice_questions(db, practice_dir)
+    svc.seed_practice_questions()
 
-    questions = db.list_questions(source=QuestionSource.PRACTICE)
+    questions = svc.db.list_questions(source=QuestionSource.PRACTICE)
     assert len(questions) == 1
     question = questions[0]
     assert question.topic == "goniometrie"
@@ -202,7 +211,7 @@ def test_seed_practice_questions_updates_unique_source_title_topic_rename(
 def test_seed_practice_questions_does_not_fallback_update_ambiguous_title(
     tmp_path: Path,
 ) -> None:
-    practice_dir = tmp_path / "questions" / "practice"
+    practice_dir = tmp_path / "data" / "questions" / "practice"
     topic_dir = practice_dir / "vectors"
     topic_dir.mkdir(parents=True)
     write_practice_question(
@@ -217,15 +226,15 @@ def test_seed_practice_questions_does_not_fallback_update_ambiguous_title(
             "  points: 2",
         ],
     )
-    db = make_db(tmp_path)
-    db.create_question(
+    svc = make_service(tmp_path)
+    svc.db.create_question(
         title="Hoek tussen twee lijnen",
         stem="Bestaande parametric-vraag.",
         parts=[{"text": r"\(l: y=2x+1\)", "points": 3}],
         topic="parametric",
         source=QuestionSource.PRACTICE,
     )
-    db.create_question(
+    svc.db.create_question(
         title="Hoek tussen twee lijnen",
         stem="Bestaande analytic-vraag.",
         parts=[{"text": r"\(m: y=-x+4\)", "points": 3}],
@@ -233,9 +242,9 @@ def test_seed_practice_questions_does_not_fallback_update_ambiguous_title(
         source=QuestionSource.PRACTICE,
     )
 
-    seed_practice_questions(db, practice_dir)
+    svc.seed_practice_questions()
 
-    questions = db.list_questions(source=QuestionSource.PRACTICE)
+    questions = svc.db.list_questions(source=QuestionSource.PRACTICE)
     assert len(questions) == 3
     stems_by_topic = {question.topic: question.stem for question in questions}
     assert stems_by_topic == {
@@ -248,7 +257,7 @@ def test_seed_practice_questions_does_not_fallback_update_ambiguous_title(
 def test_seed_practice_questions_clears_optional_fields_missing_from_yaml(
     tmp_path: Path,
 ) -> None:
-    practice_dir = tmp_path / "questions" / "practice"
+    practice_dir = tmp_path / "data" / "questions" / "practice"
     topic_dir = practice_dir / "derivatives"
     topic_dir.mkdir(parents=True)
     question_path = topic_dir / "p1.yaml"
@@ -268,9 +277,9 @@ def test_seed_practice_questions_clears_optional_fields_missing_from_yaml(
             "  points: 2",
         ],
     )
-    db = make_db(tmp_path)
+    svc = make_service(tmp_path)
 
-    seed_practice_questions(db, practice_dir)
+    svc.seed_practice_questions()
     write_practice_question(
         question_path,
         [
@@ -284,9 +293,9 @@ def test_seed_practice_questions_clears_optional_fields_missing_from_yaml(
         ],
     )
 
-    seed_practice_questions(db, practice_dir)
+    svc.seed_practice_questions()
 
-    questions = db.list_questions(source=QuestionSource.PRACTICE)
+    questions = svc.db.list_questions(source=QuestionSource.PRACTICE)
     assert len(questions) == 1
     question = questions[0]
     assert question.tags == []
@@ -296,7 +305,7 @@ def test_seed_practice_questions_clears_optional_fields_missing_from_yaml(
 
 
 def test_seed_practice_questions_ignores_matching_exam_question(tmp_path: Path) -> None:
-    practice_dir = tmp_path / "questions" / "practice"
+    practice_dir = tmp_path / "data" / "questions" / "practice"
     topic_dir = practice_dir / "derivatives"
     topic_dir.mkdir(parents=True)
     (topic_dir / "p1.yaml").write_text(
@@ -311,8 +320,8 @@ def test_seed_practice_questions_ignores_matching_exam_question(tmp_path: Path) 
             "",
         ])
     )
-    db = make_db(tmp_path)
-    db.create_question(
+    svc = make_service(tmp_path)
+    svc.db.create_question(
         title="Machtsfuncties",
         stem="Bepaal de afgeleide.",
         parts=[{"text": r"\(f(x)=x^2\)", "points": 2}],
@@ -321,9 +330,9 @@ def test_seed_practice_questions_ignores_matching_exam_question(tmp_path: Path) 
         exam_id="VWO-2024-I-01",
     )
 
-    seed_practice_questions(db, practice_dir)
+    svc.seed_practice_questions()
 
-    questions = db.list_questions()
+    questions = svc.db.list_questions()
     practice_questions = [
         question for question in questions if question.source == QuestionSource.PRACTICE
     ]

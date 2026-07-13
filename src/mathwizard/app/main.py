@@ -6,8 +6,8 @@ from fastapi import FastAPI
 from mathwizard.app.auth import router as auth_router
 from mathwizard.app.routes.practice import router as practice_router
 from mathwizard.db.client import DBClient
-import mathwizard.services.bootstrap as bootstrap
 from mathwizard.services.auth import AuthService
+from mathwizard.services.bootstrap import BootstrapService
 from mathwizard.services.question import QuestionService
 from mathwizard.settings import get_settings
 
@@ -17,7 +17,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None]:
     settings = get_settings()
     db = DBClient(settings.database_url)
 
-    bootstrap.run_all(db, settings.practice_dir)
+    BootstrapService(db, settings).run_all()
     app.state.auth_service = AuthService(db, settings)
     app.state.question_service = QuestionService(db)
 

@@ -1,0 +1,69 @@
+exam:
+  id: VW-1025-a-19-1-o
+  level: VWO
+  tijdvak: 1
+  year: 2019
+figure:
+  description: Figure 1 shows function \( f \) and line \( k \) with intersection
+    points A and B. Figure 2 depicts \( f_p \) with points P, Q, R and segments PQ,
+    QR.
+  missing: false
+  present: true
+figure_images:
+- q6/figures/fig1.png
+- q6/figures/fig2.png
+id: VW-1025-a-19-1-o-q6
+page_images:
+- q6/pages/page8.png
+question_number: '6'
+question_text: 'De functie \( f \) is gegeven door:
+
+  \[
+
+  f(x) = \frac{\cos(x)}{-\sin^2(x)}
+
+  \]
+
+  Lijn \( k \) is de lijn met vergelijking \( y = \sqrt{2} \).
+
+
+  Lijn \( k \) en de grafiek van \( f \) hebben oneindig veel snijpunten. De punten
+  \( A \) en \( B \) zijn de twee snijpunten met de kleinste positieve \( x \)-coördinaten.
+  Deze zijn in figuur 1 aangegeven.
+
+
+  Bereken exact de \( x \)-coördinaten van \( A \) en \( B \).
+
+
+  Voor elke waarde van \( p \) is de functie \( f_p \) gegeven door:
+
+  \[
+
+  f_p(x) = \frac{\cos(x)}{p - \sin^2(x)}
+
+  \]
+
+
+  Onderzoek of er waarden van \( p \) zijn waarvoor de grafiek van \( f_p \) perforaties
+  heeft.
+
+
+  In de rest van de opgave beperken we ons tot waarden van \( p \) waarvoor geldt:
+  \( p \neq 0 \).
+
+
+  De punten op de grafiek van \( f_p \) met \( x \)-coördinaten \( 0 \), \( \pi \)
+  en \( 2\pi \) noemen we respectievelijk \( P \), \( Q \) en \( R \).
+
+
+  In figuur 2 is voor een waarde van \( p \) de grafiek van \( f_p \) weergegeven.
+  Ook zijn de lijnstukken \( PQ \) en \( QR \) weergegeven.
+
+
+  Er zijn waarden van \( p \) waarvoor \( PQ \) en \( QR \) loodrecht op elkaar staan.
+  Bereken exact deze waarden van \( p \).'
+source_images:
+- q6/pages/page8.png
+- q6/figures/fig1.png
+- q6/figures/fig2.png
+title: Gebroken goniometrische functie

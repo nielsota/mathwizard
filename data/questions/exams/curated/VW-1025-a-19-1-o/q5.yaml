@@ -1,0 +1,33 @@
+calculator_allowed: null
+exam_id: VW-1025-a-19-1-o
+figure_images:
+- q5/figures/fig1.png
+page_images:
+- q5/pages/page7.png
+parts:
+- label: '8'
+  points: 5
+  text: Bereken exact de \( x \)-coördinaten van de snijpunten van de grafieken van
+    \( f \) en \( g \).
+- label: '9'
+  points: 7
+  text: 'Er is één waarde van \( p \) waarvoor geldt:
+
+    \[
+
+    \int_{p}^{2p} g(x) \, dx = 0
+
+    \]
+
+    Voor deze waarde van \( p \) is de situatie in de figuur geschetst.
+
+    Bereken exact deze waarde van \( p \). Schrijf je eindantwoord in de vorm \( p
+    = ae \), waarbij \( a \) een getal is.'
+stem: '\[
+
+  f(x) = x \ln(x) - x + 1 \\\ng(x) = f''(x)
+
+  \]
+
+  '
+title: 'De functies \( f \) en \( g \) worden gegeven door:'

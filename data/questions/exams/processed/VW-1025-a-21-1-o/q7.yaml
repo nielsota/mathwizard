@@ -1,0 +1,33 @@
+exam:
+  id: VW-1025-a-21-1-o
+  level: VWO
+  tijdvak: 1
+  year: 2021
+figure:
+  description: A graph of function \( f(x) = |\ln(x)| \) with a horizontal line \(
+    y = q \) intersecting at points A, B, C.
+  missing: false
+  present: true
+figure_images:
+- q7/figures/figure 10.png
+id: VW-1025-a-21-1-o-q7
+page_images:
+- q7/pages/page 9.png
+question_number: '7'
+question_text: 'De functie \( f \) wordt gegeven door \( f(x) = |\ln(x)| \).
+
+  Gegeven is verder de horizontale lijn met vergelijking \( y = q \), met \( q > 0
+  \).
+
+  Deze lijn snijdt de y-as in het punt \( A \) en de grafiek van \( f \) in de punten
+  \( B \) en \( C \) met \( x_B < x_C \). Zie de figuur.
+
+
+  Er is een waarde van \( q \) waarvoor de lengte van lijnstuk \( BC \) drie keer
+  zo groot is als de lengte van lijnstuk \( AB \).
+
+  Bereken exact deze waarde van \( q \).'
+source_images:
+- q7/pages/page 9.png
+- q7/figures/figure 10.png
+title: Absolute natuurlijke logaritme

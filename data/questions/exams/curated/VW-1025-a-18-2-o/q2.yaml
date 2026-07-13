@@ -1,0 +1,47 @@
+calculator_allowed: null
+exam_id: VW-1025-a-18-2-o
+figure_images:
+- q2/figures/fig1.png
+page_images:
+- q2/pages/page3.png
+- q2/pages/page2.png
+parts:
+- label: '3'
+  points: 0
+  text: Bereken algebraïsch dit quotiënt bij deze ijsbol. Rond je eindantwoord af
+    op 2 decimalen.
+- label: '4'
+  points: 0
+  text: 'Een ijsbol wordt in een glas water gedaan, waarna de ijsbol in het water
+    drijft. Op het moment dat de ijsbol in het water wordt gedaan, heeft deze een
+    straal van 1,5 cm. Er geldt dat 92% van het volume van de ijsbol onder water zit
+    en 8% erboven. Het volume van de ijsbol is dan \( \frac{4}{3} \pi \cdot 1,5^3
+    \approx 14,137 \text{ cm}^3\).
+
+
+    Het deel van de ijsbol onder het wateroppervlak is op te vatten als een omwentelingslichaam
+    dat ontstaat bij wenteling van een deel van de cirkel met vergelijking \( x^2
+    + y^2 = 2,25 \) om de \( y \)-as. Zie de figuur.
+
+
+    Bereken hoeveel cm de ijsbol boven het water uitsteekt op het moment dat hij in
+    het water wordt gedaan. Rond je eindantwoord af op 2 decimalen.'
+stem: 'De snelheid waarmee een ijsklontje smelt, hangt onder andere af van de verhouding
+  tussen de oppervlakte \( A \) in cm^2 en het volume \( V \) in cm\(^{3}\) van het
+  ijsklontje. Deze verhouding wordt uitgedrukt in het quotiënt \( \frac{A}{V} \).
+
+
+  Voorbeeld: bij een kubusvormig ijsklontje met ribben van 3 cm is dit quotiënt gelijk
+  aan \( \frac{54}{27} = 2 \).
+
+
+  Er zijn ook bolvormige ijsklontjes ofwel ijsbollen. Zie de foto.
+
+
+  Voor een bol met straal \( r \) gelden voor \( A \) en \( V \) de formules \( A
+  = 4\pi r^2 \) en \( V = \frac{4}{3} \pi r^3 \).
+
+
+  Bij een ijsbol met hetzelfde volume als het genoemde kubusvormige ijsklontje met
+  ribben van 3 cm is het quotiënt \( \frac{A}{V} \) kleiner dan 2.'
+title: IJsklontje en ijsbol

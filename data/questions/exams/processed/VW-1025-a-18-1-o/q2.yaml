@@ -1,0 +1,65 @@
+exam:
+  id: VW-1025-a-18-1-o
+  level: VWO
+  tijdvak: 1
+  year: 2018
+figure:
+  description: Two figures showing graphs of functions and lines. Figure 1 shows several
+    curves intersecting a dashed line \( y = \frac{1}{e}x \). Figure 2 shows a curve
+    and a line with an area shaded in gray between them.
+  missing: false
+  present: true
+figure_images:
+- q2/figures/fig1.png
+- q2/figures/fig2.png
+id: VW-1025-a-18-1-o-q2
+page_images:
+- q2/pages/page3.png
+- q2/pages/page2.png
+question_number: '2'
+question_text: 'Voor elke waarde van \( a \) met \( a > 0 \) wordt de functie \( f_a
+  \) gegeven door \( f_a(x) = xe^{ax} \).
+
+
+  De afgeleide functie \( f''_a \) wordt gegeven door \( f''_a(x) = e^{ax} + axe^{ax}
+  \).
+
+  In figuur 1 zie je voor een aantal waarden van \( a \) de grafiek van \( f_a \).
+
+
+  Ook is de lijn \( l \) met vergelijking \( y = \frac{1}{e}x \) weergegeven.
+
+
+  Voor elke waarde van \( a \) met \( a > 0 \) heeft de grafiek van \( f_a \) precies
+  één top.
+
+  Bewijs dat deze top op lijn \( l \) ligt.
+
+
+  De functie \( F_a \) is gegeven door:
+
+  \[
+
+  F_a(x) = \frac{1}{a} xe^{ax} - \frac{1}{a^2} e^{ax}
+
+  \]
+
+
+  \( F_a \) is een primitieve van \( f_a \).
+
+
+  3p 4 Bewijs dat \( F_a \) inderdaad een primitieve van \( f_a \) is.
+
+
+  Voor \( f_1 \) geldt \( f_1(x) = xe^x \). In figuur 2 is de grafiek van \( f_1 \)
+  getekend, en ook lijn \( l \). Het vlakdeel tussen lijn \( l \) en de grafiek van
+  \( f_1 \) is grijs gemaakt.
+
+
+  5p 5 Bereken exact de oppervlakte van het grijze vlakdeel.'
+source_images:
+- q2/pages/page3.png
+- q2/pages/page2.png
+- q2/figures/fig1.png
+- q2/figures/fig2.png
+title: Lijn door de toppen

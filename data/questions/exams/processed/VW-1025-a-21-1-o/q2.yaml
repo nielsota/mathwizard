@@ -1,0 +1,60 @@
+exam:
+  id: VW-1025-a-21-1-o
+  level: VWO
+  tijdvak: 1
+  year: 2021
+figure:
+  description: Figuur 1 shows the graphs of functions \( f \) and \( g \) with intersection
+    points \( P \) and \( Q \). Figuur 2 displays the area \( V \) between \( f \)
+    and \( h \), shaded in grey. Figuur 3 illustrates the graphs of \( f \) and \(
+    k \), where \( k \) is a tangent function.
+  missing: false
+  present: true
+figure_images:
+- q2/figures/figure 2.png
+- q2/figures/figure 3.png
+- q2/figures/figure 4.png
+id: VW-1025-a-21-1-o-q2
+page_images:
+- q2/pages/page 2.png
+- q2/pages/page 3.png
+question_number: '2'
+question_text: 'De functies \( f \) en \( g \) worden voor \( 0 \leq x \leq 2\pi \)
+  gegeven door:
+
+  \[ f(x) = 2\sin(x) - \sin(2x) \]
+
+  \[ g(x) = \sin(2x) \]
+
+  De grafieken van \( f \) en \( g \) hebben vijf gemeenschappelijke punten. Drie
+  van deze punten liggen op de \( x \)-as. De andere twee punten zijn \( P \) en \(
+  Q \). Zie figuur 1.
+
+
+  2. Bereken exact de \( x \)-coördinaten van \( P \) en \( Q \).
+
+
+  De grafiek van \( g \) wordt 1 omhoog geschoven. Zo ontstaat de grafiek van de functie
+  \( h \). Zie figuur 2. \( V \) is het gebied dat wordt ingesloten door de grafieken
+  van \( f \) en \( h \). In figuur 2 is dit gebied grijs gemaakt.
+
+
+  3. De grafieken van \( f \) en \( h \) snijden elkaar in twee punten. De \( x \)-coördinaten
+  van deze twee punten zijn afgerond 1,33 en 2,97. Bereken de oppervlakte van \( V
+  \) met behulp van primitiveren. Geef je eindantwoord in één decimaal.
+
+
+  De functie \( k \) wordt gegeven door \( k(x) = \frac{1}{2} \tan(x) \). Zie figuur
+  3, waarin de grafieken van \( k \) en \( f \) zijn weergegeven.
+
+
+  4. De grafiek van \( k \) raakt de grafiek van \( f \) in een punt met \( x \)-coördinaat
+  \( \frac{1}{3} \pi \). Bewijs dat voor \( x = \frac{1}{3} \pi \) de grafieken van
+  \( k \) en \( f \) elkaar inderdaad raken.'
+source_images:
+- q2/pages/page 2.png
+- q2/pages/page 3.png
+- q2/figures/figure 2.png
+- q2/figures/figure 3.png
+- q2/figures/figure 4.png
+title: Goniometrische functies

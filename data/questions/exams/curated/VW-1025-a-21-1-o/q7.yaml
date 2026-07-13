@@ -1,0 +1,21 @@
+calculator_allowed: null
+exam_id: VW-1025-a-21-1-o
+figure_images:
+- q7/figures/figure 10.png
+page_images:
+- q7/pages/page 9.png
+parts: []
+stem: 'De functie \( f \) wordt gegeven door \( f(x) = |\ln(x)| \).
+
+  Gegeven is verder de horizontale lijn met vergelijking \( y = q \), met \( q > 0
+  \).
+
+  Deze lijn snijdt de y-as in het punt \( A \) en de grafiek van \( f \) in de punten
+  \( B \) en \( C \) met \( x_B < x_C \). Zie de figuur.
+
+
+  Er is een waarde van \( q \) waarvoor de lengte van lijnstuk \( BC \) drie keer
+  zo groot is als de lengte van lijnstuk \( AB \).
+
+  Bereken exact deze waarde van \( q \).'
+title: Lengteverhouding BC en AB bij f(x)=|\ln(x)|

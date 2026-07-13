@@ -1,0 +1,33 @@
+exam:
+  id: VW-1025-a-18-2-o
+  level: VWO
+  tijdvak: 2
+  year: 2018
+figure:
+  description: Graph showing function \( f(x) = x^2 \) with point \( P(p, p^2) \)
+    and area \( V \) under the tangent line.
+  missing: false
+  present: true
+figure_images:
+- q5/figures/fig1.png
+id: VW-1025-a-18-2-o-q5
+page_images:
+- q5/pages/page6.png
+question_number: '5'
+question_text: 'De functie \( f \) is gegeven door \( f(x) = x^2 \).
+
+  De raaklijn aan de grafiek van \( f \) in een punt \( P(p, p^2) \) met \( p > 0
+  \) snijdt de \( x \)-as in een punt \( A \).
+
+  \( V \) is het vlakdeel dat wordt ingesloten door de grafiek van \( f \) en de lijn
+  \( OP \).
+
+  Zie de figuur.
+
+
+  Bewijs dat de oppervlakte van driehoek \( OAP \) anderhalf keer zo groot is als
+  de oppervlakte van \( V \).'
+source_images:
+- q5/pages/page6.png
+- q5/figures/fig1.png
+title: Anderhalf keer zo groot

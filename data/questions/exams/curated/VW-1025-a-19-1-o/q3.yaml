@@ -1,0 +1,54 @@
+calculator_allowed: null
+exam_id: VW-1025-a-19-1-o
+figure_images:
+- q3/figures/fig1.png
+- q3/figures/fig2.png
+page_images:
+- q3/pages/page4.png
+- q3/pages/page3.png
+parts:
+- label: a
+  points: 5
+  text: 'Lijn \( k \) raakt de grafiek van \( f_p \) voor elke waarde van \( p \geq
+    1 \).
+
+
+    Bewijs dit.'
+- label: b
+  points: 3
+  text: 'Voor \( p \geq 1 \) heeft de grafiek van \( f_p \) een randpunt, ook wel
+    beginpunt genoemd. De randpunten van de grafieken in figuur 1 zijn met een stip
+    aangegeven.
+
+
+    Bewijs dat inderdaad voor \( p \geq 1 \) geldt: het randpunt van de grafiek van
+    \( f_p \) ligt op de grafiek van \( f_{p-1} \).'
+- label: c
+  points: 5
+  text: 'Punt \( A(1, 1) \) is het randpunt van de grafiek van \( f_1 \). Punt \(
+    B(2, 2) \) is het randpunt van de grafiek van \( f_2 \). \( B \) ligt dus op de
+    grafiek van \( f_1 \).
+
+    Door de punten \( A \) en \( B \) gaat een lijn \( l \).
+
+    \( V \) is het vlakdeel dat wordt ingesloten door lijn \( l \) en de grafiek van
+    \( f_1 \).
+
+    Zie figuur 2.
+
+
+    Bereken exact de oppervlakte van \( V \).'
+- label: d
+  points: 0
+  text: ''
+stem: 'Voor \( p \geq 1 \) is de functie \( f_p \) gegeven door:
+
+  \[
+
+  f_p(x) = p + \sqrt{x-p}
+
+  \]
+
+  In figuur 1 is voor enkele waarden van \( p \) de grafiek van \( f_p \) weergegeven
+  en ook lijn \( k \) met vergelijking \( y = x + \frac{1}{4} \).'
+title: Functies f_p, raaklijn k, randpunten en oppervlakte V

@@ -1,0 +1,47 @@
+calculator_allowed: null
+exam_id: VW-1025-a-18-2-o
+figure_images:
+- q6/figures/fig1.png
+- q6/figures/fig2.png
+page_images:
+- q6/pages/page7.png
+parts:
+- label: a
+  points: 3
+  text: Bewijs dat die lijn inderdaad verticaal is.
+- label: b
+  points: 5
+  text: 'Er zijn meerdere tijdstippen waarvoor geldt dat de afstand van \(P_t\) tot
+    de \(x\)-as twee keer zo groot is als de afstand van \(P_t\) tot de \(y\)-as.
+
+
+    Bereken exact het vierde tijdstip waarvoor dit het geval is.'
+- label: c
+  points: 5
+  text: 'Voor iedere waarde van \(t\) kunnen de snelheidsvector \(\vec{v}\) vanuit
+    punt \(P_t\) en de vector \(\overrightarrow{OP_t}\) worden getekend.
+
+
+    In figuur 2 zijn punt \(P_t\), vector \(\overrightarrow{OP_t}\) en vector \(\vec{v}\)
+    getekend voor \(t = \frac{3}{4}\pi\).
+
+
+    Bewijs dat voor \(t = \frac{3}{4}\pi\) geldt: \(\overrightarrow{OP_t} = \vec{v}\).'
+- label: d
+  points: 0
+  text: ''
+stem: 'Een punt beweegt voor \(0 \leq t \leq 2\pi\) volgens de bewegingsvergelijkingen:
+
+  \[\begin{align*} x(t) &= \cos(t)\sin(2t) \\ y(t) &= \cos(t) \end{align*}\]
+
+  De baan van het bewegende punt is weergegeven in figuur 1.
+
+  Voor \(t = \frac{1}{2}\pi\) en \(t = 1\frac{1}{2}\pi\) bevindt het bewegende punt
+  zich in \(O\). Deze situatie laten we in de gehele opgave verder buiten beschouwing.
+
+  \(P_t\) is de positie van het bewegende punt op tijdstip \(t\).
+
+
+  Er geldt: de lijn door \(P_a\) en \(P_{\pi-a}\) is voor elke in deze situatie mogelijke
+  waarde van \(a\) verticaal.'
+title: Puntbeweging gegeven door parametergelijkingen

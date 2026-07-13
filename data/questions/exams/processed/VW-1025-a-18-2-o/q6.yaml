@@ -1,0 +1,38 @@
+exam:
+  id: VW-1025-a-18-2-o
+  level: VWO
+  tijdvak: 2
+  year: 2018
+figure:
+  description: 'Figuur 1: Symmetrical graph on axes with curves; Figuur 2: Similar
+    graph with point Pt and vector v shown.'
+  missing: false
+  present: true
+figure_images:
+- q6/figures/fig1.png
+- q6/figures/fig2.png
+id: VW-1025-a-18-2-o-q6
+page_images:
+- q6/pages/page7.png
+question_number: '6'
+question_text: "Een punt beweegt voor \\(0 \\leq t \\leq 2\\pi\\) volgens de bewegingsvergelijkingen:\
+  \  \n\\[\\begin{align*} x(t) &= \\cos(t)\\sin(2t) \\\\ y(t) &= \\cos(t) \\end{align*}\\\
+  ] De baan van het bewegende punt is weergegeven in figuur 1.  \nVoor \\(t = \\frac{1}{2}\\\
+  pi\\) en \\(t = 1\\frac{1}{2}\\pi\\) bevindt het bewegende punt zich in \\(O\\).\
+  \ Deze situatie laten we in de gehele opgave verder buiten beschouwing.  \n\\(P_t\\\
+  ) is de positie van het bewegende punt op tijdstip \\(t\\).  \n\nEr geldt: de lijn\
+  \ door \\(P_a\\) en \\(P_{\\pi-a}\\) is voor elke in deze situatie mogelijke waarde\
+  \ van \\(a\\) verticaal. \n\n3p  \n\nBewijs dat die lijn inderdaad verticaal is.\n\
+  \nEr zijn meerdere tijdstippen waarvoor geldt dat de afstand van \\(P_t\\) tot de\
+  \ \\(x\\)-as twee keer zo groot is als de afstand van \\(P_t\\) tot de \\(y\\)-as.\
+  \  \n\n5p  \n\nBereken exact het vierde tijdstip waarvoor dit het geval is. \n\n\
+  Voor iedere waarde van \\(t\\) kunnen de snelheidsvector \\(\\vec{v}\\) vanuit punt\
+  \ \\(P_t\\) en de vector \\(\\overrightarrow{OP_t}\\) worden getekend. \n\nIn figuur\
+  \ 2 zijn punt \\(P_t\\), vector \\(\\overrightarrow{OP_t}\\) en vector \\(\\vec{v}\\\
+  ) getekend voor \\(t = \\frac{3}{4}\\pi\\). \n\n5p  \n\nBewijs dat voor \\(t = \\\
+  frac{3}{4}\\pi\\) geldt: \\(\\overrightarrow{OP_t} = \\vec{v}\\)"
+source_images:
+- q6/pages/page7.png
+- q6/figures/fig1.png
+- q6/figures/fig2.png
+title: Een baan

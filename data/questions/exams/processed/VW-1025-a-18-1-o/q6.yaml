@@ -1,0 +1,53 @@
+exam:
+  id: VW-1025-a-18-1-o
+  level: VWO
+  tijdvak: 1
+  year: 2018
+figure:
+  description: Diagram showing graphs of functions \( f \) and \( g \) with intersecting
+    vertical line segment.
+  missing: false
+  present: true
+figure_images:
+- q6/figures/fig1.png
+id: VW-1025-a-18-1-o-q6
+page_images:
+- q6/pages/page8.png
+question_number: '6'
+question_text: 'De functie \( f \) wordt gegeven door \( f(x) = \ln(\sqrt{x}) \).
+
+  Deze functie heeft een inverse functie \( f^{\text{inv}} \). Er geldt: \( f^{\text{inv}}(x)
+  = e^{2x} \).
+
+
+  3p  12  Bewijs dat inderdaad geldt \( f^{\text{inv}}(x) = e^{2x} \).
+
+
+  De grafiek van \( f^{\text{inv}} \) wordt ten opzichte van de \( x \)-as met factor
+  \( \frac{1}{2} \) vermenigvuldigd. Zo ontstaat de grafiek van de functie \( g \).
+
+  Elke verticale lijn rechts van de \( y \)-as snijdt de grafiek van \( f \) in één
+  punt en de grafiek van \( g \) in één punt. Het lijnstuk tussen deze twee punten
+  heeft een lengte die afhangt van de plaats van de verticale lijn. Zie de figuur.
+
+
+  4p  13  Bereken de minimale lengte van het lijnstuk. Rond je eindantwoord af op
+  drie decimalen.
+
+
+  De functie \( h \) wordt gegeven door:
+
+  \[
+
+  h(x) = \frac{\ln(\sqrt{x})}{\ln(x)}
+
+  \]
+
+
+  De grafiek van \( h \) heeft rechts van de \( y \)-as één perforatie.
+
+  4p  14  Bereken exact de coördinaten van deze perforatie.'
+source_images:
+- q6/pages/page8.png
+- q6/figures/fig1.png
+title: Natuurlijke logaritme van de wortel

@@ -1,0 +1,25 @@
+calculator_allowed: null
+exam_id: VW-1025-a-18-1-o
+figure_images:
+- q7/figures/fig1.png
+page_images:
+- q7/pages/page9.png
+parts: []
+stem: 'Voor \( x > 0 \) wordt de functie \( f \) gegeven door \( f(x) = \frac{1}{x}
+  \).
+
+
+  In de figuur is de grafiek van \( f \) getekend. Onder de grafiek is een vierkant
+  getekend met twee zijden evenwijdig aan de \( x \)-as en twee zijden evenwijdig
+  aan de \( y \)-as.
+
+
+  Het vierkant heeft linksonder hoekpunt \( (1, 0) \). Het hoekpunt rechtsboven ligt
+  op de grafiek van \( f \).
+
+
+  Bereken exact de lengte van de zijde van het vierkant.
+
+
+  Let op: de laatste vragen van dit examen staan op de volgende pagina.'
+title: Vierkant onder de grafiek van f(x)=1/x

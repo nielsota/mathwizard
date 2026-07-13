@@ -1,0 +1,23 @@
+calculator_allowed: null
+exam_id: VW-1025-a-21-1-o
+figure_images:
+- q8/figures/figure 11.png
+page_images:
+- q8/pages/page 10.png
+parts: []
+stem: 'De functie \( f \) wordt gegeven door \( f(x) = 6\sqrt{x} \). Het punt \( P
+  \) is een punt op de grafiek van \( f \) rechts van de \( y \)-as. Zie de figuur.
+
+
+  In de figuur is het punt \( P \) zo gekozen dat er een punt \( P'' \) bestaat met
+  de volgende eigenschappen:
+
+  - \( P'' \) ligt op de negatieve \( x \)-as;
+
+  - Lijnstuk \( OP'' \) heeft dezelfde lengte als lijnstuk \( OP \);
+
+  - \( \angle POP'' = 120^\circ \).
+
+
+  Bereken exact de \( x \)-coördinaat van \( P'' \).'
+title: Punt P en P' bij \( f(x) = 6\sqrt{x} \)

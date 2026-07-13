@@ -1,0 +1,17 @@
+calculator_allowed: null
+exam_id: VW-1025-a-19-1-o
+figure_images:
+- q2/figures/fig1.png
+page_images:
+- q2/pages/page2.png
+parts:
+- label: '2.'
+  points: 0
+  text: Toon dit aan met behulp van de afgeleide van \( f \).
+stem: "De functies \\( f \\) en \\( g \\) zijn gegeven door:\n\\[\n\\begin{align*}\n\
+  f(x) &= 3 \\cos(2x) - \\sqrt{2x} \\\\ \ng(x) &= 3 - \\sqrt{2x}\n\\end{align*}\n\\\
+  ]\nDe grafiek van \\( g \\) snijdt de \\( x \\)-as in punt \\( A \\).\\nDe grafiek\
+  \ van \\( f \\) heeft diverse toppen, alle met een positieve \\( x \\)-coÃ¶rdinaat.\\\
+  nPunt \\( B \\) is de derde van deze toppen.\\nZie de figuur.\\n\\nEr geldt: punt\
+  \ \\( B \\) ligt rechts van punt \\( A \\)."
+title: Punten A en B bij functies f en g

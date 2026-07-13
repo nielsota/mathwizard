@@ -1,0 +1,37 @@
+calculator_allowed: null
+exam_id: VW-1025-a-19-1-o
+figure_images:
+- q7/figures/fig1.png
+page_images:
+- q7/pages/page9.png
+parts:
+- label: '13'
+  points: 0
+  text: Bereken de coördinaten van $P$ zodat $A$, $B$ en $P$ niet de hoekpunten van
+    een driehoek vormen.
+- label: '14'
+  points: 0
+  text: Onderzoek op algebraïsche wijze of er een positie van $P$ is, zó dat driehoek
+    $\triangle ABP$ een rechte hoek heeft bij $P$ én driehoek $\triangle ABP$ een
+    gelijkbenige driehoek is.
+stem: 'Lijn $k$ gaat door de punten $A(0, 10)$ en $B(40, 0)$. De baan van een punt
+  $P$ is gegeven door de volgende bewegingsvergelijkingen:
+
+  \[
+
+  \begin{align*}
+
+  x &= 18 + 5t \\
+
+  v &= 30 - 3t
+
+  \end{align*}
+
+  \]
+
+  De baan van punt $P$ is de lijn $m$. Zie de figuur.
+
+
+  Bij bijna elke positie van punt $P$ vormen de punten $A$, $B$ en $P$ een driehoek
+  $\triangle ABP$. Er is één uitzondering.'
+title: Driehoek ABP en baan van P

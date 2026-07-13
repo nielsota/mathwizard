@@ -1,0 +1,75 @@
+exam:
+  id: VW-1025-a-19-1-o
+  level: VWO
+  tijdvak: 1
+  year: 2019
+figure:
+  description: "Two diagrams: \n1. Figuur 1 shows graphs of multiple functions \\\
+    ( f_p \\) and a line \\( k \\). \n2. Figuur 2 shows graphs of \\( f_1 \\) and\
+    \ \\( f_2 \\) with points \\( A \\) and \\( B \\), a line \\( l \\), and area\
+    \ \\( V \\). The area \\( V \\) is shaded."
+  missing: false
+  present: true
+figure_images:
+- q3/figures/fig1.png
+- q3/figures/fig2.png
+id: VW-1025-a-19-1-o-q3
+page_images:
+- q3/pages/page4.png
+- q3/pages/page3.png
+question_number: '3'
+question_text: 'Voor \( p \geq 1 \) is de functie \( f_p \) gegeven door:
+
+  \[
+
+  f_p(x) = p + \sqrt{x-p}
+
+  \]
+
+  In figuur 1 is voor enkele waarden van \( p \) de grafiek van \( f_p \) weergegeven
+  en ook lijn \( k \) met vergelijking \( y = x + \frac{1}{4} \).
+
+
+  Lijn \( k \) raakt de grafiek van \( f_p \) voor elke waarde van \( p \geq 1 \).
+
+
+  5p 3
+
+  Bewijs dit.
+
+
+  Voor \( p \geq 1 \) heeft de grafiek van \( f_p \) een randpunt, ook wel beginpunt
+  genoemd. De randpunten van de grafieken in figuur 1 zijn met een stip aangegeven.
+
+
+  Er geldt voor elke \( p \geq 1 \): het randpunt van de grafiek van \( f_p \) ligt
+  op de grafiek van \( f_{p-1} \).
+
+
+  3p 4
+
+  Bewijs dat inderdaad voor \( p \geq 1 \) geldt: het randpunt van de grafiek van
+  \( f_p \) ligt op de grafiek van \( f_{p-1} \).
+
+
+  Punt \( A(1, 1) \) is het randpunt van de grafiek van \( f_1 \). Punt \( B(2, 2)
+  \) is het randpunt van de grafiek van \( f_2 \). \( B \) ligt dus op de grafiek
+  van \( f_1 \).
+
+  Door de punten \( A \) en \( B \) gaat een lijn \( l \).
+
+  \( V \) is het vlakdeel dat wordt ingesloten door lijn \( l \) en de grafiek van
+  \( f_1 \).
+
+  Zie figuur 2.
+
+
+  5p 5
+
+  Bereken exact de oppervlakte van \( V \).'
+source_images:
+- q3/pages/page4.png
+- q3/pages/page3.png
+- q3/figures/fig1.png
+- q3/figures/fig2.png
+title: Altijd raak

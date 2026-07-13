@@ -1,0 +1,36 @@
+exam:
+  id: VW-1025-a-18-2-o
+  level: VWO
+  tijdvak: 2
+  year: 2018
+figure:
+  description: Three diagrams show square ABCD with point P on AB. Figure 2 shows
+    Q on DP such that CQ is perpendicular to DP. Figure 3 shows triangle CDQ shaded,
+    with specific conditions for point Q.
+  missing: false
+  present: true
+figure_images:
+- q4/figures/fig1.png
+- q4/figures/fig3.png
+- q4/figures/fig2.png
+id: VW-1025-a-18-2-o-q4
+page_images:
+- q4/pages/page5.png
+question_number: '4'
+question_text: "Gegeven is het vierkant \\(ABCD\\) met hoekpunten \\(A(8, 0)\\), \\\
+  (B(0, 4)\\), \\(C(-4, -4)\\) en \\(D(4, -8)\\). Op zijde \\(AB\\) ligt het punt\
+  \ \\(P(2, 3)\\). Zie figuur 1.\n\n5p 8  \nDe punten \\(B\\), \\(C\\) en \\(P\\)\
+  \ liggen op één cirkel.  \nStel een vergelijking op van deze cirkel.\n\nOver lijnstuk\
+  \ \\(DP\\) beweegt (van \\(D\\) naar \\(P\\)) een punt \\(Q\\).\nEr is een positie\
+  \ van \\(Q\\) waarvoor lijnstuk \\(CQ\\) loodrecht staat op lijnstuk \\(DP\\). Zie\
+  \ figuur 2.\n\n5p 9  \nBereken voor deze positie exact de coördinaten van \\(Q\\\
+  ).\n\nIn figuur 3 is driehoek \\(CDQ\\) grijs gemaakt.  \nEr is een positie van\
+  \ \\(Q\\) waarbij de oppervlakte van driehoek \\(CDQ\\) een derde deel is van de\
+  \ oppervlakte van vierkant \\(ABCD\\).\n\n5p 10  \nBereken voor deze positie exact\
+  \ de coördinaten van \\(Q\\)."
+source_images:
+- q4/pages/page5.png
+- q4/figures/fig1.png
+- q4/figures/fig3.png
+- q4/figures/fig2.png
+title: Gekanteld vierkant

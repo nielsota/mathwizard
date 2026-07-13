@@ -1,0 +1,33 @@
+calculator_allowed: null
+exam_id: VW-1025-a-18-1-o
+figure_images:
+- q8/figures/fig1.png
+- q8/figures/fig2.png
+page_images:
+- q8/pages/page10.png
+parts:
+- label: a
+  points: 0
+  text: Er is een waarde van \( t \) waarvoor de oppervlakte van vierkant \( ADEC
+    \) twee keer zo groot is als de oppervlakte van vierkant \( BCFG \). Bereken deze
+    waarde van \( t \). Rond je eindantwoord af op twee decimalen.
+- label: b
+  points: 0
+  text: 'In figuur 2 is de situatie van figuur 1 uitgebreid met vector \( \overrightarrow{OF}
+    \). Deze figuur staat vergroot op de uitwerkbijlage.
+
+
+    Voor elke waarde van \( t \) met \( 0 < t < \frac{1}{2} \pi \) geldt: \( \overrightarrow{OF}
+    = \begin{pmatrix} 1 - \sin(t) + \cos(t) \\ \sin(t) + \cos(t) \end{pmatrix} \)
+
+
+    Bewijs dit. Je kunt hierbij gebruikmaken van de figuur op de uitwerkbijlage.'
+stem: 'Gegeven zijn de punten \( A(1, 0) \) en \( B(0, 1) \). Punt \( C \) bevindt
+  zich op de kwartcirkel door \( A \) en \( B \) met middelpunt \( O(0, 0) \). Op
+  de lijnstukken \( AC \) en \( BC \) worden twee vierkanten \( ADEC \) en \( BCFG
+  \) getekend. Zie figuur 1.
+
+
+  De grootte van hoek \( AOC \) (in radialen) noemen we \( t \), met \( 0 < t < \frac{1}{2}
+  \pi \). Punt \( C \) heeft dus coördinaten \( (\cos(t), \sin(t)) \).'
+title: Vierkanten op kwartcirkel en vector OF

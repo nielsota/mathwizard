@@ -1,0 +1,88 @@
+exam:
+  id: VW-1025-a-18-1-o
+  level: VWO
+  tijdvak: 1
+  year: 2018
+figure:
+  description: This question references two figures and one photo. Figuur 1 shows
+    a catenary curve with points P and Q and a distance labeled d. Figuur 2 features
+    multiple arch shapes with one highlighted as the largest. The photo shows the
+    Sheffield Winter Garden with similar arches.
+  missing: false
+  present: true
+figure_images:
+- q5/figures/fig1.png
+- q5/figures/fig3.png
+- q5/figures/fig2.png
+id: VW-1025-a-18-1-o-q5
+page_images:
+- q5/pages/page6.png
+- q5/pages/page7.png
+question_number: '5'
+question_text: 'Voor elke waarde van \( k \) met \( k > 0 \) wordt de functie \( f_k
+  \) gegeven door:
+
+  \[ f_k(x) = \frac{1}{2k} \left( e^{kx} + e^{-kx} \right) \]
+
+  De grafiek van \( f_k \) wordt een kettinglijn genoemd.
+
+
+  Op de grafiek van \( f_k \) worden twee punten \( P \) en \( Q \) met gelijke \(
+  y \)-coördinaat gekozen. De lengte van het deel van de kettinglijn tussen \( P \)
+  en \( Q \) noemen we \( l \). De top \( T \) van de kettinglijn ligt op de \( y
+  \)-as. De afstand van \( T \) tot de horizontale lijn \( PQ \) noemen we \( d \).
+  Zie figuur 1.
+
+
+  Er geldt: \( k = \frac{8d}{l^2 - 4d^2} \)
+
+
+  In figuur 1 is voor \( k = 0,7 \), \( x_P = -3 \) en \( x_Q = 3 \) het bijbehorende
+  deel van de kettinglijn getekend.
+
+
+  Bereken voor de situatie van figuur 1 de lengte van het deel van de kettinglijn
+  tussen \( P \) en \( Q \). Rond je eindantwoord af op twee decimalen.
+
+
+  Als het deel van de grafiek van \( f_k \) tussen \( P \) en \( Q \) wordt gespiegeld
+  in de \( x \)-as en vervolgens omhoog wordt geschoven, ontstaat een boog.
+
+
+  Bij de bouw van de Sheffield Winter Garden, een in 2003 geopende plantenkas, is
+  gebruikgemaakt van dergelijke bogen. Zie de foto.
+
+
+  De ontwerpers hebben een tekening gemaakt van het vooraanzicht van het gebouw. Dit
+  vooraanzicht bestaat uit acht bogen. Zie figuur 2. In de rest van deze opgave kijken
+  we naar de grootste boog. Deze boog is in figuur 2 dikker gedrukt.
+
+
+  Voor de grootste boog in deze tekening geldt:
+
+  - de lengte van de boog is 49,63 meter;
+
+  - het hoogste punt van de boog bevindt zich 20,51 meter boven de grond.
+
+
+  Bij deze grootste boog gaan we een functievoorschrift opstellen. We kiezen daartoe
+  een assenstelsel waarbij de \( x \)-as door de onderste punten van de boog gaat
+  en de top van de boog op de \( y \)-as ligt. De eenheden langs de assen zijn meters.
+
+
+  In dit assenstelsel wordt de boog weergegeven door de grafiek van een functie \(
+  h \). De grafiek van deze functie \( h \) ontstaat door de grafiek van een functie
+  \( f_k \) te spiegelen in de \( x \)-as en de beeldgrafiek vervolgens omhoog te
+  schuiven. Er is precies één waarde van \( k \) waarvoor de beeldgrafiek de juiste
+  lengte en hoogte heeft.
+
+
+  Stel een functievoorschrift op van \( h \). Rond de getallen in je eindantwoord
+  af op twee decimalen.'
+source_images:
+- q5/pages/page6.png
+- q5/pages/page7.png
+- q5/figures/fig1.png
+- q5/figures/fig3.png
+- q5/figures/fig2.png
+title: Sheffield Winter Garden

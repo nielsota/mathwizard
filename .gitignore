@@ -37,3 +37,15 @@ backups/
 *.svg
 *.eps
 *.ai
+
+# claude
+.claude/
+
+# cursor
+.cursor/
+
+# database
+*.db
+
+# text
+*.txt

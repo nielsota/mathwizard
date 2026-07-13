@@ -1,0 +1,27 @@
+exam:
+  id: VW-1025-a-19-1-o
+  level: VWO
+  tijdvak: 1
+  year: 2019
+figure:
+  description: A graph showing two functions, \( f \) and \( g \), intersecting at
+    points labeled \( A \) and \( B \).
+  missing: false
+  present: true
+figure_images:
+- q2/figures/fig1.png
+id: VW-1025-a-19-1-o-q2
+page_images:
+- q2/pages/page2.png
+question_number: '2'
+question_text: "\n\nDe functies \\( f \\) en \\( g \\) zijn gegeven door:\n\\[\n\\\
+  begin{align*}\nf(x) &= 3 \\cos(2x) - \\sqrt{2x} \\\\ \ng(x) &= 3 - \\sqrt{2x}\n\\\
+  end{align*}\n\\]\nDe grafiek van \\( g \\) snijdt de \\( x \\)-as in punt \\( A\
+  \ \\).\nDe grafiek van \\( f \\) heeft diverse toppen, alle met een positieve \\\
+  ( x \\)-coördinaat.\nPunt \\( B \\) is de derde van deze toppen.\nZie de figuur.\n\
+  \nEr geldt: punt \\( B \\) ligt rechts van punt \\( A \\).\n\n2. Toon dit aan met\
+  \ behulp van de afgeleide van \\( f \\)."
+source_images:
+- q2/pages/page2.png
+- q2/figures/fig1.png
+title: Rechts van het snijpunt

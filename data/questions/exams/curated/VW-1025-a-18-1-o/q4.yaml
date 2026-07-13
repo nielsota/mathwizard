@@ -1,0 +1,31 @@
+calculator_allowed: null
+exam_id: VW-1025-a-18-1-o
+figure_images:
+- q4/figures/fig1.png
+page_images:
+- q4/pages/page5.png
+parts:
+- label: a
+  points: 0
+  text: Berekén exact de \( x \)-coördinaten van alle toppen van de grafiek van \(
+    f \).
+- label: b
+  points: 0
+  text: 'Een van de toppen is het punt \( P(\frac{1}{2}\pi, -5) \).
+
+
+    De grafiek van \( f \) is symmetrisch ten opzichte van de verticale lijn door
+    \( P \).
+
+
+    Boven \( P \) wordt een horizontaal lijnstuk van lengte 2 geplaatst, waarvan de
+    eindpunten op de grafiek van \( f \) liggen. Zie de figuur.
+
+
+    Berekén de afstand van \( P \) tot het horizontale lijnstuk. Rond je eindantwoord
+    af op twee decimalen.'
+stem: 'De functie \( f \) wordt gegeven door \( f(x) = 6\sin(x) - \cos(2x) \).
+
+
+  De grafiek van \( f \) heeft oneindig veel toppen.'
+title: Toppen en afstand tot lijnstuk van \( f(x)=6\sin(x)-\cos(2x) \)

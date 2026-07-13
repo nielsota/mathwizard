@@ -1,0 +1,26 @@
+calculator_allowed: null
+exam_id: VW-1025-a-18-2-o
+figure_images:
+- q4/figures/fig1.png
+- q4/figures/fig3.png
+- q4/figures/fig2.png
+page_images:
+- q4/pages/page5.png
+parts:
+- label: '8'
+  points: 5
+  text: De punten \(B\), \(C\) en \(P\) liggen op één cirkel. Stel een vergelijking
+    op van deze cirkel.
+- label: '9'
+  points: 5
+  text: Over lijnstuk \(DP\) beweegt (van \(D\) naar \(P\)) een punt \(Q\). Er is
+    een positie van \(Q\) waarvoor lijnstuk \(CQ\) loodrecht staat op lijnstuk \(DP\).
+    Zie figuur 2. Bereken voor deze positie exact de coördinaten van \(Q\).
+- label: '10'
+  points: 5
+  text: In figuur 3 is driehoek \(CDQ\) grijs gemaakt. Er is een positie van \(Q\)
+    waarbij de oppervlakte van driehoek \(CDQ\) een derde deel is van de oppervlakte
+    van vierkant \(ABCD\). Bereken voor deze positie exact de coördinaten van \(Q\).
+stem: Gegeven is het vierkant \(ABCD\) met hoekpunten \(A(8, 0)\), \(B(0, 4)\), \(C(-4,
+  -4)\) en \(D(4, -8)\). Op zijde \(AB\) ligt het punt \(P(2, 3)\). Zie figuur 1.
+title: Vierkant \(ABCD\) en punten \(P\) en \(Q\)

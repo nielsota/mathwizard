@@ -1,0 +1,117 @@
+calculator_allowed: null
+exam_id: VW-1025-a-18-1-o
+figure_images:
+- q5/figures/fig1.png
+- q5/figures/fig3.png
+- q5/figures/fig2.png
+page_images:
+- q5/pages/page6.png
+- q5/pages/page7.png
+parts:
+- label: a
+  points: 0
+  text: Bereken voor de situatie van figuur 1 de lengte van het deel van de kettinglijn
+    tussen \( P \) en \( Q \). Rond je eindantwoord af op twee decimalen.
+- label: b
+  points: 0
+  text: 'Als het deel van de grafiek van \( f_k \) tussen \( P \) en \( Q \) wordt
+    gespiegeld in de \( x \)-as en vervolgens omhoog wordt geschoven, ontstaat een
+    boog.
+
+
+    Bij de bouw van de Sheffield Winter Garden, een in 2003 geopende plantenkas, is
+    gebruikgemaakt van dergelijke bogen. Zie de foto.
+
+
+    De ontwerpers hebben een tekening gemaakt van het vooraanzicht van het gebouw.
+    Dit vooraanzicht bestaat uit acht bogen. Zie figuur 2. In de rest van deze opgave
+    kijken we naar de grootste boog. Deze boog is in figuur 2 dikker gedrukt.
+
+
+    Voor de grootste boog in deze tekening geldt:
+
+    - de lengte van de boog is 49,63 meter;
+
+    - het hoogste punt van de boog bevindt zich 20,51 meter boven de grond.
+
+
+    Bij deze grootste boog gaan we een functievoorschrift opstellen. We kiezen daartoe
+    een assenstelsel waarbij de \( x \)-as door de onderste punten van de boog gaat
+    en de top van de boog op de \( y \)-as ligt. De eenheden langs de assen zijn meters.
+
+
+    In dit assenstelsel wordt de boog weergegeven door de grafiek van een functie
+    \( h \). De grafiek van deze functie \( h \) ontstaat door de grafiek van een
+    functie \( f_k \) te spiegelen in de \( x \)-as en de beeldgrafiek vervolgens
+    omhoog te schuiven. Er is precies één waarde van \( k \) waarvoor de beeldgrafiek
+    de juiste lengte en hoogte heeft.
+
+
+    Stel een functievoorschrift op van \( h \). Rond de getallen in je eindantwoord
+    af op twee decimalen.'
+- label: c
+  points: 0
+  text: ''
+- label: d
+  points: 0
+  text: ''
+- label: e
+  points: 0
+  text: ''
+- label: f
+  points: 0
+  text: ''
+- label: g
+  points: 0
+  text: ''
+- label: h
+  points: 0
+  text: ''
+- label: i
+  points: 0
+  text: ''
+- label: j
+  points: 0
+  text: ''
+- label: k
+  points: 0
+  text: ''
+- label: l
+  points: 0
+  text: ''
+- label: m
+  points: 0
+  text: ''
+- label: n
+  points: 0
+  text: ''
+- label: o
+  points: 0
+  text: ''
+- label: p
+  points: 0
+  text: ''
+- label: q
+  points: 0
+  text: ''
+stem: 'Voor elke waarde van \( k \) met \( k > 0 \) wordt de functie \( f_k \) gegeven
+  door:
+
+  \[ f_k(x) = \frac{1}{2k} \left( e^{kx} + e^{-kx} \right) \]
+
+  De grafiek van \( f_k \) wordt een kettinglijn genoemd.
+
+
+  Op de grafiek van \( f_k \) worden twee punten \( P \) en \( Q \) met gelijke \(
+  y \)-coördinaat gekozen. De lengte van het deel van de kettinglijn tussen \( P \)
+  en \( Q \) noemen we \( l \). De top \( T \) van de kettinglijn ligt op de \( y
+  \)-as. De afstand van \( T \) tot de horizontale lijn \( PQ \) noemen we \( d \).
+  Zie figuur 1.
+
+
+  Er geldt: \( k = \frac{8d}{l^2 - 4d^2} \)
+
+
+  In figuur 1 is voor \( k = 0,7 \), \( x_P = -3 \) en \( x_Q = 3 \) het bijbehorende
+  deel van de kettinglijn getekend.'
+title: Kettinglijn en boog

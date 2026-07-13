@@ -1,0 +1,59 @@
+exam:
+  id: VW-1025-a-19-1-o
+  level: VWO
+  tijdvak: 1
+  year: 2019
+figure:
+  description: Diagrams of the Slingshot setup showing forces and dimensions (Figures
+    1, 2, and 3).
+  missing: false
+  present: true
+figure_images:
+- q4/figures/fig1.png
+- q4/figures/fig3.png
+- q4/figures/fig2.png
+id: VW-1025-a-19-1-o-q4
+page_images:
+- q4/pages/page6.png
+- q4/pages/page5.png
+question_number: '4'
+question_text: "De Slingshot is een kermisattractie. Tussen de toppen van twee palen\
+  \ hangt aan twee identieke elastische koorden een capsule die plaats biedt aan twee\
+  \ personen. Zie de foto.\nDe capsule wordt allereerst omlaag getrokken tot aan de\
+  \ grond. Op dat moment gaan er twee personen in de capsule zitten. Vervolgens wordt\
+  \ de capsule losgelaten. De capsule schiet dan recht omhoog. Daarna valt hij recht\
+  \ omlaag, gaat weer omhoog, enzovoorts. Na enige tijd komt de capsule stil te hangen.\n\
+  \nGegeven is:\n- De palen staan 14 m uit elkaar.\n- De palen staan verticaal.\n\
+  - De palen zijn 20 m hoog.\n- Zonder uittrekking heeft elk koord een lengte van\
+  \ 8 m.\n- Elk koord trekt aan de capsule met een kracht die afhangt van de lengte\
+  \ van het uitgerekte koord. De grootte van deze kracht kan berekend worden met de\
+  \ formule:\n  \\[ F_k = 0{,}6 \times (L - 8) \\]\n  Hierbij is \\( F_k \\) de grootte\
+  \ van de kracht in kN (kilonewton) en \\( L \\) de lengte van het uitgerekte koord\
+  \ in m (met \\( L \\geq 8 \\)).\n\nIn figuur 1 is de beginsituatie weergegeven.\
+  \ De capsule is aangegeven met het punt \\( C \\) en de toppen van de palen met\
+  \ \\( A \\) en \\( B \\). De capsule bevindt zich op de grond, midden tussen de\
+  \ palen. Beide koorden, \\( CA \\) en \\( CB \\), zijn dan flink uitgerekt en staan\
+  \ strak.\n\nBereken de grootte van de kracht in kN waarmee een koord in de beginsituatie\
+  \ aan de capsule trekt. Geef je eindantwoord in één decimaal.\n\nDe twee krachten\
+  \ kun je weergeven met twee vectoren. De som van deze twee vectoren is een vector\
+  \ die een verticale kracht weergeeft met grootte \\( F_{kv} \\). De grootte van\
+  \ deze kracht kan berekend worden met de volgende formule:\n\\[ F_{kv} = 2 \times\
+  \ F_k \times \\cos(\\alpha) \\]\nHierin is \\( \\alpha \\) de hoek tussen een koord\
+  \ en de verticale vector. Zie figuur 2.\n\nOp de capsule, inclusief de twee personen,\
+  \ werkt niet alleen de kracht van beide koorden, maar ook de zwaartekracht \\( F_z\
+  \ \\), die recht naar beneden is gericht. Zie figuur 3. Deze zwaartekracht bedraagt\
+  \ 1,8 kN. In figuur 2 en figuur 3 is ook het hoogteverschil tussen \\( C \\) en\
+  \ de toppen van de palen met \\( x \\) aangegeven.\n\nNa een aantal keren op en\
+  \ neer te zijn geslingerd, is de capsule tot stilstand gekomen. Op dat moment heft\
+  \ de zwaartekracht de twee krachten op die door de koorden samen worden uitgeoefend.\n\
+  \nEr geldt dan dus: \\( F_{kv} = F_z \\)\n\nDe hoogte waarop de capsule tot stilstand\
+  \ komt, is te berekenen door eerst \\( F_k \\) in \\( x \\) uit te drukken.\nDruk\
+  \ \\( F_{kv} \\) uit in \\( x \\) en bereken daarmee hoe hoog de capsule boven de\
+  \ grond hangt als hij tot stilstand is gekomen. Geef je eindantwoord in gehele meters."
+source_images:
+- q4/pages/page6.png
+- q4/pages/page5.png
+- q4/figures/fig1.png
+- q4/figures/fig3.png
+- q4/figures/fig2.png
+title: Slingshot

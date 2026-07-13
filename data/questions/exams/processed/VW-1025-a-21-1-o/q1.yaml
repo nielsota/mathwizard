@@ -1,0 +1,37 @@
+exam:
+  id: VW-1025-a-21-1-o
+  level: VWO
+  tijdvak: 1
+  year: 2021
+figure:
+  description: Diagram showing a parabola, tangent line \( l \), perpendicular line
+    \( m \), point \( T \), and area \( V \) under the curve.
+  missing: false
+  present: true
+figure_images:
+- q1/figures/figure 1.png
+id: VW-1025-a-21-1-o-q1
+page_images:
+- q1/pages/page 1.png
+question_number: '1'
+question_text: 'De functie \( f \) wordt gegeven door \( f(x) = x - x^2 \).
+
+
+  Het punt \( T \left( \frac{1}{2}, \frac{1}{4} \right) \) is de top van de grafiek
+  van \( f \).
+
+  De lijn \( l \) is de raaklijn aan de grafiek van \( f \) in de oorsprong.
+
+  De lijn \( m \) staat loodrecht op lijn \( l \) en gaat door \( T \).
+
+  \( V \) is het vlakdeel dat wordt ingesloten door lijn \( m \) en de grafiek van
+  \( f \).
+
+  Zie de figuur.
+
+
+  1 Bereken exact de oppervlakte van \( V \).'
+source_images:
+- q1/pages/page 1.png
+- q1/figures/figure 1.png
+title: Parabool en twee lijnen

@@ -1,0 +1,60 @@
+exam:
+  id: VW-1025-a-18-2-o
+  level: VWO
+  tijdvak: 2
+  year: 2018
+figure:
+  description: 'Two diagrams: Figure 1 shows graphs of \( f \) and \( g \) with their
+    intersection at point \( P \). Figure 2 shows the graph of \( h \) and line \(
+    k \) with their point of intersection at \( P \).'
+  missing: false
+  present: true
+figure_images:
+- q1/figures/fig1.png
+id: VW-1025-a-18-2-o-q1
+page_images:
+- q1/pages/page1.png
+question_number: '1'
+question_text: 'De functie \( f \) is gegeven door \( f(x) = \frac{-2 + 2\sqrt{x+1}}{x}
+  \).
+
+
+  Ook is gegeven de functie \( h \) door \( h(x) = \frac{2}{1+\sqrt{x+1}} \).
+
+
+  Voor \( x \neq 0 \) geldt: \( f(x) = h(x) \)
+
+
+  1. Bewijs dat voor \( x \neq 0 \) geldt: \( f(x) = h(x) \)
+
+
+  Verder is de functie \( g \) gegeven door \( g(x) = \frac{4x^2 + x}{x} \).
+
+
+  Er is een lijn \( k \) die voor \( x \neq 0 \) samenvalt met de grafiek van \( g
+  \).
+
+
+  In figuur 1 zijn de grafieken van \( f \) en \( g \) weergegeven.
+
+  Punt \( P(0, 1) \) is de perforatie van beide grafieken.
+
+  In figuur 2 zijn de grafiek van \( h \) en lijn \( k \) weergegeven en ook hun snijpunt
+  \( P \).
+
+
+  Er geldt:
+
+  - de grafieken van \( f \) en \( g \) staan in hun perforatie \( P \) loodrecht
+  op elkaar als
+
+  - de grafiek van \( h \) en lijn \( k \) in hun snijpunt \( P \) loodrecht op elkaar
+  staan.
+
+
+  2. Bewijs dat de grafieken van \( f \) en \( g \) in hun perforatie \( P \) loodrecht
+  op elkaar staan.'
+source_images:
+- q1/pages/page1.png
+- q1/figures/fig1.png
+title: Loodrecht in de perforatie

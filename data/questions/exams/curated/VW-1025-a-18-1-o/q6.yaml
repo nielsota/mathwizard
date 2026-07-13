@@ -1,0 +1,38 @@
+calculator_allowed: null
+exam_id: VW-1025-a-18-1-o
+figure_images:
+- q6/figures/fig1.png
+page_images:
+- q6/pages/page8.png
+parts:
+- label: '12'
+  points: 3
+  text: Bewijs dat inderdaad geldt \( f^{\text{inv}}(x) = e^{2x} \).
+- label: '13'
+  points: 4
+  text: 'De grafiek van \( f^{\text{inv}} \) wordt ten opzichte van de \( x \)-as
+    met factor \( \frac{1}{2} \) vermenigvuldigd. Zo ontstaat de grafiek van de functie
+    \( g \). Elke verticale lijn rechts van de \( y \)-as snijdt de grafiek van \(
+    f \) in één punt en de grafiek van \( g \) in één punt. Het lijnstuk tussen deze
+    twee punten heeft een lengte die afhangt van de plaats van de verticale lijn.
+    Zie de figuur.
+
+
+    Bereken de minimale lengte van het lijnstuk. Rond je eindantwoord af op drie decimalen.'
+- label: '14'
+  points: 4
+  text: 'De functie \( h \) wordt gegeven door:
+
+    \[
+
+    h(x) = \frac{\ln(\sqrt{x})}{\ln(x)}
+
+    \]
+
+
+    De grafiek van \( h \) heeft rechts van de \( y \)-as één perforatie. Bereken
+    exact de coördinaten van deze perforatie.'
+stem: 'De functie \( f \) wordt gegeven door \( f(x) = \ln(\sqrt{x}) \). Deze functie
+  heeft een inverse functie \( f^{\text{inv}} \). Er geldt: \( f^{\text{inv}}(x) =
+  e^{2x} \).'
+title: Functies f, g en h

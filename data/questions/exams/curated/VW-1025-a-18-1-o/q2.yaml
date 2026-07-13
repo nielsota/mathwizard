@@ -1,0 +1,51 @@
+calculator_allowed: null
+exam_id: VW-1025-a-18-1-o
+figure_images:
+- q2/figures/fig1.png
+- q2/figures/fig2.png
+page_images:
+- q2/pages/page3.png
+- q2/pages/page2.png
+parts:
+- label: a
+  points: 0
+  text: Bewijs dat deze top op lijn \( l \) ligt.
+- label: b
+  points: 3
+  text: 'De functie \( F_a \) is gegeven door:
+
+    \[
+
+    F_a(x) = \frac{1}{a} xe^{ax} - \frac{1}{a^2} e^{ax}
+
+    \]
+
+
+    \( F_a \) is een primitieve van \( f_a \).
+
+
+    Bewijs dat \( F_a \) inderdaad een primitieve van \( f_a \) is.'
+- label: c
+  points: 5
+  text: 'Voor \( f_1 \) geldt \( f_1(x) = xe^x \). In figuur 2 is de grafiek van \(
+    f_1 \) getekend, en ook lijn \( l \). Het vlakdeel tussen lijn \( l \) en de grafiek
+    van \( f_1 \) is grijs gemaakt.
+
+
+    Bereken exact de oppervlakte van het grijze vlakdeel.'
+stem: 'Voor elke waarde van \( a \) met \( a > 0 \) wordt de functie \( f_a \) gegeven
+  door \( f_a(x) = xe^{ax} \).
+
+
+  De afgeleide functie \( f''_a \) wordt gegeven door \( f''_a(x) = e^{ax} + axe^{ax}
+  \).
+
+  In figuur 1 zie je voor een aantal waarden van \( a \) de grafiek van \( f_a \).
+
+
+  Ook is de lijn \( l \) met vergelijking \( y = \frac{1}{e}x \) weergegeven.
+
+
+  Voor elke waarde van \( a \) met \( a > 0 \) heeft de grafiek van \( f_a \) precies
+  één top.'
+title: 'Functies f_a: top, primitieve en oppervlakte'

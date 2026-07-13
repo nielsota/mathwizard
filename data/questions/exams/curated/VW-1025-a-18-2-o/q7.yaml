@@ -1,0 +1,89 @@
+calculator_allowed: null
+exam_id: VW-1025-a-18-2-o
+figure_images:
+- q7/figures/fig1.png
+- q7/figures/fig2.png
+page_images:
+- q7/pages/page8.png
+parts:
+- label: a
+  points: 0
+  text: Bewijs dat \( F \) inderdaad het midden is van \( CS \).
+- label: b
+  points: 0
+  text: 'Verder geldt: \( G \) is het midden van \( OS \). In figuur 2 zijn de cirkelsectoren
+    \( BMF \) en \( GMA \) grijs gemaakt. De oppervlakte van deze twee sectoren samen
+    is gelijk aan de helft van de oppervlakte van de cirkel. Bewijs dit.'
+- label: c
+  points: 0
+  text: ''
+- label: d
+  points: 0
+  text: ''
+- label: e
+  points: 0
+  text: ''
+- label: f
+  points: 0
+  text: ''
+- label: g
+  points: 0
+  text: ''
+- label: h
+  points: 0
+  text: ''
+- label: i
+  points: 0
+  text: ''
+- label: j
+  points: 0
+  text: ''
+- label: k
+  points: 0
+  text: ''
+- label: l
+  points: 0
+  text: ''
+- label: m
+  points: 0
+  text: ''
+- label: n
+  points: 0
+  text: ''
+- label: o
+  points: 0
+  text: ''
+- label: p
+  points: 0
+  text: ''
+- label: q
+  points: 0
+  text: ''
+- label: r
+  points: 0
+  text: ''
+- label: s
+  points: 0
+  text: ''
+- label: t
+  points: 0
+  text: ''
+- label: u
+  points: 0
+  text: ''
+- label: v
+  points: 0
+  text: ''
+- label: w
+  points: 0
+  text: ''
+stem: 'Gegeven is het vierkant \( OABC \) met \( O(0, 0), A(4, 0) \) en \( C(0, 4)
+  \).
+
+  Het snijpunt van \( OB \) en \( AC \) is het punt \( S \).
+
+  Het punt \( M(3, 2) \) is het middelpunt van een cirkel door \( A \) en \( B \).
+
+  De punten \( F \) en \( G \) zijn de snijpunten van deze cirkel met \( CS \) respectievelijk
+  \( OS \). Zie figuur 1.'
+title: Vierkant OABC, cirkel met middelpunt M en punten F en G — bewijzen
