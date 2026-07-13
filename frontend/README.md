@@ -13,7 +13,7 @@ npm install
 Start the Vite dev server:
 
 ```bash
-npm run dev -- --host 0.0.0.0
+npm run dev -- --host 0.0.0.0 --port 3001
 ```
 
 Build for production:
@@ -42,4 +42,4 @@ GET /api/v1/practice/:topic
 
 The response shape is defined in `src/types/api.ts` as `QuestionListResponse`. Exercise cards render MathJax question text, part text, marks, difficulty, topic, and tags from that response.
 
-During local development, run the backend at http://localhost:8000 and this frontend at http://localhost:3000.
+During local development, run the backend at http://localhost:8001 and this frontend at http://localhost:3001.

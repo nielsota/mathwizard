@@ -19,13 +19,13 @@ Start both local dev servers with hot reload:
 ./scripts/dev_deploy.sh
 ```
 
-The backend runs at http://localhost:8000 and the frontend runs at http://localhost:3000.
+The backend runs at http://localhost:8001 and the frontend runs at http://localhost:3001.
 
 You can also start them separately:
 
 ```bash
-uv run uvicorn mathwizard.app.main:app --reload --host 0.0.0.0 --port 8000
-cd frontend && npm run dev -- --host 0.0.0.0
+uv run uvicorn mathwizard.app.main:app --reload --host 0.0.0.0 --port 8001
+cd frontend && npm run dev -- --host 0.0.0.0 --port 3001
 ```
 
 ## Authentication
@@ -68,13 +68,13 @@ On startup, the backend seeds practice questions from this directory into the co
 Health check:
 
 ```bash
-curl http://localhost:8000/
+curl http://localhost:8001/
 ```
 
 Practice questions by topic:
 
 ```bash
-curl "http://localhost:8000/api/v1/practice/derivatives"
+curl "http://localhost:8001/api/v1/practice/derivatives"
 ```
 
 The practice endpoint returns a generic question list response:
@@ -90,7 +90,7 @@ The practice endpoint returns a generic question list response:
 Questions are sorted by difficulty by default. Disable that sorting with:
 
 ```bash
-curl "http://localhost:8000/api/v1/practice/derivatives?sort_by_difficulty=false"
+curl "http://localhost:8001/api/v1/practice/derivatives?sort_by_difficulty=false"
 ```
 
 ## Development Checks

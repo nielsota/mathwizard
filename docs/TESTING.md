@@ -99,7 +99,7 @@ docker compose down
 
 # 2. Make changes to code
 # 3. Browser auto-refreshes (if using live-reload extension)
-# 4. Or manually refresh: http://localhost:8000
+# 4. Or manually refresh: http://localhost:8001
 ```
 
 ### Before Committing
@@ -122,7 +122,7 @@ uv run pytest -xvs
 docker compose build
 docker compose up
 
-# 3. Manual smoke test at http://localhost:8000
+# 3. Manual smoke test at http://localhost:8001
 # 4. Stop Docker
 docker compose down
 
@@ -224,15 +224,15 @@ docker compose build
 docker compose up
 ```
 
-### Issue: Port 8000 already in use
+### Issue: Port 8001 already in use
 
 **Solution:**
 ```bash
 # Find and kill the process
-lsof -ti:8000 | xargs kill -9
+lsof -ti:8001 | xargs kill -9
 
 # Or use a different port
-uv run uvicorn mathwizard.web.app:app_factory --factory --reload --port 8001
+uv run uvicorn mathwizard.app.main:app --reload --port 8002
 ```
 
 ---

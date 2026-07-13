@@ -14,7 +14,7 @@ docker compose up
 docker compose down
 ```
 
-That's it! The app runs at **http://localhost:8000**
+That's it! The app runs at **http://localhost:8001**
 
 ---
 
