@@ -7,11 +7,26 @@ interface ExerciseCardProps {
   exercise: QuestionResponse
 }
 
+function difficultyMeta(difficulty?: number | null) {
+  if (difficulty == null) {
+    return { label: 'Unknown', className: 'ex-badge--difficulty-unknown' }
+  }
+
+  if (difficulty <= 1) {
+    return { label: 'Easy', className: 'ex-badge--difficulty-easy' }
+  }
+
+  if (difficulty === 2) {
+    return { label: 'Medium', className: 'ex-badge--difficulty-medium' }
+  }
+
+  return { label: 'Hard', className: 'ex-badge--difficulty-hard' }
+}
+
 export default function ExerciseCard({ exercise }: ExerciseCardProps) {
   const [expanded, setExpanded] = useState(false)
-  const difficultyLabel = exercise.difficulty ? `Niveau ${exercise.difficulty}` : 'Niveau onbekend'
+  const difficulty = difficultyMeta(exercise.difficulty)
   const bodyId = `exercise-${exercise.id}-body`
-  const visibleTags = exercise.tags.filter(tag => tag !== exercise.topic)
   const toggleExpanded = () => setExpanded(current => !current)
 
   return (
@@ -22,7 +37,9 @@ export default function ExerciseCard({ exercise }: ExerciseCardProps) {
           {exercise.title && <span className="ex-card-title">{exercise.title}</span>}
         </div>
         <div className="ex-card-meta">
-          <span className="ex-badge ex-badge--difficulty">{difficultyLabel}</span>
+          <span className={`ex-badge ex-badge--difficulty ${difficulty.className}`}>
+            {difficulty.label}
+          </span>
           {exercise.max_marks > 0 && (
             <span className="ex-badge ex-badge--marks">
               {exercise.max_marks}p
@@ -60,7 +77,7 @@ export default function ExerciseCard({ exercise }: ExerciseCardProps) {
           <div className="ex-card-divider" />
           <div className="ex-card-tags" aria-label="Opgave labels">
             <span className="ex-tag ex-tag--topic">{exercise.topic}</span>
-            {visibleTags.map(tag => (
+            {exercise.tags.filter(tag => tag !== exercise.topic).map(tag => (
               <span className="ex-tag" key={tag}>{tag}</span>
             ))}
           </div>

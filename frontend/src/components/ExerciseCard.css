@@ -86,9 +86,31 @@
 }
 
 .ex-badge--difficulty {
+  border: 1px solid transparent;
+}
+
+.ex-badge--difficulty-easy {
+  background: #ecfdf3;
+  color: #027a48;
+  border-color: #abefc6;
+}
+
+.ex-badge--difficulty-medium {
+  background: #fffaeb;
+  color: #b54708;
+  border-color: #fedf89;
+}
+
+.ex-badge--difficulty-hard {
+  background: #fef3f2;
+  color: #b42318;
+  border-color: #fecdca;
+}
+
+.ex-badge--difficulty-unknown {
   background: #f6f8fb;
-  color: var(--navy);
-  border: 1px solid var(--border);
+  color: var(--text-muted);
+  border-color: var(--border);
 }
 
 /* Toggle chevron */
