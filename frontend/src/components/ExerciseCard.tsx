@@ -75,12 +75,6 @@ export default function ExerciseCard({ exercise }: ExerciseCardProps) {
       {expanded && (
         <div className="ex-card-body" id={bodyId}>
           <div className="ex-card-divider" />
-          <div className="ex-card-tags" aria-label="Opgave labels">
-            <span className="ex-tag ex-tag--topic">{exercise.topic}</span>
-            {exercise.tags.filter(tag => tag !== exercise.topic).map(tag => (
-              <span className="ex-tag" key={tag}>{tag}</span>
-            ))}
-          </div>
           <MathJax dynamic>
             <div
               className="ex-card-stem"

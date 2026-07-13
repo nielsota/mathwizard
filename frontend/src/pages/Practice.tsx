@@ -45,7 +45,6 @@ export default function Practice({ onUnauthorized }: PracticeProps) {
   const meta = topic ? TOPIC_META[topic] : null
   const questions = practiceSet?.questions ?? []
   const totalMarks = questions.reduce((sum, ex) => sum + ex.max_marks, 0)
-  const tagCount = new Set(questions.flatMap(ex => ex.tags)).size
 
   useEffect(() => {
     if (!topic) return
@@ -98,7 +97,6 @@ export default function Practice({ onUnauthorized }: PracticeProps) {
             <div className="practice-summary">
               <span>{questions.length} opgaven</span>
               <span>{totalMarks} punten</span>
-              <span>{tagCount} labels</span>
             </div>
           )}
         </div>
