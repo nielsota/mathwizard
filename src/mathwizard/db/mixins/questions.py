@@ -126,6 +126,50 @@ class QuestionsMixin(NeedsEngine):
             _ = question.parts
             return question
 
+    def replace_question(
+        self,
+        question_id: int,
+        *,
+        title: str,
+        stem: str,
+        topic: str,
+        source: QuestionSource,
+        parts: list[dict],
+        tags: list[str],
+        exam_id: str | None = None,
+        calculator_allowed: bool | None = None,
+        difficulty: int | None = None,
+    ) -> Question:
+        with DBSession(self.engine) as session:
+            question = session.get(Question, question_id)
+            if question is None:
+                raise QuestionNotFoundError(question_id)
+
+            question.title = title
+            question.stem = stem
+            question.topic = topic
+            question.source = source
+            question.tags = tags
+            question.exam_id = exam_id
+            question.calculator_allowed = calculator_allowed
+            question.difficulty = difficulty
+
+            for existing in question.parts:
+                session.delete(existing)
+            session.flush()
+            for i, part in enumerate(parts):
+                session.add(QuestionPart(
+                    question_id=question_id,
+                    label=part.get("label", chr(ord("a") + i)),
+                    text=part["text"],
+                    points=part["points"],
+                ))
+
+            session.commit()
+            session.refresh(question)
+            _ = question.parts
+            return question
+
     def delete_question(self, question_id: int) -> None:
         with DBSession(self.engine) as session:
             question = session.get(Question, question_id)
