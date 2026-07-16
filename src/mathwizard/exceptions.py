@@ -6,6 +6,16 @@ class AuthenticationError(MathWizardError):
     pass
 
 
+class AuthorizationError(MathWizardError):
+    pass
+
+
+class RoleNotAssignedError(MathWizardError):
+    def __init__(self, user_id: int) -> None:
+        super().__init__(f"User {user_id} has no teacher or student role")
+        self.user_id = user_id
+
+
 class UserNotFoundError(MathWizardError):
     def __init__(self, user_id: int) -> None:
         super().__init__(f"User {user_id} not found")

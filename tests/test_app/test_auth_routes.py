@@ -6,6 +6,7 @@ from fastapi.testclient import TestClient
 from mathwizard.app.auth import router
 from mathwizard.db.client import DBClient
 from mathwizard.services.auth import AuthService, hash_password
+from mathwizard.services.user import UserService
 from mathwizard.settings import Settings
 
 
@@ -24,12 +25,15 @@ def make_settings(tmp_path: Path) -> Settings:
 def make_client(db: DBClient, settings: Settings) -> TestClient:
     app = FastAPI()
     app.state.auth_service = AuthService(db, settings)
+    app.state.user_service = UserService(db)
     app.include_router(router)
     return TestClient(app)
 
 
 def seed_user(db: DBClient) -> None:
-    db.create_user("root", hash_password("secret"))
+    user = db.create_user("root", hash_password("secret"))
+    assert user.id is not None
+    db.create_teacher(user.id)
 
 
 def test_login_sets_cookie_and_me_returns_user(tmp_path: Path) -> None:
@@ -44,7 +48,7 @@ def test_login_sets_cookie_and_me_returns_user(tmp_path: Path) -> None:
     )
 
     assert response.status_code == 200
-    assert response.json() == {"id": 1, "username": "root"}
+    assert response.json() == {"id": 1, "username": "root", "role": "teacher"}
     cookie = response.headers["set-cookie"]
     assert f"{settings.session_cookie_name}=" in cookie
     assert "HttpOnly" in cookie
@@ -52,7 +56,7 @@ def test_login_sets_cookie_and_me_returns_user(tmp_path: Path) -> None:
 
     me = client.get("/auth/me")
     assert me.status_code == 200
-    assert me.json() == {"id": 1, "username": "root"}
+    assert me.json() == {"id": 1, "username": "root", "role": "teacher"}
 
 
 def test_login_rejects_invalid_credentials(tmp_path: Path) -> None:

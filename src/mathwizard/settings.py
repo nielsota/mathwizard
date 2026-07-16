@@ -20,6 +20,8 @@ class Settings(BaseSettings):
     cookie_secure: bool = False
     bootstrap_username: str = "root"
     bootstrap_password: str = "root"
+    bootstrap_student_usernames: list[str] = ["student1", "student2"]
+    bootstrap_student_password: str = "student"
 
     @property
     def data_dir(self) -> Path:
