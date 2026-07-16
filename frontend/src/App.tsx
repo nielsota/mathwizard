@@ -69,7 +69,7 @@ function App() {
 
   return (
     <>
-      {user && <Header user={user} onLogout={handleLogout} />}
+      {user && <Header user={user} onLogout={handleLogout} onUnauthorized={handleUnauthorized} />}
       <main>
         <Routes>
           <Route

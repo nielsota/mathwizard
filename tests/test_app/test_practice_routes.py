@@ -9,6 +9,7 @@ from mathwizard.db.client import DBClient
 from mathwizard.enums import QuestionSource
 from mathwizard.services.auth import AuthService, hash_password
 from mathwizard.services.question import QuestionService
+from mathwizard.services.user import UserService
 from mathwizard.settings import Settings
 
 
@@ -28,13 +29,16 @@ def make_client(db: DBClient, tmp_path: Path) -> TestClient:
     app = FastAPI()
     app.state.auth_service = AuthService(db, make_settings(tmp_path))
     app.state.question_service = QuestionService(db)
+    app.state.user_service = UserService(db)
     app.include_router(auth_router)
     app.include_router(practice_router)
     return TestClient(app)
 
 
 def authenticate(client: TestClient, db: DBClient) -> None:
-    db.create_user("root", hash_password("secret"))
+    user = db.create_user("root", hash_password("secret"))
+    assert user.id is not None
+    db.create_teacher(user.id)
     response = client.post(
         "/auth/login",
         json={"username": "root", "password": "secret"},
