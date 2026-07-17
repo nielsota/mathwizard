@@ -39,28 +39,23 @@ class BootstrapService:
             self.db.create_user(username, hash_password(self.settings.bootstrap_password))
 
     def seed_root_teacher(self) -> None:
-        user = self.db.get_user_by_username(self.settings.bootstrap_username)
-        if user is None or user.id is None:
-            return
+        user = self.db.get_user_by_username(
+            self.settings.bootstrap_username, raise_if_not_found=True
+        )
         if self.db.get_teacher_by_user_id(user.id) is None:
             self.db.create_teacher(user.id)
 
     def seed_students(self) -> None:
-        root = self.db.get_user_by_username(self.settings.bootstrap_username)
-        if root is None or root.id is None:
-            return
+        root = self.db.get_user_by_username(
+            self.settings.bootstrap_username, raise_if_not_found=True
+        )
         teacher = self.db.get_teacher_by_user_id(root.id)
-        if teacher is None or teacher.id is None:
-            return
         for username in self.settings.bootstrap_student_usernames:
-            if self.db.get_user_by_username(username) is not None:
-                continue
-            user = self.db.create_user(
-                username, hash_password(self.settings.bootstrap_student_password)
-            )
-            if user.id is None:
-                raise RuntimeError(f"Created student user has no id: {username}")
-            self.db.create_student(user.id, teacher.id)
+            if self.db.get_user_by_username(username) is None:
+                user = self.db.create_user(
+                    username, hash_password(self.settings.bootstrap_student_password)
+                )
+                self.db.create_student(user.id, teacher.id)
 
     def seed_practice_questions(self) -> None:
         practice_dir = self.settings.practice_dir

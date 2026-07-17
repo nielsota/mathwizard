@@ -17,9 +17,9 @@ class RoleNotAssignedError(MathWizardError):
 
 
 class UserNotFoundError(MathWizardError):
-    def __init__(self, user_id: int) -> None:
-        super().__init__(f"User {user_id} not found")
-        self.user_id = user_id
+    def __init__(self, identifier: int | str) -> None:
+        super().__init__(f"User {identifier} not found")
+        self.identifier = identifier
 
 
 class QuestionNotFoundError(MathWizardError):

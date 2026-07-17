@@ -23,7 +23,11 @@ class UserMixin(NeedsEngine):
             raise UserNotFoundError(user_id)
         return user
 
-    def get_user_by_username(self, username: str) -> User | None:
+    def get_user_by_username(
+        self, username: str, raise_if_not_found: bool = False
+    ) -> User | None:
         with DBSession(self.engine) as session:
             user = session.exec(select(User).where(User.username == username)).first()
+            if user is None and raise_if_not_found:
+                raise UserNotFoundError(username)
             return user
