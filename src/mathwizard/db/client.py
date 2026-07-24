@@ -3,10 +3,10 @@ from pathlib import Path
 from sqlalchemy.engine import make_url
 from sqlmodel import SQLModel, create_engine
 
-from .mixins import QuestionsMixin, SessionsMixin, UserMixin
+from .mixins import QuestionsMixin, RosterMixin, SessionsMixin, UserMixin
 
 
-class DBClient(UserMixin, SessionsMixin, QuestionsMixin):
+class DBClient(UserMixin, SessionsMixin, QuestionsMixin, RosterMixin):
     def __init__(self, database_url: str, echo: bool = False):
         Path(make_url(database_url).database).parent.mkdir(parents=True, exist_ok=True)
         self.engine = create_engine(database_url, echo=echo)

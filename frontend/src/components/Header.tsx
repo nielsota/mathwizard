@@ -2,14 +2,16 @@ import { useState, useRef, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import type { UserResponse } from '../types/api'
 import { TOPICS } from '../constants/topics'
+import UserMenu from './UserMenu'
 import './Header.css'
 
 interface HeaderProps {
   user: UserResponse
   onLogout: () => void
+  onUnauthorized: () => void
 }
 
-export default function Header({ user, onLogout }: HeaderProps) {
+export default function Header({ user, onLogout, onUnauthorized }: HeaderProps) {
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
   const location = useLocation()
@@ -70,6 +72,8 @@ export default function Header({ user, onLogout }: HeaderProps) {
           >
             Examenopgaven zoeken
           </Link>
+
+          <UserMenu user={user} onUnauthorized={onUnauthorized} />
 
           <div className="mw-auth">
             <span className="mw-user">{user.username}</span>

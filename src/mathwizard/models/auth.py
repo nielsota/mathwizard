@@ -1,5 +1,7 @@
 from pydantic import BaseModel
 
+from mathwizard.enums import UserRole
+
 
 class LoginRequest(BaseModel):
     username: str
@@ -9,3 +11,4 @@ class LoginRequest(BaseModel):
 class UserResponse(BaseModel):
     id: int
     username: str
+    role: UserRole

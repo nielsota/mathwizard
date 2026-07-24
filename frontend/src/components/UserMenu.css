@@ -1,0 +1,180 @@
+.mw-usermenu .mw-dropdown-trigger svg:first-of-type {
+  color: var(--navy);
+}
+
+.mw-usermenu-panel {
+  min-width: 288px;
+  padding: 12px;
+}
+
+.mw-um-eyebrow {
+  margin: 2px 4px 10px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* Card */
+.mw-um-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.mw-um-card--open {
+  border-color: var(--blue);
+  box-shadow: 0 4px 18px rgba(3, 34, 84, 0.07);
+}
+
+.mw-um-card-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 14px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--font-body);
+  transition: background 0.12s ease;
+}
+
+.mw-um-card-head:hover {
+  background: var(--blue-wash);
+}
+
+.mw-um-card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, var(--navy) 0%, #0a3a7a 100%);
+  color: var(--peach);
+}
+
+.mw-um-card-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  flex: 1;
+  min-width: 0;
+}
+
+.mw-um-card-title {
+  font-family: var(--font-display);
+  font-size: 17px;
+  line-height: 1.15;
+  color: var(--navy);
+}
+
+.mw-um-card-subtitle {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.mw-um-card-chevron {
+  color: var(--text-muted);
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.mw-um-card--open .mw-um-card-chevron {
+  transform: rotate(180deg);
+  color: var(--navy);
+}
+
+.mw-um-card-body {
+  padding: 6px 14px 14px;
+  border-top: 1px solid var(--border);
+  animation: umReveal 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes umReveal {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.mw-um-hint {
+  margin: 10px 2px 2px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.mw-um-hint--error {
+  color: #b4232a;
+}
+
+/* People */
+.mw-um-list {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 240px;
+  overflow-y: auto;
+}
+
+.mw-um-person {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 8px;
+  border-radius: var(--radius-sm);
+}
+
+.mw-um-person--highlight {
+  margin-top: 10px;
+  background: var(--peach-light);
+  border: 1px solid var(--peach-dark);
+}
+
+.mw-um-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--blue-mist);
+  color: var(--navy);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.mw-um-avatar--teacher {
+  background: var(--navy);
+  color: var(--peach);
+}
+
+.mw-um-person-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 520px) {
+  .mw-usermenu-panel {
+    min-width: min(84vw, 288px);
+  }
+}
