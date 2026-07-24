@@ -1,0 +1,15 @@
+.ui-card {
+  background: var(--color-surface);
+  border: var(--outline-width-card) solid var(--color-outline);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  transition: transform 0.12s var(--ease), box-shadow 0.12s var(--ease);
+}
+.ui-card--hard { box-shadow: var(--shadow-hard); }
+.ui-card__band {
+  height: 8px;
+  margin: calc(-1 * var(--space-5)) calc(-1 * var(--space-5)) var(--space-4);
+  background: var(--color-accent);
+  border-bottom: var(--outline-width-card) solid var(--color-outline);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
