@@ -28,6 +28,14 @@ def _load_practice_yaml(topic_dir: Path) -> list[ExerciseYaml]:
     return exercises
 
 
+def _load_figure_yaml(figures_dir: Path) -> list[dict]:
+    figures = []
+    for f in sorted(figures_dir.glob("*.yaml")):
+        with f.open() as fh:
+            figures.append(yaml.safe_load(fh))
+    return figures
+
+
 class BootstrapService:
     def __init__(self, db: DBClient, settings: Settings) -> None:
         self.db = db
@@ -115,6 +123,19 @@ class BootstrapService:
                     [],
                 ).append(question.id)
 
+    def seed_figures(self) -> None:
+        figures_dir = self.settings.figures_dir
+        if not figures_dir.exists():
+            return
+        for fig in _load_figure_yaml(figures_dir):
+            self.db.upsert_figure(
+                slug=fig["slug"],
+                title=fig["title"],
+                spec=fig["spec"],
+                description=fig.get("description"),
+            )
+
     def run_all(self) -> None:
         self.seed_root_user()
         self.seed_practice_questions()
+        self.seed_figures()

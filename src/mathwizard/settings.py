@@ -29,6 +29,10 @@ class Settings(BaseSettings):
     def practice_dir(self) -> Path:
         return self.data_dir / "questions" / "practice"
 
+    @property
+    def figures_dir(self) -> Path:
+        return self.data_dir / "questions" / "figures"
+
 
 @lru_cache(maxsize=1)
 def get_settings() -> Settings:
