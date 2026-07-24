@@ -62,3 +62,42 @@ export interface UserResponse {
   id: number;
   username: string;
 }
+
+export interface FunctionGraphElement {
+  type: "functionGraph";
+  fn: string;
+  domain?: [number, number] | null;
+  color?: string | null;
+}
+
+export type FigureElement = FunctionGraphElement;
+
+export interface FigureViewport {
+  x: [number, number];
+  y?: [number, number] | null;
+}
+
+export interface FigureSpec {
+  viewport: FigureViewport;
+  show_grid: boolean;
+  x_label: string;
+  y_label: string;
+  elements: FigureElement[];
+}
+
+export interface FigureSummary {
+  id: number;
+  slug: string;
+  title: string;
+  question_id?: number | null;
+  part_id?: number | null;
+}
+
+export interface FigureResponse extends FigureSummary {
+  description?: string | null;
+  spec: FigureSpec;
+}
+
+export interface FigureListResponse {
+  figures: FigureSummary[];
+}

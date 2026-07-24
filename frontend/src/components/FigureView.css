@@ -1,0 +1,14 @@
+.figure-view {
+  width: 100%;
+  max-width: 480px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(47, 95, 237, 0.15);
+  box-shadow: 0 4px 16px rgba(47, 95, 237, 0.08);
+}
+
+.figure-error {
+  padding: 1rem;
+  color: #b00020;
+  font-style: italic;
+}
