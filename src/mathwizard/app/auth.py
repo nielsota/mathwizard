@@ -2,11 +2,10 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, Request, Response, status
 
-from mathwizard.app.dependencies import AuthServiceDep
+from mathwizard.app.dependencies import AuthServiceDep, UserServiceDep
 from mathwizard.exceptions import AuthenticationError
 from mathwizard.models.auth import LoginRequest, UserResponse
 from mathwizard.models.db import User
-from mathwizard.services.auth import user_response
 
 
 def _set_session_cookie(
@@ -51,6 +50,7 @@ def login(
     body: LoginRequest,
     response: Response,
     auth_service: AuthServiceDep,
+    user_service: UserServiceDep,
 ) -> UserResponse:
     try:
         result = auth_service.login(body)
@@ -66,7 +66,7 @@ def login(
         max_age_seconds=result.max_age_seconds,
         secure=result.cookie_secure,
     )
-    return result.user
+    return user_service.to_response(result.user)
 
 
 @router.post("/logout", status_code=status.HTTP_204_NO_CONTENT)
@@ -82,5 +82,5 @@ def logout(
 
 
 @router.get("/me", response_model=UserResponse)
-def me(user: CurrentUserDep) -> UserResponse:
-    return user_response(user)
+def me(user: CurrentUserDep, user_service: UserServiceDep) -> UserResponse:
+    return user_service.to_response(user)

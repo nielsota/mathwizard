@@ -46,6 +46,25 @@ class BootstrapService:
         if self.db.get_user_by_username(username) is None:
             self.db.create_user(username, hash_password(self.settings.bootstrap_password))
 
+    def seed_root_teacher(self) -> None:
+        user = self.db.get_user_by_username(
+            self.settings.bootstrap_username, raise_if_not_found=True
+        )
+        if self.db.get_teacher_by_user_id(user.id) is None:
+            self.db.create_teacher(user.id)
+
+    def seed_students(self) -> None:
+        root = self.db.get_user_by_username(
+            self.settings.bootstrap_username, raise_if_not_found=True
+        )
+        teacher = self.db.get_teacher_by_user_id(root.id)
+        for username in self.settings.bootstrap_student_usernames:
+            if self.db.get_user_by_username(username) is None:
+                user = self.db.create_user(
+                    username, hash_password(self.settings.bootstrap_student_password)
+                )
+                self.db.create_student(user.id, teacher.id)
+
     def seed_practice_questions(self) -> None:
         practice_dir = self.settings.practice_dir
         if not practice_dir.exists():
@@ -137,5 +156,7 @@ class BootstrapService:
 
     def run_all(self) -> None:
         self.seed_root_user()
+        self.seed_root_teacher()
+        self.seed_students()
         self.seed_practice_questions()
         self.seed_figures()

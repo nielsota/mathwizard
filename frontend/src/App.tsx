@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import Header from './components/Header'
 import ExamSearch from './pages/ExamSearch'
+import Home from './pages/Home'
 import Login from './pages/Login'
 import Practice from './pages/Practice'
 import Figures from './pages/Figures'
@@ -70,7 +71,7 @@ function App() {
 
   return (
     <>
-      {user && <Header user={user} onLogout={handleLogout} />}
+      {user && <Header user={user} onLogout={handleLogout} onUnauthorized={handleUnauthorized} />}
       <main>
         <Routes>
           <Route
@@ -79,6 +80,10 @@ function App() {
           />
           <Route
             path="/"
+            element={user ? <Home user={user} /> : <Navigate to="/login" replace state={{ from: location }} />}
+          />
+          <Route
+            path="/search"
             element={user ? <ExamSearch onUnauthorized={handleUnauthorized} /> : <Navigate to="/login" replace state={{ from: location }} />}
           />
           <Route

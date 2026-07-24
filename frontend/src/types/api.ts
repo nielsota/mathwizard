@@ -58,9 +58,30 @@ export interface LoginRequest {
   password: string;
 }
 
+export type UserRole = 'teacher' | 'student';
+
 export interface UserResponse {
   id: number;
   username: string;
+  role: UserRole;
+}
+
+export interface StudentSummary {
+  id: number;
+  username: string;
+}
+
+export interface TeacherSummary {
+  id: number;
+  username: string;
+}
+
+export interface StudentsResponse {
+  students: StudentSummary[];
+}
+
+export interface MyTeacherResponse {
+  teacher: TeacherSummary;
 }
 
 export interface FunctionGraphElement {

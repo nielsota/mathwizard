@@ -29,6 +29,19 @@ class Session(SQLModel, table=True):
     user: User = Relationship(back_populates="sessions")
 
 
+class Teacher(SQLModel, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    user_id: int = Field(foreign_key="user.id", unique=True, index=True)
+    students: list["Student"] = Relationship(back_populates="teacher")
+
+
+class Student(SQLModel, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    user_id: int = Field(foreign_key="user.id", unique=True, index=True)
+    teacher_id: int = Field(foreign_key="teacher.id", index=True)
+    teacher: Teacher = Relationship(back_populates="students")
+
+
 class Question(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
     topic: str = Field(index=True)

@@ -2,35 +2,8 @@ import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import ExerciseCard from '../components/ExerciseCard'
 import type { QuestionListResponse } from '../types/api'
+import { TOPIC_MAP } from '../constants/topics'
 import './Practice.css'
-
-const TOPIC_META: Record<string, { title: string; subtitle: string; icon: string }> = {
-  unitcircle: {
-    title: 'Eenheidscirkel',
-    subtitle: 'Oefen met de eenheidscirkel, sinus, cosinus en tangens',
-    icon: '⊙',
-  },
-  derivatives: {
-    title: 'Afgeleiden',
-    subtitle: 'Opgaven over differentiëren en afgeleide functies',
-    icon: "f'",
-  },
-  rootfinding: {
-    title: 'Wortels vinden',
-    subtitle: 'Snijpunten, nulpunten en vergelijkingen oplossen',
-    icon: '√',
-  },
-  parametric: {
-    title: 'Parametrische vergelijkingen',
-    subtitle: 'Opgaven over parametrische krommen en vergelijkingen',
-    icon: 't→',
-  },
-  goniometrie: {
-    title: 'Goniometrie',
-    subtitle: 'Goniometrische functies, identiteiten en vergelijkingen',
-    icon: 'θ',
-  },
-}
 
 interface PracticeProps {
   onUnauthorized: () => void
@@ -42,7 +15,7 @@ export default function Practice({ onUnauthorized }: PracticeProps) {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
-  const meta = topic ? TOPIC_META[topic] : null
+  const meta = topic ? TOPIC_MAP[topic] : null
   const questions = practiceSet?.questions ?? []
   const totalMarks = questions.reduce((sum, ex) => sum + ex.max_marks, 0)
 
@@ -91,7 +64,7 @@ export default function Practice({ onUnauthorized }: PracticeProps) {
       <header className="practice-header">
         {meta && <span className="practice-icon">{meta.icon}</span>}
         <div>
-          <h1 className="practice-title">{meta?.title ?? topic}</h1>
+          <h1 className="practice-title">{meta?.label ?? topic}</h1>
           <p className="practice-subtitle">{meta?.subtitle ?? ''}</p>
           {practiceSet && !loading && !error && (
             <div className="practice-summary">

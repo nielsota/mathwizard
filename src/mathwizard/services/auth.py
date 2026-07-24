@@ -6,7 +6,7 @@ from pwdlib.hashers.bcrypt import BcryptHasher
 
 from mathwizard.db.client import DBClient
 from mathwizard.exceptions import AuthenticationError, UserNotFoundError
-from mathwizard.models.auth import LoginRequest, UserResponse
+from mathwizard.models.auth import LoginRequest
 from mathwizard.models.db import User
 from mathwizard.settings import Settings
 
@@ -17,7 +17,7 @@ DUMMY_PASSWORD_HASH = _password_hash.hash("__not_a_real_password__")
 
 @dataclass(frozen=True)
 class LoginResult:
-    user: UserResponse
+    user: User
     session_token: str
     max_age_seconds: int
     cookie_secure: bool
@@ -29,11 +29,6 @@ def hash_password(plain: str) -> str:
 
 def verify_password(plain: str, hashed: str) -> bool:
     return _password_hash.verify(plain, hashed)
-
-
-def user_response(user: User) -> UserResponse:
-    assert user.id is not None
-    return UserResponse(id=user.id, username=user.username)
 
 
 class AuthService:
@@ -55,7 +50,7 @@ class AuthService:
         ttl = timedelta(days=self.settings.session_ttl_days)
         user_session = self.db.create_session(user.id, ttl)
         return LoginResult(
-            user=user_response(user),
+            user=user,
             session_token=user_session.id,
             max_age_seconds=int(ttl.total_seconds()),
             cookie_secure=self.settings.cookie_secure,
