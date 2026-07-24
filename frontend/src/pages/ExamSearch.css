@@ -139,31 +139,6 @@
   font-weight: 500;
 }
 
-.search-spinner {
-  width: 18px;
-  height: 18px;
-  border: 2.5px solid var(--sky-300);
-  border-top-color: var(--color-primary);
-  border-radius: var(--radius-pill);
-  animation: spin 0.7s linear infinite;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-/* Error */
-.search-error {
-  padding: var(--space-3) var(--space-4);
-  background: var(--danger-fill);
-  color: var(--danger-ink);
-  border: var(--outline-width) solid var(--danger-ink);
-  border-radius: var(--radius-md);
-  font-size: 14px;
-  margin-bottom: var(--space-5);
-  white-space: pre-wrap;
-}
-
 /* Results */
 .search-results {
   display: grid;
