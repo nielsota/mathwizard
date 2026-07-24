@@ -2,7 +2,7 @@ import type { KeyboardEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { TOPICS } from '../constants/topics'
 import type { UserResponse } from '../types/api'
-import { Card, Button } from '../components/ui'
+import { Card } from '../components/ui'
 import './Home.css'
 
 interface HomeProps {
@@ -12,10 +12,10 @@ interface HomeProps {
 export default function Home({ user }: HomeProps) {
   const navigate = useNavigate()
 
-  const handleCardKeyDown = (event: KeyboardEvent<HTMLDivElement>, slug: string) => {
+  const handleCardKeyDown = (event: KeyboardEvent<HTMLDivElement>, to: string) => {
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault()
-      navigate(`/practice/${slug}`)
+      navigate(to)
     }
   }
 
@@ -44,7 +44,7 @@ export default function Home({ user }: HomeProps) {
               className="home-topic-card"
               style={{ animationDelay: `${0.06 * index}s` }}
               onClick={() => navigate(`/practice/${topic.slug}`)}
-              onKeyDown={event => handleCardKeyDown(event, topic.slug)}
+              onKeyDown={event => handleCardKeyDown(event, `/practice/${topic.slug}`)}
             >
               <span className="home-topic-icon" aria-hidden="true">{topic.icon}</span>
               <span className="home-topic-label">{topic.label}</span>
@@ -60,7 +60,14 @@ export default function Home({ user }: HomeProps) {
       </section>
 
       <section className="home-section">
-        <Card hard className="home-search">
+        <Card
+          hard
+          role="button"
+          tabIndex={0}
+          className="home-search"
+          onClick={() => navigate('/search')}
+          onKeyDown={event => handleCardKeyDown(event, '/search')}
+        >
           <div className="home-search-body">
             <span className="home-search-kicker">Examenbank</span>
             <span className="home-search-title">Examenopgaven zoeken</span>
@@ -69,16 +76,12 @@ export default function Home({ user }: HomeProps) {
             </span>
           </div>
 
-          <Button
-            variant="primary"
-            className="home-search-cta"
-            onClick={() => navigate('/search')}
-          >
+          <span className="ui-btn ui-btn--primary home-search-cta" aria-hidden="true">
             Zoeken
             <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
               <path d="M4 9h10M10 5l4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
-          </Button>
+          </span>
         </Card>
       </section>
     </div>

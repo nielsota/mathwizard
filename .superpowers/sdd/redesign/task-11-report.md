@@ -41,3 +41,21 @@ pages/Practice.css:16
 
 ## Concerns
 - None blocking. Kept raw px font sizes (no type token exists); consistent with other restyled components (e.g. ExerciseCard).
+
+## Fix: search lane click target
+Review found an IMPORTANT UX regression: after the restyle only the inner `<Button>` navigated, so clicking the search-lane card body no longer went to `/search` (the pre-restyle `.home-search-lane` was fully clickable).
+
+### What changed
+- `frontend/src/pages/Home.tsx`
+  - Generalised the existing `handleCardKeyDown(event, slug)` helper to `handleCardKeyDown(event, to)` (takes a full destination path) so it is reused by both the topic tiles and the search lane. Topic tiles now pass `/practice/${topic.slug}`.
+  - Made the whole search-lane `Card` the single interactive control: added `role="button"`, `tabIndex={0}`, `onClick={() => navigate('/search')}`, and `onKeyDown={event => handleCardKeyDown(event, '/search')}` — matching the topic-tile accessibility pattern (click + Enter/Space).
+  - Replaced the inner `<Button>` CTA with a **non-interactive** `<span className="ui-btn ui-btn--primary home-search-cta" aria-hidden="true">`, preserving the primary-button visual affordance while avoiding a nested-interactive a11y violation. Removed the now-unused `Button` import.
+- `frontend/src/pages/Home.css` — added `cursor: pointer` to `.home-search` so the whole lane reads as clickable.
+
+### A11y approach
+Chose option (a): the card is the one focusable/clickable control; the CTA is a purely visual `<span>` styled with the shared `ui-btn ui-btn--primary` classes and `aria-hidden`. Single interactive element, full keyboard support, no nested interactive controls.
+
+### Verification (from `frontend/`)
+- `npm run build` → PASS (59 modules, built in ~805ms).
+- `npm run lint` (oxlint) → PASS (no warnings/errors).
+- `npm run check-tokens` → `Home.css` NOT in offender list (remains cleared). Script still exits 1 only for out-of-scope pages (ExamSearch.css, Login.css, Practice.css).
