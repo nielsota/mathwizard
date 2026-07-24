@@ -1,0 +1,38 @@
+.figures-page {
+  max-width: var(--container-max, 920px);
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+.figures-title {
+  font-family: var(--font-display, serif);
+  margin: 0;
+}
+
+.figures-subtitle {
+  color: #55607a;
+  margin: 0.25rem 0 1.5rem;
+}
+
+.figures-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+.figures-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 1rem;
+  box-shadow: 0 6px 20px rgba(47, 95, 237, 0.08);
+}
+
+.figures-card-title {
+  font-size: 1rem;
+  margin: 0 0 0.75rem;
+}
+
+.figures-loading {
+  padding: 2rem;
+  color: #55607a;
+}

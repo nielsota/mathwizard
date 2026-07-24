@@ -29,5 +29,20 @@ def seed_practice() -> None:
     )
 
 
+@app.command()
+def seed_figures() -> None:
+    """Sync figure spec YAMLs into the database (idempotent upsert)."""
+    settings = get_settings()
+    db = DBClient(settings.database_url)
+    before = len(db.list_figures())
+    BootstrapService(db, settings).seed_figures()
+    after = len(db.list_figures())
+    db.engine.dispose()
+    rprint(
+        f"[green]Figure sync complete.[/green] "
+        f"{after} figures in DB (+{after - before} new)."
+    )
+
+
 if __name__ == "__main__":
     app()

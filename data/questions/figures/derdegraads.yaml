@@ -1,0 +1,13 @@
+slug: derdegraads
+title: Derdegraadsfunctie y = x^3 - 3x
+description: Kubische functie met twee toppen
+spec:
+  viewport:
+    x: [-3, 3]
+    y: [-5, 5]
+  show_grid: true
+  x_label: x
+  y_label: y
+  elements:
+  - type: functionGraph
+    fn: x^3 - 3*x
