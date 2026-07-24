@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import FigureView from '../components/FigureView'
+import { Card } from '../components/ui'
 import type { FigureListResponse, FigureResponse } from '../types/api'
 import './Figures.css'
 
@@ -63,10 +64,10 @@ export default function Figures({ onUnauthorized }: FiguresProps) {
       {!loading && !error && (
         <div className="figures-grid">
           {figures.map((figure) => (
-            <div key={figure.id} className="figures-card">
+            <Card key={figure.id} className="figures-card">
               <h2 className="figures-card-title">{figure.title}</h2>
               <FigureView spec={figure.spec} />
-            </div>
+            </Card>
           ))}
         </div>
       )}
