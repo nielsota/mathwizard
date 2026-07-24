@@ -1,16 +1,9 @@
 import { useState, useRef, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import type { UserResponse } from '../types/api'
+import { TOPICS } from '../constants/topics'
 import UserMenu from './UserMenu'
 import './Header.css'
-
-const practiceTopics = [
-  { path: '/practice/unitcircle', label: 'Eenheidscirkel' },
-  { path: '/practice/derivatives', label: 'Afgeleiden' },
-  { path: '/practice/rootfinding', label: 'Wortels vinden' },
-  { path: '/practice/parametric', label: 'Parametrisch' },
-  { path: '/practice/goniometrie', label: 'Goniometrie' },
-]
 
 interface HeaderProps {
   user: UserResponse
@@ -64,9 +57,9 @@ export default function Header({ user, onLogout, onUnauthorized }: HeaderProps) 
             </button>
             {dropdownOpen && (
               <div className="mw-dropdown-menu">
-                {practiceTopics.map(t => (
-                  <Link key={t.path} to={t.path} className="mw-dropdown-item">
-                    {t.label}
+                {TOPICS.map(topic => (
+                  <Link key={topic.slug} to={`/practice/${topic.slug}`} className="mw-dropdown-item">
+                    {topic.label}
                   </Link>
                 ))}
               </div>
@@ -74,8 +67,8 @@ export default function Header({ user, onLogout, onUnauthorized }: HeaderProps) 
           </div>
 
           <Link
-            to="/"
-            className={`mw-nav-link ${location.pathname === '/' ? 'active' : ''}`}
+            to="/search"
+            className={`mw-nav-link ${location.pathname === '/search' ? 'active' : ''}`}
           >
             Examenopgaven zoeken
           </Link>

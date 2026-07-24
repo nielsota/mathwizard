@@ -39,7 +39,7 @@ backups/
 *.ai
 
 # claude
-.claude/
+.claude/settings.local.json
 
 # cursor
 .cursor/

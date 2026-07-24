@@ -77,3 +77,13 @@ class QuestionPart(SQLModel, table=True):
     points: int
 
     question: Question = Relationship(back_populates="parts")
+
+
+class Figure(SQLModel, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    slug: str = Field(unique=True, index=True)
+    title: str
+    description: str | None = None
+    spec: dict = Field(default_factory=dict, sa_column=Column(JSON))
+    question_id: int | None = Field(default=None, foreign_key="question.id", index=True)
+    part_id: int | None = Field(default=None, foreign_key="questionpart.id", index=True)
