@@ -65,8 +65,8 @@ export default function Header({ user, onLogout }: HeaderProps) {
           </div>
 
           <Link
-            to="/"
-            className={`mw-nav-link ${location.pathname === '/' ? 'active' : ''}`}
+            to="/search"
+            className={`mw-nav-link ${location.pathname === '/search' ? 'active' : ''}`}
           >
             Examenopgaven zoeken
           </Link>
