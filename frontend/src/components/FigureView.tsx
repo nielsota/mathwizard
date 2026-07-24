@@ -8,10 +8,10 @@ const DEFAULT_Y: [number, number] = [-10, 10]
 
 // House palette. Color AND line style vary per curve so multiple plots stay
 // distinguishable without relying on color alone (accessibility).
-const CURVE_STYLES: { color: string; style: 'solid' | 'dashed' }[] = [
-  { color: 'var(--sky-600)', style: 'solid' },
-  { color: 'var(--peach-400)', style: 'dashed' },
-  { color: 'var(--ink-600)', style: 'dashed' },
+const CURVE_STYLES: { color: string; style: 'solid' | 'dashed'; weight: number }[] = [
+  { color: 'var(--sky-600)', style: 'solid', weight: 2.5 },
+  { color: 'var(--peach-400)', style: 'dashed', weight: 2.5 },
+  { color: 'var(--ink-600)', style: 'dashed', weight: 4 },
 ]
 
 interface FigureViewProps {
@@ -33,7 +33,7 @@ export default function FigureView({ spec }: FigureViewProps) {
           y={fn}
           color={element.color ?? preset.color}
           style={preset.style}
-          weight={2.5}
+          weight={preset.weight}
         />
       )
     })
