@@ -1,6 +1,8 @@
 import { Mafs, Coordinates, Plot } from 'mafs'
-import { compile } from 'mathjs'
+import type { ReactNode } from 'react'
 import 'mafs/core.css'
+import { compileExpression, evaluateFinite } from '../lib/mathEval'
+import FigureErrorBoundary from './FigureErrorBoundary'
 import type { FigureSpec } from '../types/api'
 import './FigureView.css'
 
@@ -14,6 +16,8 @@ const CURVE_STYLES: { color: string; style: 'solid' | 'dashed'; weight: number }
   { color: 'var(--ink-600)', style: 'dashed', weight: 4 },
 ]
 
+const fallback = <div className="figure-error">Kon figuur niet tekenen</div>
+
 interface FigureViewProps {
   spec: FigureSpec
 }
@@ -21,32 +25,32 @@ interface FigureViewProps {
 export default function FigureView({ spec }: FigureViewProps) {
   const y = spec.viewport.y ?? DEFAULT_Y
 
-  let plots: React.ReactNode
-  try {
-    plots = spec.elements.map((element, i) => {
-      const node = compile(element.fn)
-      const fn = (x: number) => node.evaluate({ x }) as number
-      const preset = CURVE_STYLES[i % CURVE_STYLES.length]
-      return (
-        <Plot.OfX
-          key={i}
-          y={fn}
-          color={element.color ?? preset.color}
-          style={preset.style}
-          weight={preset.weight}
-        />
-      )
-    })
-  } catch {
-    return <div className="figure-error">Kon figuur niet tekenen</div>
+  const plots: ReactNode[] = []
+  for (const [index, element] of spec.elements.entries()) {
+    const compiled = compileExpression(element.fn)
+    if (compiled === null) {
+      return fallback
+    }
+    const preset = CURVE_STYLES[index % CURVE_STYLES.length]
+    plots.push(
+      <Plot.OfX
+        key={`${element.type}-${index}`}
+        y={(x: number) => evaluateFinite(compiled, x)}
+        color={element.color ?? preset.color}
+        style={preset.style}
+        weight={preset.weight}
+      />,
+    )
   }
 
   return (
-    <div className="figure-view">
-      <Mafs viewBox={{ x: spec.viewport.x, y }} preserveAspectRatio={false}>
-        {spec.show_grid && <Coordinates.Cartesian />}
-        {plots}
-      </Mafs>
-    </div>
+    <FigureErrorBoundary fallback={fallback}>
+      <div className="figure-view">
+        <Mafs viewBox={{ x: spec.viewport.x, y }} preserveAspectRatio={false}>
+          {spec.show_grid && <Coordinates.Cartesian />}
+          {plots}
+        </Mafs>
+      </div>
+    </FigureErrorBoundary>
   )
 }
