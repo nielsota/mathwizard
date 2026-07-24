@@ -1,0 +1,13 @@
+slug: parabool
+title: Parabool y = x^2
+description: Standaardparabool
+spec:
+  viewport:
+    x: [-5, 5]
+    y: [-1, 10]
+  show_grid: true
+  x_label: x
+  y_label: y
+  elements:
+  - type: functionGraph
+    fn: x^2

@@ -1,0 +1,13 @@
+slug: lijn
+title: Rechte lijn y = 2x - 1
+description: Lineaire functie
+spec:
+  viewport:
+    x: [-5, 5]
+    y: [-5, 5]
+  show_grid: true
+  x_label: x
+  y_label: y
+  elements:
+  - type: functionGraph
+    fn: 2*x - 1
