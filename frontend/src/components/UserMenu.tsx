@@ -10,6 +10,7 @@ import './UserMenu.css'
 interface UserMenuProps {
   user: UserResponse
   onUnauthorized: () => void
+  onLogout: () => void
 }
 
 type FetchState<T> =
@@ -165,7 +166,7 @@ const teacherIcon = (
   </svg>
 )
 
-export default function UserMenu({ user, onUnauthorized }: UserMenuProps) {
+export default function UserMenu({ user, onUnauthorized, onLogout }: UserMenuProps) {
   const [open, setOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
   const location = useLocation()
@@ -206,9 +207,16 @@ export default function UserMenu({ user, onUnauthorized }: UserMenuProps) {
       </button>
       {open && (
         <div className="mw-dropdown-menu mw-usermenu-panel">
-          <p className="mw-um-eyebrow">
-            {user.role === 'teacher' ? 'Docent' : 'Leerling'}
-          </p>
+          <div className="mw-um-identity">
+            <span className="mw-um-avatar mw-um-avatar--self">{initials(user.username)}</span>
+            <span className="mw-um-identity-text">
+              <span className="mw-um-identity-name">{user.username}</span>
+              <span className="mw-um-identity-role">
+                {user.role === 'teacher' ? 'Docent' : 'Leerling'}
+              </span>
+            </span>
+          </div>
+
           {user.role === 'teacher' ? (
             <RosterCard
               title="Mijn leerlingen"
@@ -226,6 +234,14 @@ export default function UserMenu({ user, onUnauthorized }: UserMenuProps) {
               <MyTeacherContent onUnauthorized={onUnauthorized} />
             </RosterCard>
           )}
+
+          <button type="button" className="mw-um-logout" onClick={onLogout}>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M6 2H3.5A1.5 1.5 0 002 3.5v9A1.5 1.5 0 003.5 14H6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+              <path d="M10 11l3-3-3-3M13 8H6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            Uitloggen
+          </button>
         </div>
       )}
     </div>

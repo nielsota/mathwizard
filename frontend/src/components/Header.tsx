@@ -73,14 +73,7 @@ export default function Header({ user, onLogout, onUnauthorized }: HeaderProps) 
             Examenopgaven zoeken
           </Link>
 
-          <UserMenu user={user} onUnauthorized={onUnauthorized} />
-
-          <div className="mw-auth">
-            <span className="mw-user">{user.username}</span>
-            <button className="mw-logout" type="button" onClick={onLogout}>
-              Uitloggen
-            </button>
-          </div>
+          <UserMenu user={user} onUnauthorized={onUnauthorized} onLogout={onLogout} />
         </nav>
       </div>
     </header>
