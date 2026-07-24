@@ -145,6 +145,23 @@ Restrained and snappy. Ease `cubic-bezier(0.2, 0.8, 0.2, 1)`, durations 120–22
 - **Input** — surface fill, 1.5px ink outline, sky-600 focus ring.
 - **Badge** — pill, flat functional fill + matching ink text, 1px outline.
 
+## Figure / graph palette
+
+For the planned figure system (`FigureView`, `/figures`) and any charts, default
+graph colors to the house tokens so plots read as part of the product:
+
+| Element | Token | Hex |
+|---------|-------|-----|
+| Primary curve / plotted function | `--sky-600` | `#3f79bf` |
+| Secondary curve / highlight | `--peach-400` | `#eab170` |
+| Axes / ticks / labels | `--ink-950` | `#111318` |
+| Gridlines | `--ink-200` | `#cbcfd8` |
+| Shaded region / area fill | `--sky-200` | `#d2e5f7` (with ink outline) |
+| Point markers | `--ink-950` fill, `--surface` stroke | — |
+
+Keep the flat, ink-outlined aesthetic: solid strokes, no gradients, thin
+`--ink-200` gridlines, bold `--ink-950` axes.
+
 ## Voice
 
 UI copy stays **Dutch**, consistent with the current app. Tone: direct,
