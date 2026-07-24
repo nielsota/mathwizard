@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MathWizard — Redesign Style Tile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --ink-950:#111318; --ink-800:#282B33; --ink-600:#4C515C; --ink-400:#878C98; --ink-200:#CBCFD8;
+    --sky-100:#EAF3FC; --sky-200:#D2E5F7; --sky-300:#BAD6F0; --sky-400:#9BBEE6; --sky-500:#6F9FD8; --sky-600:#3F79BF; --sky-700:#2A5A93;
+    --peach-100:#FDF4E8; --peach-200:#FBE3C6; --peach-300:#F6CE9E; --peach-400:#EAB170;
+    --paper:#FCFBF7; --surface:#FFFFFF;
+    --success-fill:#D9F0E1; --success-ink:#1F6B45;
+    --warning-fill:#FBE8C4; --warning-ink:#8A5A17;
+    --danger-fill:#F7D6D2; --danger-ink:#A62F26;
+    --font-display:'Space Grotesk','DM Sans',system-ui,sans-serif;
+    --font-body:'DM Sans',-apple-system,system-ui,sans-serif;
+    --radius-sm:6px; --radius-md:10px; --radius-lg:16px; --radius-pill:999px;
+    --outline:var(--ink-950);
+    --ease:cubic-bezier(0.2,0.8,0.2,1);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink-800);font-family:var(--font-body);line-height:1.5;padding:48px 24px 96px}
+  .wrap{max-width:1040px;margin:0 auto}
+  h1,h2,h3{font-family:var(--font-display);color:var(--ink-950);letter-spacing:-0.01em;line-height:1.12;margin:0}
+  h1{font-size:3rem} h2{font-size:1.375rem;margin:0 0 16px} h3{font-size:1.125rem}
+  .muted{color:var(--ink-600)} .faint{color:var(--ink-400)}
+  header.hero{display:flex;align-items:center;gap:24px;margin-bottom:8px}
+  .gem{width:88px;height:88px;flex:none}
+  .lede{font-size:1.125rem;max-width:60ch;margin:8px 0 40px}
+  section{margin:44px 0}
+  .grid{display:grid;gap:16px}
+  .swatches{grid-template-columns:repeat(auto-fill,minmax(120px,1fr))}
+  .sw{border:1.5px solid var(--outline);border-radius:var(--radius-md);overflow:hidden;background:var(--surface)}
+  .sw .chip{height:64px} .sw .meta{padding:8px 10px;font-size:.75rem}
+  .sw .name{font-weight:600;color:var(--ink-950)} .sw .hex{color:var(--ink-400);font-variant-numeric:tabular-nums}
+  .card{background:var(--surface);border:2px solid var(--outline);border-radius:var(--radius-lg);padding:24px}
+  .card.shadow{box-shadow:4px 4px 0 var(--ink-950)}
+  .band{height:8px;margin:-24px -24px 20px;background:var(--peach-300);border-bottom:2px solid var(--outline);border-radius:var(--radius-lg) var(--radius-lg) 0 0}
+  .row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+  .btn{font-family:var(--font-body);font-weight:600;font-size:.95rem;padding:11px 20px;border-radius:var(--radius-md);cursor:pointer;border:1.5px solid var(--outline);transition:transform .12s var(--ease),box-shadow .12s var(--ease),background .12s var(--ease)}
+  .btn--primary{background:var(--sky-300);color:var(--ink-950);box-shadow:4px 4px 0 var(--ink-950)}
+  .btn--primary:hover{background:var(--sky-400)}
+  .btn--primary:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink-950)}
+  .btn--secondary{background:var(--surface);color:var(--ink-950)}
+  .btn--secondary:hover{background:var(--sky-100)}
+  .btn--ghost{background:transparent;border-color:transparent;color:var(--ink-800)}
+  .btn--ghost:hover{background:var(--sky-100)}
+  .input{width:100%;padding:11px 14px;border:1.5px solid var(--outline);border-radius:var(--radius-md);font-family:var(--font-body);font-size:.95rem;background:var(--surface)}
+  .input:focus{outline:none;box-shadow:0 0 0 3px var(--sky-200);border-color:var(--sky-600)}
+  .badge{display:inline-flex;align-items:center;gap:6px;font-size:.75rem;font-weight:600;padding:4px 10px;border-radius:var(--radius-pill);border:1px solid}
+  .badge--easy{background:var(--success-fill);color:var(--success-ink);border-color:var(--success-ink)}
+  .badge--med{background:var(--warning-fill);color:var(--warning-ink);border-color:var(--warning-ink)}
+  .badge--hard{background:var(--danger-fill);color:var(--danger-ink);border-color:var(--danger-ink)}
+  .type-spec{display:flex;gap:32px;flex-wrap:wrap;align-items:baseline}
+  .cols{grid-template-columns:1fr 1fr}
+  @media(max-width:720px){.cols{grid-template-columns:1fr}h1{font-size:2.25rem}}
+  .tag{font-family:var(--font-body);font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--sky-700);background:var(--sky-100);border:1px solid var(--sky-300);padding:3px 8px;border-radius:var(--radius-pill)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <!-- Gem mark reconstructed from the logo for preview purposes -->
+    <svg class="gem" viewBox="0 0 100 100" aria-label="MathWizard mark">
+      <g stroke="#111318" stroke-width="5" stroke-linejoin="round" fill="none">
+        <path d="M50 6 L92 50 L50 94 L8 50 Z" fill="#9BBEE6"/>
+        <path d="M50 6 L92 50 L8 50 Z" fill="#BAD6F0"/>
+        <path d="M20 50 L80 50 L68 62 L32 62 Z" fill="#FBE3C6"/>
+      </g>
+    </svg>
+    <div>
+      <span class="tag">Redesign preview</span>
+      <h1>Math&nbsp;Wizard</h1>
+    </div>
+  </header>
+  <p class="lede muted">Flat geometric shapes, confident ink outlines, pastel fills, generous light space — the logo language applied to the whole product.</p>
+
+  <section>
+    <h2>Palette</h2>
+    <div class="grid swatches" id="sw"></div>
+  </section>
+
+  <section>
+    <h2>Typography</h2>
+    <div class="type-spec">
+      <div>
+        <div class="faint" style="font-size:.72rem;text-transform:uppercase;letter-spacing:.08em">Display · Space Grotesk</div>
+        <div style="font-family:var(--font-display);font-weight:700;font-size:2.25rem;color:var(--ink-950)">Los de vergelijking op</div>
+      </div>
+      <div>
+        <div class="faint" style="font-size:.72rem;text-transform:uppercase;letter-spacing:.08em">Body · DM Sans</div>
+        <div style="max-width:34ch">Bepaal de afgeleide van de functie en bereken de helling in het gegeven punt.</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Components</h2>
+    <div class="grid cols">
+      <div class="card shadow">
+        <div class="band"></div>
+        <h3>Afgeleiden — oefenen</h3>
+        <p class="muted" style="margin:8px 0 16px">Kies een opgave om te starten. Signature card: 2px ink outline, hard offset shadow, peach top-band.</p>
+        <div class="row" style="margin-bottom:16px">
+          <span class="badge badge--easy">Makkelijk</span>
+          <span class="badge badge--med">Gemiddeld</span>
+          <span class="badge badge--hard">Moeilijk</span>
+        </div>
+        <div class="row">
+          <button class="btn btn--primary">Start oefening</button>
+          <button class="btn btn--secondary">Bekijk uitleg</button>
+          <button class="btn btn--ghost">Later</button>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Zoek een examenvraag</h3>
+        <p class="muted" style="margin:8px 0 12px">Inputs use a 1.5px ink outline with a sky focus ring.</p>
+        <label class="faint" style="font-size:.72rem;text-transform:uppercase;letter-spacing:.08em">Onderwerp</label>
+        <input class="input" style="margin:6px 0 14px" placeholder="bv. afgeleiden, integralen…" />
+        <button class="btn btn--primary" style="width:100%">Zoeken</button>
+      </div>
+    </div>
+  </section>
+</div>
+<script>
+  const groups = [
+    ['Ink','--ink-950','--ink-800','--ink-600','--ink-400','--ink-200'],
+    ['Sky','--sky-100','--sky-200','--sky-300','--sky-400','--sky-500','--sky-600','--sky-700'],
+    ['Peach','--peach-100','--peach-200','--peach-300','--peach-400'],
+    ['Neutral','--paper','--surface']
+  ];
+  const el = document.getElementById('sw');
+  const cs = getComputedStyle(document.documentElement);
+  groups.flat().filter(x=>x.startsWith('--')).forEach(v=>{
+    const hex = cs.getPropertyValue(v).trim();
+    const d = document.createElement('div'); d.className='sw';
+    d.innerHTML = `<div class="chip" style="background:${hex}"></div><div class="meta"><div class="name">${v.replace('--','')}</div><div class="hex">${hex}</div></div>`;
+    el.appendChild(d);
+  });
+</script>
+</body>
+</html>

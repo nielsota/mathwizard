@@ -1,19 +1,18 @@
 .ex-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
+  background: var(--color-surface);
+  border: var(--outline-width-card) solid var(--color-outline);
   border-radius: var(--radius-lg);
   overflow: hidden;
-  transition: box-shadow 0.25s ease, border-color 0.25s ease;
+  transition: transform 0.18s var(--ease), box-shadow 0.18s var(--ease);
 }
 
 .ex-card:hover {
-  border-color: var(--blue-light);
-  box-shadow: 0 4px 20px rgba(133, 181, 226, 0.12);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-hard);
 }
 
 .ex-card--expanded {
-  border-color: var(--blue-light);
-  box-shadow: 0 6px 28px rgba(133, 181, 226, 0.15);
+  box-shadow: var(--shadow-soft);
 }
 
 /* Header (clickable) */
@@ -21,22 +20,22 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 18px 22px;
+  padding: var(--space-4) var(--space-5);
   cursor: pointer;
   user-select: none;
-  gap: 12px;
+  gap: var(--space-3);
 }
 
 .ex-card-title-row {
   display: flex;
   align-items: baseline;
-  gap: 12px;
+  gap: var(--space-3);
   min-width: 0;
 }
 
 .ex-card-number {
   flex-shrink: 0;
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   font-size: 13px;
   font-weight: 700;
   letter-spacing: 0.04em;
@@ -46,7 +45,7 @@
 .ex-card-title {
   font-size: 14px;
   font-weight: 500;
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -55,90 +54,38 @@
 .ex-card-meta {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-2);
   flex-shrink: 0;
-}
-
-/* Badges */
-.ex-badge {
-  display: inline-flex;
-  align-items: center;
-  padding: 4px 10px;
-  border-radius: 99px;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-}
-
-.ex-badge--marks {
-  background: var(--peach-light);
-  color: #b45309;
-}
-
-.ex-badge--calc {
-  background: var(--blue-wash);
-  color: var(--blue);
-  border: 1px solid var(--blue-light);
-}
-
-.ex-badge--no-calc {
-  background: #fef3f2;
-  color: #b42318;
-  border: 1px solid #fecdca;
-}
-
-.ex-badge--difficulty {
-  border: 1px solid transparent;
-}
-
-.ex-badge--difficulty-easy {
-  background: #ecfdf3;
-  color: #027a48;
-  border-color: #abefc6;
-}
-
-.ex-badge--difficulty-medium {
-  background: #fffaeb;
-  color: #b54708;
-  border-color: #fedf89;
-}
-
-.ex-badge--difficulty-hard {
-  background: #fef3f2;
-  color: #b42318;
-  border-color: #fecdca;
-}
-
-.ex-badge--difficulty-unknown {
-  background: #f6f8fb;
-  color: var(--text-muted);
-  border-color: var(--border);
 }
 
 /* Toggle chevron */
 .ex-card-toggle {
   width: 30px;
   height: 30px;
-  border-radius: 50%;
+  border-radius: var(--radius-pill);
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--blue-wash);
+  background: transparent;
   border: none;
-  color: var(--blue);
+  color: var(--color-primary);
   cursor: pointer;
-  transition: transform 0.25s ease, background 0.2s;
+  transition: transform 0.25s var(--ease), background 0.2s var(--ease);
   flex-shrink: 0;
+}
+
+.ex-card-toggle:hover {
+  background: var(--sky-100);
 }
 
 .ex-card--expanded .ex-card-toggle {
   transform: rotate(180deg);
-  background: var(--blue-mist);
+  background: var(--sky-100);
 }
 
 /* Body (expandable) */
 .ex-card-body {
-  padding: 0 22px 22px;
+  padding: 0 var(--space-5) var(--space-5);
   animation: cardExpand 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -155,66 +102,61 @@
 
 .ex-card-divider {
   height: 1px;
-  background: var(--border-light);
-  margin-bottom: 18px;
+  background: var(--color-hairline);
+  margin-bottom: var(--space-4);
 }
 
 .ex-card-stem {
   font-size: 15px;
   line-height: 1.7;
-  color: var(--text);
+  color: var(--color-text);
   white-space: pre-wrap;
 }
 
 .ex-card-parts {
-  margin-top: 14px;
-  padding-left: 24px;
+  margin-top: var(--space-3);
+  padding-left: var(--space-5);
 }
 
 .ex-card-parts li {
-  margin: 8px 0;
+  margin: var(--space-2) 0;
   font-size: 15px;
   line-height: 1.7;
-  color: var(--text);
+  color: var(--color-text);
   white-space: pre-wrap;
 }
 
 .ex-card-parts li::marker {
-  color: var(--blue);
+  color: var(--color-primary);
   font-weight: 600;
 }
 
 .ex-card-figures {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 12px;
-  margin-top: 18px;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
 }
 
 .ex-card-figures img {
   width: 100%;
   height: auto;
   border-radius: var(--radius-md);
-  border: 1px solid var(--border);
+  border: var(--outline-width) solid var(--color-hairline);
 }
 
 /* Mobile */
 @media (max-width: 640px) {
   .ex-card-header {
-    padding: 14px 16px;
+    padding: var(--space-3) var(--space-4);
     flex-wrap: wrap;
   }
 
   .ex-card-body {
-    padding: 0 16px 16px;
+    padding: 0 var(--space-4) var(--space-4);
   }
 
   .ex-card-number {
     font-size: 12px;
-  }
-
-  .ex-badge {
-    font-size: 11px;
-    padding: 3px 8px;
   }
 }

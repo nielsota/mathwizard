@@ -1,5 +1,6 @@
 import { useState, useRef, useCallback } from 'react'
 import ResultCard from '../components/ResultCard'
+import { Button } from '../components/ui'
 import type { FetchRequest, FetchResponse } from '../types/api'
 import './ExamSearch.css'
 
@@ -69,11 +70,11 @@ export default function ExamSearch({ onUnauthorized }: ExamSearchProps) {
       {/* Decorative geometric accent */}
       <div className="search-hero-accent" aria-hidden="true">
         <svg viewBox="0 0 200 200" fill="none" width="200" height="200">
-          <circle cx="100" cy="100" r="80" stroke="var(--blue-light)" strokeWidth="1" opacity="0.5" />
-          <circle cx="100" cy="100" r="50" stroke="var(--blue-light)" strokeWidth="1" opacity="0.35" />
-          <line x1="20" y1="100" x2="180" y2="100" stroke="var(--peach)" strokeWidth="1" opacity="0.4" />
-          <line x1="100" y1="20" x2="100" y2="180" stroke="var(--peach)" strokeWidth="1" opacity="0.4" />
-          <path d="M30 170 Q100 40 170 170" stroke="var(--blue)" strokeWidth="1.5" opacity="0.25" fill="none" />
+          <circle cx="100" cy="100" r="80" stroke="var(--sky-300)" strokeWidth="1" opacity="0.5" />
+          <circle cx="100" cy="100" r="50" stroke="var(--sky-300)" strokeWidth="1" opacity="0.35" />
+          <line x1="20" y1="100" x2="180" y2="100" stroke="var(--peach-300)" strokeWidth="1" opacity="0.4" />
+          <line x1="100" y1="20" x2="100" y2="180" stroke="var(--peach-300)" strokeWidth="1" opacity="0.4" />
+          <path d="M30 170 Q100 40 170 170" stroke="var(--sky-500)" strokeWidth="1.5" opacity="0.25" fill="none" />
         </svg>
       </div>
 
@@ -96,8 +97,9 @@ export default function ExamSearch({ onUnauthorized }: ExamSearchProps) {
 
         <div className="search-controls">
           <div className="search-buttons">
-            <button
-              className="btn btn--primary"
+            <Button
+              variant="primary"
+              className="search-btn"
               onClick={() => handleSearch('best')}
               disabled={status === 'loading' || !query.trim()}
             >
@@ -106,9 +108,10 @@ export default function ExamSearch({ onUnauthorized }: ExamSearchProps) {
                 <path d="M11 11L14 14" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
               </svg>
               Beste match
-            </button>
-            <button
-              className="btn btn--secondary"
+            </Button>
+            <Button
+              variant="secondary"
+              className="search-btn"
               onClick={() => handleSearch('random')}
               disabled={status === 'loading' || !query.trim()}
             >
@@ -116,9 +119,10 @@ export default function ExamSearch({ onUnauthorized }: ExamSearchProps) {
                 <path d="M2 12L6 2L10 10L14 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
               Willekeurig
-            </button>
-            <button
-              className="btn btn--ghost"
+            </Button>
+            <Button
+              variant="ghost"
+              className="search-btn"
               onClick={handleRedo}
               disabled={status === 'loading' || !lastPayload.current}
             >
@@ -127,7 +131,7 @@ export default function ExamSearch({ onUnauthorized }: ExamSearchProps) {
                 <path d="M2 12V8h4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
               Opnieuw
-            </button>
+            </Button>
           </div>
 
           <div className="search-max">

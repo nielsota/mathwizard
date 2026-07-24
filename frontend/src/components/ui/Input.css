@@ -1,0 +1,24 @@
+.ui-field { display: flex; flex-direction: column; gap: var(--space-2); }
+.ui-field__label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-faint);
+}
+.ui-input {
+  width: 100%;
+  padding: 11px 14px;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  background: var(--color-surface);
+  color: var(--color-text);
+  border: var(--outline-width) solid var(--color-outline);
+  border-radius: var(--radius-md);
+}
+.ui-input:focus {
+  outline: none;
+  border-color: var(--color-focus);
+  box-shadow: 0 0 0 3px var(--sky-200);
+}
+.ui-input::placeholder { color: var(--color-text-faint); }

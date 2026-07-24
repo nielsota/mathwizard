@@ -1,0 +1,7 @@
+.styleguide { max-width: var(--container-max); margin: 0 auto; padding: var(--space-7) var(--space-5); }
+.styleguide__hero { margin-bottom: var(--space-6); }
+.styleguide section { margin: var(--space-6) 0; }
+.styleguide h2 { font-size: 1.375rem; margin-bottom: var(--space-4); }
+.styleguide__row { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; }
+.styleguide__grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
+@media (max-width: 720px) { .styleguide__grid { grid-template-columns: 1fr; } }

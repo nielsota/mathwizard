@@ -6,6 +6,7 @@ import Home from './pages/Home'
 import Login from './pages/Login'
 import Practice from './pages/Practice'
 import Figures from './pages/Figures'
+import StyleGuide from './pages/StyleGuide'
 import type { UserResponse } from './types/api'
 import './App.css'
 
@@ -94,6 +95,7 @@ function App() {
             path="/figures"
             element={user ? <Figures onUnauthorized={handleUnauthorized} /> : <Navigate to="/login" replace state={{ from: location }} />}
           />
+          <Route path="/style" element={<StyleGuide />} />
         </Routes>
       </main>
     </>

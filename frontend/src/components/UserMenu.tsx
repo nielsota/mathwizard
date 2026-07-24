@@ -5,6 +5,7 @@ import type {
   StudentsResponse,
   UserResponse,
 } from '../types/api'
+import { Badge } from './ui'
 import './UserMenu.css'
 
 interface UserMenuProps {
@@ -211,9 +212,9 @@ export default function UserMenu({ user, onUnauthorized, onLogout }: UserMenuPro
             <span className="mw-um-avatar mw-um-avatar--self">{initials(user.username)}</span>
             <span className="mw-um-identity-text">
               <span className="mw-um-identity-name">{user.username}</span>
-              <span className="mw-um-identity-role">
+              <Badge tone="neutral">
                 {user.role === 'teacher' ? 'Docent' : 'Leerling'}
-              </span>
+              </Badge>
             </span>
           </div>
 

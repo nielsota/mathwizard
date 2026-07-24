@@ -1,5 +1,6 @@
 import { MathJax } from 'better-react-mathjax'
 import type { FetchResponse } from '../types/api'
+import { Badge, Card } from './ui'
 import './ResultCard.css'
 
 interface ResultCardProps {
@@ -10,16 +11,16 @@ export default function ResultCard({ result }: ResultCardProps) {
   const { formatted, figure_images, record_id, score } = result
 
   return (
-    <article className="result-card">
+    <Card className="result-card">
       <div className="result-meta">
-        <span className="result-pill">
+        <Badge tone="neutral">
           <span className="result-pill-label">ID</span>
           {record_id}
-        </span>
-        <span className="result-pill result-pill--score">
+        </Badge>
+        <Badge tone="med">
           <span className="result-pill-label">Score</span>
           {typeof score === 'number' ? score.toFixed(3) : score}
-        </span>
+        </Badge>
       </div>
 
       <MathJax dynamic>
@@ -50,6 +51,6 @@ export default function ResultCard({ result }: ResultCardProps) {
           </div>
         </div>
       )}
-    </article>
+    </Card>
   )
 }

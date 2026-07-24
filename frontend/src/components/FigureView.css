@@ -1,14 +1,21 @@
 .figure-view {
   width: 100%;
   max-width: 480px;
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   overflow: hidden;
-  border: 1px solid rgba(47, 95, 237, 0.15);
-  box-shadow: 0 4px 16px rgba(47, 95, 237, 0.08);
+  border: var(--outline-width-card) solid var(--color-outline);
+  box-shadow: var(--shadow-soft);
+  background: var(--color-surface);
+
+  /* Theme the Mafs SVG canvas via its own custom properties:
+     bold ink axes/labels on a clean surface, faint ink gridlines. */
+  --mafs-bg: var(--color-surface);
+  --mafs-fg: var(--ink-950);
+  --mafs-origin-color: var(--ink-950);
 }
 
 .figure-error {
-  padding: 1rem;
-  color: #b00020;
+  padding: var(--space-4);
+  color: var(--danger-ink);
   font-style: italic;
 }

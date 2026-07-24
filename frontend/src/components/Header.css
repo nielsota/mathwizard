@@ -2,17 +2,15 @@
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(16px) saturate(1.6);
-  -webkit-backdrop-filter: blur(16px) saturate(1.6);
-  border-bottom: 1px solid var(--border);
   height: var(--header-height);
+  background: var(--color-surface);
+  border-bottom: var(--outline-width-card) solid var(--color-outline);
 }
 
 .mw-header-inner {
   max-width: var(--container-max);
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 var(--space-5);
   height: 100%;
   display: flex;
   align-items: center;
@@ -23,10 +21,9 @@
 .mw-brand {
   display: flex;
   align-items: center;
-  gap: 12px;
   flex-shrink: 0;
   text-decoration: none;
-  color: var(--navy);
+  color: var(--color-heading);
   transition: opacity 0.2s;
 }
 
@@ -34,24 +31,22 @@
   opacity: 0.8;
 }
 
-.mw-logo-mark {
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, var(--navy) 0%, #0a3a7a 100%);
-  display: flex;
+.mw-logo {
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  color: var(--peach);
-  box-shadow: 0 2px 8px rgba(3, 34, 84, 0.2);
+  gap: var(--space-2);
 }
 
-.mw-brand-name {
+.mw-logo-mark {
+  display: block;
+}
+
+.mw-logo-word {
   font-family: var(--font-display);
-  font-size: 24px;
-  font-weight: 400;
-  letter-spacing: -0.3px;
-  color: var(--navy);
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: -0.01em;
+  color: var(--color-heading);
 }
 
 /* Navigation */
@@ -59,18 +54,18 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 4px;
+  gap: var(--space-1);
 }
 
 .mw-nav-link {
   display: flex;
   align-items: center;
   gap: 5px;
-  padding: 8px 14px;
+  padding: var(--space-2) var(--space-3);
   border-radius: var(--radius-sm);
   font-size: 14px;
   font-weight: 500;
-  color: var(--text-muted);
+  color: var(--color-text);
   text-decoration: none;
   border: none;
   background: none;
@@ -82,8 +77,8 @@
 
 .mw-nav-link:hover,
 .mw-nav-link.active {
-  color: var(--navy);
-  background: var(--blue-wash);
+  color: var(--color-primary);
+  background: var(--sky-100);
 }
 
 .mw-chevron {
@@ -101,17 +96,15 @@
 
 .mw-dropdown-menu {
   position: absolute;
-  top: calc(100% + 8px);
+  top: calc(100% + var(--space-2));
   right: 0;
   min-width: 200px;
-  background: var(--surface);
-  border: 1px solid var(--border);
+  background: var(--color-surface);
+  border: var(--outline-width) solid var(--color-outline);
   border-radius: var(--radius-md);
-  padding: 6px;
-  box-shadow:
-    0 8px 30px rgba(3, 34, 84, 0.08),
-    0 2px 8px rgba(3, 34, 84, 0.04);
-  animation: dropIn 0.18s cubic-bezier(0.22, 1, 0.36, 1);
+  padding: var(--space-2);
+  box-shadow: var(--shadow-soft);
+  animation: dropIn 0.18s var(--ease);
 }
 
 @keyframes dropIn {
@@ -127,18 +120,18 @@
 
 .mw-dropdown-item {
   display: block;
-  padding: 10px 14px;
+  padding: var(--space-3) var(--space-3);
   border-radius: var(--radius-sm);
   font-size: 14px;
   font-weight: 500;
-  color: var(--text);
+  color: var(--color-text);
   text-decoration: none;
   transition: all 0.12s ease;
 }
 
 .mw-dropdown-item:hover {
-  background: var(--blue-wash);
-  color: var(--navy);
+  background: var(--sky-100);
+  color: var(--color-primary);
 }
 
 /* Mobile */
@@ -150,13 +143,13 @@
 
   .mw-header-inner {
     flex-wrap: wrap;
-    gap: 8px 12px;
-    padding: 0 16px;
+    gap: var(--space-2) var(--space-3);
+    padding: 0 var(--space-4);
     min-height: var(--header-height);
   }
 
-  .mw-brand-name {
-    font-size: 20px;
+  .mw-logo-word {
+    font-size: 1rem;
   }
 
   .mw-nav {
@@ -173,7 +166,7 @@
 
 @media (max-width: 520px) {
   .mw-header-inner {
-    padding: 8px 16px;
+    padding: var(--space-2) var(--space-4);
   }
 
   .mw-nav {

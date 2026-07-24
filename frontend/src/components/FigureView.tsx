@@ -7,7 +7,14 @@ import type { FigureSpec } from '../types/api'
 import './FigureView.css'
 
 const DEFAULT_Y: [number, number] = [-10, 10]
-const DEFAULT_COLOR = '#2f5fed'
+
+// House palette. Color AND line style vary per curve so multiple plots stay
+// distinguishable without relying on color alone (accessibility).
+const CURVE_STYLES: { color: string; style: 'solid' | 'dashed'; weight: number }[] = [
+  { color: 'var(--sky-600)', style: 'solid', weight: 2.5 },
+  { color: 'var(--peach-400)', style: 'dashed', weight: 2.5 },
+  { color: 'var(--ink-600)', style: 'dashed', weight: 4 },
+]
 
 const fallback = <div className="figure-error">Kon figuur niet tekenen</div>
 
@@ -24,11 +31,14 @@ export default function FigureView({ spec }: FigureViewProps) {
     if (compiled === null) {
       return fallback
     }
+    const preset = CURVE_STYLES[index % CURVE_STYLES.length]
     plots.push(
       <Plot.OfX
         key={`${element.type}-${index}`}
         y={(x: number) => evaluateFinite(compiled, x)}
-        color={element.color ?? DEFAULT_COLOR}
+        color={element.color ?? preset.color}
+        style={preset.style}
+        weight={preset.weight}
       />,
     )
   }
