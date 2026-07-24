@@ -1,26 +1,29 @@
 import { useState } from 'react'
 import { MathJax } from 'better-react-mathjax'
 import type { QuestionResponse } from '../types/api'
+import { Badge } from './ui'
 import './ExerciseCard.css'
 
 interface ExerciseCardProps {
   exercise: QuestionResponse
 }
 
-function difficultyMeta(difficulty?: number | null) {
+type DifficultyTone = 'easy' | 'med' | 'hard' | 'neutral'
+
+function difficultyMeta(difficulty?: number | null): { label: string; tone: DifficultyTone } {
   if (difficulty == null) {
-    return { label: 'Unknown', className: 'ex-badge--difficulty-unknown' }
+    return { label: 'Onbekend', tone: 'neutral' }
   }
 
   if (difficulty <= 1) {
-    return { label: 'Easy', className: 'ex-badge--difficulty-easy' }
+    return { label: 'Makkelijk', tone: 'easy' }
   }
 
   if (difficulty === 2) {
-    return { label: 'Medium', className: 'ex-badge--difficulty-medium' }
+    return { label: 'Gemiddeld', tone: 'med' }
   }
 
-  return { label: 'Hard', className: 'ex-badge--difficulty-hard' }
+  return { label: 'Moeilijk', tone: 'hard' }
 }
 
 export default function ExerciseCard({ exercise }: ExerciseCardProps) {
@@ -37,17 +40,13 @@ export default function ExerciseCard({ exercise }: ExerciseCardProps) {
           {exercise.title && <span className="ex-card-title">{exercise.title}</span>}
         </div>
         <div className="ex-card-meta">
-          <span className={`ex-badge ex-badge--difficulty ${difficulty.className}`}>
-            {difficulty.label}
-          </span>
+          <Badge tone={difficulty.tone}>{difficulty.label}</Badge>
           {exercise.max_marks > 0 && (
-            <span className="ex-badge ex-badge--marks">
-              {exercise.max_marks}p
-            </span>
+            <Badge tone="neutral">{exercise.max_marks}p</Badge>
           )}
-          <span className={`ex-badge ${exercise.calculator_allowed ? 'ex-badge--calc' : 'ex-badge--no-calc'}`}>
+          <Badge tone="neutral">
             {exercise.calculator_allowed ? 'Rekenmachine' : 'Zonder rekenmachine'}
-          </span>
+          </Badge>
           <button
             type="button"
             className="ex-card-toggle"
