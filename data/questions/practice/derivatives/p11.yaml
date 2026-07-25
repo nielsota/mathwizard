@@ -1,0 +1,19 @@
+source: practice
+topic: derivatives
+tags:
+- differentieren
+- raaklijn
+- machtsregel
+calculator_allowed: false
+difficulty: 2
+builds_toward:
+- VW-1025-a-18-2-o-q5
+parts:
+- points: 3
+  text: \(f(x) = x^2 - 3x\) in het punt met \(x = 2\)
+- points: 3
+  text: \(g(x) = x^3 - 2x + 1\) in het punt met \(x = 1\)
+- points: 3
+  text: \(h(x) = \frac{1}{2}x^2 + 1\) in het punt met \(x = -2\)
+stem: Stel een vergelijking op van de raaklijn aan de grafiek van de gegeven functie in het aangegeven punt.
+title: Raaklijn opstellen

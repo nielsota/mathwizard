@@ -1,0 +1,20 @@
+source: practice
+topic: derivatives
+tags:
+- differentieren
+- monotonie
+- tekenschema
+- quotientregel
+calculator_allowed: false
+difficulty: 3
+builds_toward:
+- VW-1025-a-18-1-o-q4
+parts:
+- points: 3
+  text: \(f(x) = x^3 - 3x^2\)
+- points: 3
+  text: \(g(x) = x^4 - 8x^2\)
+- points: 4
+  text: \(h(x) = \frac{x}{x^2 + 1}\)
+stem: Onderzoek met behulp van de afgeleide op welke intervallen de functie stijgt en op welke zij daalt.
+title: Stijgen en dalen

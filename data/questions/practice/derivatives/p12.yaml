@@ -1,0 +1,19 @@
+source: practice
+topic: derivatives
+tags:
+- differentieren
+- raaklijn
+- parameter
+calculator_allowed: false
+difficulty: 3
+builds_toward:
+- VW-1025-a-18-2-o-q5
+parts:
+- points: 3
+  text: Stel een vergelijking op van de raaklijn \(l\) aan de grafiek van \(f\) in \(P\).
+- points: 3
+  text: De raaklijn \(l\) snijdt de \(x\)-as in punt \(A\). Bereken exact de \(x\)-coördinaat van \(A\), uitgedrukt in \(p\).
+- points: 3
+  text: Toon aan dat de \(x\)-coördinaat van \(A\) gelijk is aan de helft van de \(x\)-coördinaat van \(P\).
+stem: De functie \(f\) is gegeven door \(f(x) = x^2\). Het punt \(P(p, p^2)\) met \(p > 0\) ligt op de grafiek van \(f\).
+title: Raaklijn met parameter

@@ -1,0 +1,19 @@
+source: practice
+topic: derivatives
+tags:
+- differentieren
+- goniometrie
+- kettingregel
+- extremen
+calculator_allowed: false
+difficulty: 4
+builds_toward:
+- VW-1025-a-18-1-o-q4
+- VW-1025-a-19-1-o-q2
+parts:
+- points: 5
+  text: \(f(x) = 2\sin(x) + \cos(2x)\)
+- points: 5
+  text: \(g(x) = \cos(2x) + 2\cos(x)\)
+stem: Bepaal exact de \(x\)-coördinaten van de toppen van de grafiek van de functie op het interval \([0, 2\pi)\).
+title: Toppen van een goniometrische functie

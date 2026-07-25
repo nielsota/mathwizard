@@ -1,0 +1,20 @@
+source: practice
+topic: derivatives
+tags:
+- differentieren
+- kettingregel
+- wortel
+- goniometrie
+calculator_allowed: false
+difficulty: 4
+builds_toward:
+- VW-1025-a-19-1-o-q2
+parts:
+- points: 4
+  text: Gegeven \(f(x) = 4\sqrt{x} - x\). Bepaal \(f'(x)\) en toon aan dat \(f\) een top heeft in \(x = 4\). Bereken exact de \(y\)-coördinaat van deze top.
+- points: 4
+  text: Gegeven \(g(x) = \sqrt{x^2 + 1}\). Bepaal \(g'(x)\) en toon aan dat \(g\) een minimum heeft in \(x = 0\).
+- points: 4
+  text: Gegeven \(h(x) = 3\cos(2x) - \sqrt{2x}\). Bepaal \(h'(x)\).
+stem: Bepaal telkens eerst de afgeleide en gebruik die om de gevraagde eigenschap aan te tonen.
+title: Afgeleide met wortel en top aantonen
