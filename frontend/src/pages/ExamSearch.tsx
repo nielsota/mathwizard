@@ -91,6 +91,7 @@ export default function ExamSearch({ onUnauthorized }: ExamSearchProps) {
           value={query}
           onChange={e => setQuery(e.target.value)}
           onKeyDown={handleKeyDown}
+          aria-label="Beschrijf de opgave die je zoekt"
           placeholder="Beschrijf de opgave die je zoekt..."
           rows={3}
         />

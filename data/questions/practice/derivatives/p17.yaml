@@ -1,0 +1,19 @@
+source: practice
+topic: derivatives
+tags:
+- differentieren
+- veranderingssnelheid
+- context
+calculator_allowed: false
+difficulty: 4
+builds_toward:
+- VW-1025-a-18-1-o-q1
+parts:
+- points: 3
+  text: De hoogte (in meter) van een omhooggeworpen bal is \(h(t) = 20t - 5t^2\) met \(t\) in seconden. Bereken de snelheid van de bal op \(t = 1\).
+- points: 3
+  text: Bepaal het tijdstip waarop de snelheid van de bal gelijk is aan \(0\) en bereken de hoogte van de bal op dat moment.
+- points: 4
+  text: De inhoud (in liter) van een leeglopend vat is \(V(t) = 100 - 5t^2\) met \(t\) in minuten. Bereken exact de snelheid waarmee het vat leegloopt op \(t = 2\).
+stem: Bij elke opgave stelt de afgeleide een momentane veranderingssnelheid voor.
+title: Momentane snelheid

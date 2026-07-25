@@ -1,0 +1,22 @@
+source: practice
+topic: derivatives
+tags:
+- differentieren
+- familie
+- productregel
+- kettingregel
+- exponentieel
+- bewijs
+calculator_allowed: false
+difficulty: 4
+builds_toward:
+- VW-1025-a-18-1-o-q2
+parts:
+- points: 4
+  text: Bepaal \(f_a'(x)\) en herleid deze tot de vorm \(e^{ax}(1 + ax)\).
+- points: 4
+  text: Toon aan dat de grafiek van \(f_a\) voor elke \(a > 0\) precies één top heeft en bepaal exact de coördinaten van deze top, uitgedrukt in \(a\).
+- points: 4
+  text: Toon aan dat de toppen van alle grafieken \(f_a\) op de lijn \(y = \frac{1}{e}x\) liggen.
+stem: De functie \(f_a\) is gegeven door \(f_a(x) = x e^{ax}\) met \(a > 0\).
+title: Familie f_a en toppen

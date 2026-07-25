@@ -12,6 +12,7 @@
   --mafs-bg: var(--color-surface);
   --mafs-fg: var(--ink-950);
   --mafs-origin-color: var(--ink-950);
+  --mafs-line-color: var(--ink-200);
 }
 
 .figure-error {
