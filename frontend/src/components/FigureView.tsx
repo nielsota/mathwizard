@@ -50,7 +50,7 @@ export default function FigureView({ spec }: FigureViewProps) {
 
   return (
     <FigureErrorBoundary fallback={fallback}>
-      <div className="figure-view">
+      <figure className="figure-view">
         <Mafs viewBox={{ x: spec.viewport.x, y }} preserveAspectRatio={false}>
           {spec.show_grid && <Coordinates.Cartesian subdivisions={2} />}
           {plots}
@@ -62,7 +62,7 @@ export default function FigureView({ spec }: FigureViewProps) {
             ))}
           </figcaption>
         )}
-      </div>
+      </figure>
     </FigureErrorBoundary>
   )
 }
