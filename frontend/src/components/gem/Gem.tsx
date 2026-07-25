@@ -1,6 +1,7 @@
 import { Suspense, lazy, useMemo } from 'react'
 import Logo from '../Logo'
 import { canRender3D } from './capabilities'
+import GemErrorBoundary from './GemErrorBoundary'
 import './Gem.css'
 
 const GemCanvas = lazy(() => import('./GemCanvas'))
@@ -17,9 +18,11 @@ export default function Gem({ size = 96 }: GemProps) {
 
   return (
     <div className="gem" style={{ width: size, height: size }}>
-      <Suspense fallback={fallback}>
-        <GemCanvas size={size} />
-      </Suspense>
+      <GemErrorBoundary fallback={fallback}>
+        <Suspense fallback={fallback}>
+          <GemCanvas size={size} />
+        </Suspense>
+      </GemErrorBoundary>
     </div>
   )
 }
