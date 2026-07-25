@@ -8,6 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "check-tokens": "node scripts/check-tokens.mjs",
+    "check-gem": "node --experimental-strip-types scripts/check-gem.ts",
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest"
