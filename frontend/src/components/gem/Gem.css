@@ -1,0 +1,13 @@
+.gem {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gem-canvas {
+  display: block;
+}
+
+.gem-canvas canvas {
+  display: block;
+}
