@@ -168,3 +168,26 @@ h1, h2, h3, h4 {
   margin-bottom: var(--space-5);
   white-space: pre-wrap;
 }
+
+/* Respect the user's motion preference: drop enter/hover/decorative motion,
+   but keep the loading spinner turning as a functional indicator. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .page-enter { animation: none; }
+  .search-hero-accent { animation: none; }
+
+  /* Keep hover feedback via shadow, but remove the lift/translation. */
+  .home-topic-card:hover,
+  .ex-card:hover { transform: none; }
+
+  .search-spinner {
+    animation-duration: 0.7s !important;
+    animation-iteration-count: infinite !important;
+  }
+}
