@@ -2,7 +2,7 @@ import { useState } from 'react'
 import type { FormEvent } from 'react'
 import type { LoginRequest, UserResponse } from '../types/api'
 import { Card, Button, Input } from '../components/ui'
-import Logo from '../components/Logo'
+import Gem from '../components/gem/Gem'
 import './Login.css'
 
 interface LoginProps {
@@ -49,7 +49,7 @@ export default function Login({ onLogin }: LoginProps) {
         <aside className="login-brand" aria-hidden="true">
           <p className="login-kicker">Beveiligde sessie</p>
           <div className="login-brand-mark">
-            <Logo showWordmark={false} size={96} />
+            <Gem size={96} />
           </div>
           <p className="login-brand-word">MathWizard</p>
           <p className="login-brand-tagline">Toegang tot je oefenruimte</p>
