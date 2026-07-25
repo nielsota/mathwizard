@@ -5,14 +5,20 @@
   overflow: hidden;
   border: var(--outline-width-card) solid var(--color-outline);
   box-shadow: var(--shadow-soft);
-  background: var(--color-surface);
+  background: var(--paper);
+}
 
-  /* Theme the Mafs SVG canvas via its own custom properties:
-     bold ink axes/labels on a clean surface, faint ink gridlines. */
-  --mafs-bg: var(--color-surface);
+/* Mafs declares its palette custom properties directly ON `.MafsView`, so any
+   value set on the parent `.figure-view` is overridden by Mafs' own declaration.
+   Target `.MafsView` directly (higher specificity) so the house theme wins:
+   warm paper canvas, ink axes/labels, faint ink major grid, subtle sky minor
+   grid — i.e. graph paper in the house style. */
+.figure-view .MafsView {
+  --mafs-bg: var(--paper);
   --mafs-fg: var(--ink-950);
   --mafs-origin-color: var(--ink-950);
   --mafs-line-color: var(--ink-200);
+  --grid-line-subdivision-color: var(--sky-100);
 }
 
 .figure-error {

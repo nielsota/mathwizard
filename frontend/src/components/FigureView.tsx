@@ -47,7 +47,7 @@ export default function FigureView({ spec }: FigureViewProps) {
     <FigureErrorBoundary fallback={fallback}>
       <div className="figure-view">
         <Mafs viewBox={{ x: spec.viewport.x, y }} preserveAspectRatio={false}>
-          {spec.show_grid && <Coordinates.Cartesian />}
+          {spec.show_grid && <Coordinates.Cartesian subdivisions={2} />}
           {plots}
         </Mafs>
       </div>
