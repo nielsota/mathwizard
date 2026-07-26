@@ -26,14 +26,3 @@
   color: var(--danger-ink);
   font-style: italic;
 }
-
-.figure-equation {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: var(--space-3);
-  padding: var(--space-2) var(--space-3);
-  border-top: var(--outline-width) solid var(--color-hairline);
-  color: var(--color-text-muted);
-  background: var(--surface);
-}

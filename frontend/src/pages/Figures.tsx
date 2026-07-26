@@ -1,6 +1,8 @@
+import { MathJax } from 'better-react-mathjax'
 import FigureView from '../components/FigureView'
 import { Card } from '../components/ui'
 import { useFigures } from '../hooks/useFigures'
+import { expressionToTeX } from '../lib/mathEval'
 import './Figures.css'
 
 interface FiguresProps {
@@ -22,12 +24,26 @@ export default function Figures({ onUnauthorized }: FiguresProps) {
 
       {!loading && !error && (
         <div className="figures-grid">
-          {figures.map((figure) => (
-            <Card key={figure.id} className="figures-card">
-              <h2 className="figures-card-title">{figure.title}</h2>
-              <FigureView spec={figure.spec} />
-            </Card>
-          ))}
+          {figures.map((figure) => {
+            const equation = figure.spec.elements
+              .map((element) => expressionToTeX(element.fn))
+              .filter((tex): tex is string => tex !== null)
+              .map((tex) => `y = ${tex}`)
+              .join(', ')
+            return (
+              <Card key={figure.id} className="figures-card">
+                <h2 className="figures-card-title">
+                  {figure.title}
+                  {equation && (
+                    <span className="figures-card-eq">
+                      <MathJax inline dynamic>{`\\( ${equation} \\)`}</MathJax>
+                    </span>
+                  )}
+                </h2>
+                <FigureView spec={figure.spec} />
+              </Card>
+            )
+          })}
         </div>
       )}
     </div>

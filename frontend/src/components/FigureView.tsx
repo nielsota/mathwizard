@@ -1,8 +1,7 @@
 import { Mafs, Coordinates, Plot } from 'mafs'
 import type { ReactNode } from 'react'
-import { MathJax } from 'better-react-mathjax'
 import 'mafs/core.css'
-import { compileExpression, evaluateFinite, expressionToTeX } from '../lib/mathEval'
+import { compileExpression, evaluateFinite } from '../lib/mathEval'
 import FigureErrorBoundary from './FigureErrorBoundary'
 import type { FigureSpec } from '../types/api'
 import './FigureView.css'
@@ -44,25 +43,14 @@ export default function FigureView({ spec }: FigureViewProps) {
     )
   }
 
-  const equations = spec.elements
-    .map((element) => expressionToTeX(element.fn))
-    .filter((tex): tex is string => tex !== null)
-
   return (
     <FigureErrorBoundary fallback={fallback}>
-      <figure className="figure-view">
+      <div className="figure-view">
         <Mafs viewBox={{ x: spec.viewport.x, y }} preserveAspectRatio={false}>
           {spec.show_grid && <Coordinates.Cartesian subdivisions={2} />}
           {plots}
         </Mafs>
-        {equations.length > 0 && (
-          <figcaption className="figure-equation">
-            {equations.map((tex, i) => (
-              <MathJax key={i} inline dynamic>{`\\( y = ${tex} \\)`}</MathJax>
-            ))}
-          </figcaption>
-        )}
-      </figure>
+      </div>
     </FigureErrorBoundary>
   )
 }
