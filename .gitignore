@@ -44,6 +44,11 @@ backups/
 # cursor
 .cursor/
 
+# consolidated local skills (single source of truth lives in .agents/skills;
+# .claude/skills and .cursor/skills are symlinks to it)
+.agents/skills/
+.claude/skills
+
 # database
 *.db
 
