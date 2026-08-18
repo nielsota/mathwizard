@@ -54,3 +54,8 @@ backups/
 
 # text
 *.txt
+
+# agent-generated plans, specs, and task reports: useful locally, too large to
+# review in a diff
+docs/superpowers/
+.superpowers/sdd/
