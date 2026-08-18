@@ -1,3 +1,4 @@
+from abc import abstractmethod
 from types import TracebackType
 from typing import Protocol, Self
 
@@ -9,8 +10,10 @@ from mathwizard.ports.user import UserRepository
 
 
 class Transaction(Protocol):
+    @abstractmethod
     def __enter__(self) -> Self: ...
 
+    @abstractmethod
     def __exit__(
         self,
         exc_type: type[BaseException] | None,
@@ -18,8 +21,10 @@ class Transaction(Protocol):
         traceback: TracebackType | None,
     ) -> None: ...
 
+    @abstractmethod
     def commit(self) -> None: ...
 
+    @abstractmethod
     def rollback(self) -> None: ...
 
 
@@ -57,4 +62,5 @@ class UnitOfWork(Transaction, Protocol):
 
 
 class UnitOfWorkFactory(Protocol):
+    @abstractmethod
     def __call__(self) -> UnitOfWork: ...

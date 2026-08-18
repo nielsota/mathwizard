@@ -18,10 +18,11 @@ from mathwizard.ports.figure import FigureRepository
 from mathwizard.ports.question import QuestionRepository
 from mathwizard.ports.roster import RosterRepository
 from mathwizard.ports.session import SessionRepository
+from mathwizard.ports.unit_of_work import UnitOfWork, UnitOfWorkFactory
 from mathwizard.ports.user import UserRepository
 
 
-class FakeUserRepository:
+class FakeUserRepository(UserRepository):
     def __init__(self) -> None:
         self._users: dict[int, User] = {}
         self._next_id = 1
@@ -53,7 +54,7 @@ class FakeUserRepository:
         return [user for user_id, user in sorted(self._users.items()) if user_id in wanted]
 
 
-class FakeSessionRepository:
+class FakeSessionRepository(SessionRepository):
     def __init__(self) -> None:
         self._sessions: dict[str, AuthSession] = {}
 
@@ -83,7 +84,7 @@ class FakeSessionRepository:
             self._sessions[token] = session.model_copy(update={"revoked_at": revoked_at})
 
 
-class FakeRosterRepository:
+class FakeRosterRepository(RosterRepository):
     def __init__(self) -> None:
         self._teachers: dict[int, Teacher] = {}
         self._students: dict[int, Student] = {}
@@ -129,7 +130,7 @@ class FakeRosterRepository:
         ]
 
 
-class FakeQuestionRepository:
+class FakeQuestionRepository(QuestionRepository):
     def __init__(self) -> None:
         self._questions: dict[int, Question] = {}
         self._next_id = 1
@@ -193,7 +194,7 @@ class FakeQuestionRepository:
         )
 
 
-class FakeFigureRepository:
+class FakeFigureRepository(FigureRepository):
     def __init__(self) -> None:
         self._figures: dict[int, Figure] = {}
         self._next_id = 1
@@ -239,13 +240,7 @@ class FakeFigureRepository:
         )
 
 
-class FakeUnitOfWork:
-    users: UserRepository
-    sessions: SessionRepository
-    roster: RosterRepository
-    questions: QuestionRepository
-    figures: FigureRepository
-
+class FakeUnitOfWork(UnitOfWork):
     def __init__(self) -> None:
         self.users = FakeUserRepository()
         self.sessions = FakeSessionRepository()
@@ -277,7 +272,7 @@ class FakeUnitOfWork:
         self.committed = False
 
 
-class FakeUnitOfWorkFactory:
+class FakeUnitOfWorkFactory(UnitOfWorkFactory):
     def __init__(self, uow: FakeUnitOfWork) -> None:
         self._uow = uow
 
