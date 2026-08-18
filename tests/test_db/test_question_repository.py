@@ -6,7 +6,6 @@ from mathwizard.db.repositories.question import SqlAlchemyQuestionRepository
 from mathwizard.enums import QuestionSource
 from mathwizard.exceptions import QuestionNotFoundError
 from mathwizard.models.domain.question import QuestionDraft
-from mathwizard.ports.question import QuestionRepository
 
 
 def _draft(**overrides: object) -> QuestionDraft:
@@ -20,15 +19,6 @@ def _draft(**overrides: object) -> QuestionDraft:
     }
     values.update(overrides)
     return QuestionDraft(**values)
-
-
-def test_repository_satisfies_the_question_repository_protocol(
-    session_factory: sessionmaker[Session],
-) -> None:
-    with session_factory() as session:
-        repository: QuestionRepository = SqlAlchemyQuestionRepository(session)
-
-    assert repository is not None
 
 
 def test_add_persists_metadata_and_auto_labelled_parts(

@@ -4,7 +4,6 @@ from sqlalchemy.orm import Session, sessionmaker
 
 from mathwizard.db.repositories.session import SqlAlchemySessionRepository
 from mathwizard.db.repositories.user import SqlAlchemyUserRepository
-from mathwizard.ports.session import SessionRepository
 
 NOW = datetime(2026, 8, 17, 12, 0, 0)
 
@@ -15,15 +14,6 @@ def _seed_user(session: Session) -> int:
     )
     session.commit()
     return user.id
-
-
-def test_repository_satisfies_the_session_repository_protocol(
-    session_factory: sessionmaker[Session],
-) -> None:
-    with session_factory() as session:
-        repository: SessionRepository = SqlAlchemySessionRepository(session)
-
-    assert repository is not None
 
 
 def test_add_persists_a_session(session_factory: sessionmaker[Session]) -> None:

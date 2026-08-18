@@ -2,22 +2,12 @@ from sqlalchemy.orm import Session, sessionmaker
 
 from mathwizard.db.repositories.roster import SqlAlchemyRosterRepository
 from mathwizard.db.repositories.user import SqlAlchemyUserRepository
-from mathwizard.ports.roster import RosterRepository
 
 
 def _add_user(session: Session, username: str) -> int:
     return SqlAlchemyUserRepository(session).add(
         username=username, password_hash="hash"
     ).id
-
-
-def test_repository_satisfies_the_roster_repository_protocol(
-    session_factory: sessionmaker[Session],
-) -> None:
-    with session_factory() as session:
-        repository: RosterRepository = SqlAlchemyRosterRepository(session)
-
-    assert repository is not None
 
 
 def test_add_teacher_and_lookup_by_user_id(

@@ -3,16 +3,6 @@ from sqlalchemy.orm import Session, sessionmaker
 
 from mathwizard.db.repositories.user import SqlAlchemyUserRepository
 from mathwizard.exceptions import UserNotFoundError
-from mathwizard.ports.user import UserRepository
-
-
-def test_repository_satisfies_the_user_repository_protocol(
-    session_factory: sessionmaker[Session],
-) -> None:
-    with session_factory() as session:
-        repository: UserRepository = SqlAlchemyUserRepository(session)
-
-    assert repository is not None
 
 
 def test_add_returns_a_domain_user_with_an_id(

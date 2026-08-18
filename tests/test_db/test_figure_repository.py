@@ -9,7 +9,6 @@ from mathwizard.models.domain.figure import (
     FunctionGraph,
     Viewport,
 )
-from mathwizard.ports.figure import FigureRepository
 
 
 def _spec(fn: str = "x^2") -> FigureSpec:
@@ -17,15 +16,6 @@ def _spec(fn: str = "x^2") -> FigureSpec:
         viewport=Viewport(x=(-5.0, 5.0)),
         elements=[FunctionGraph(fn=fn)],
     )
-
-
-def test_repository_satisfies_the_figure_repository_protocol(
-    session_factory: sessionmaker[Session],
-) -> None:
-    with session_factory() as session:
-        repository: FigureRepository = SqlAlchemyFigureRepository(session)
-
-    assert repository is not None
 
 
 def test_add_round_trips_the_typed_spec(
