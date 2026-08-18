@@ -7,6 +7,7 @@ from sqlalchemy.orm import Session, sessionmaker
 
 from mathwizard.db.base import Base
 from mathwizard.db.engine import create_db_engine, create_session_factory
+from mathwizard.db.unit_of_work import SqlAlchemyUnitOfWorkFactory
 
 
 @pytest.fixture
@@ -20,3 +21,8 @@ def engine(tmp_path: Path) -> Iterator[Engine]:
 @pytest.fixture
 def session_factory(engine: Engine) -> sessionmaker[Session]:
     return create_session_factory(engine)
+
+
+@pytest.fixture
+def uow_factory(session_factory: sessionmaker[Session]) -> SqlAlchemyUnitOfWorkFactory:
+    return SqlAlchemyUnitOfWorkFactory(session_factory)
