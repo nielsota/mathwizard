@@ -1,11 +1,11 @@
 from collections.abc import Sequence
 from typing import Protocol
 
-from mathwizard.models.domain.user import User, UserDraft
+from mathwizard.models.domain.user import User
 
 
 class UserRepository(Protocol):
-    def add(self, draft: UserDraft) -> User: ...
+    def add(self, *, username: str, password_hash: str) -> User: ...
 
     def get(self, user_id: int) -> User: ...
 

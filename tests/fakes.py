@@ -12,13 +12,13 @@ from mathwizard.exceptions import (
 from mathwizard.models.domain.figure import Figure, FigureDraft
 from mathwizard.models.domain.question import Question, QuestionDraft, QuestionPart
 from mathwizard.models.domain.roster import Student, Teacher
-from mathwizard.models.domain.session import AuthSession, AuthSessionDraft
-from mathwizard.models.domain.user import User, UserDraft
-from mathwizard.repositories.figure import FigureRepository
-from mathwizard.repositories.question import QuestionRepository
-from mathwizard.repositories.roster import RosterRepository
-from mathwizard.repositories.session import SessionRepository
-from mathwizard.repositories.user import UserRepository
+from mathwizard.models.domain.session import AuthSession
+from mathwizard.models.domain.user import User
+from mathwizard.ports.figure import FigureRepository
+from mathwizard.ports.question import QuestionRepository
+from mathwizard.ports.roster import RosterRepository
+from mathwizard.ports.session import SessionRepository
+from mathwizard.ports.user import UserRepository
 
 
 class FakeUserRepository:
@@ -26,11 +26,11 @@ class FakeUserRepository:
         self._users: dict[int, User] = {}
         self._next_id = 1
 
-    def add(self, draft: UserDraft) -> User:
+    def add(self, *, username: str, password_hash: str) -> User:
         user = User(
             id=self._next_id,
-            username=draft.username,
-            password_hash=draft.password_hash,
+            username=username,
+            password_hash=password_hash,
         )
         self._users[user.id] = user
         self._next_id += 1
@@ -57,12 +57,19 @@ class FakeSessionRepository:
     def __init__(self) -> None:
         self._sessions: dict[str, AuthSession] = {}
 
-    def add(self, draft: AuthSessionDraft) -> AuthSession:
+    def add(
+        self,
+        *,
+        token: str,
+        user_id: int,
+        created_at: datetime,
+        expires_at: datetime,
+    ) -> AuthSession:
         session = AuthSession(
-            token=draft.token,
-            user_id=draft.user_id,
-            created_at=draft.created_at,
-            expires_at=draft.expires_at,
+            token=token,
+            user_id=user_id,
+            created_at=created_at,
+            expires_at=expires_at,
         )
         self._sessions[session.token] = session
         return session

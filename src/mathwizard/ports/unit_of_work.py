@@ -1,11 +1,11 @@
 from types import TracebackType
 from typing import Protocol, Self
 
-from mathwizard.repositories.figure import FigureRepository
-from mathwizard.repositories.question import QuestionRepository
-from mathwizard.repositories.roster import RosterRepository
-from mathwizard.repositories.session import SessionRepository
-from mathwizard.repositories.user import UserRepository
+from mathwizard.ports.figure import FigureRepository
+from mathwizard.ports.question import QuestionRepository
+from mathwizard.ports.roster import RosterRepository
+from mathwizard.ports.session import SessionRepository
+from mathwizard.ports.user import UserRepository
 
 
 class Transaction(Protocol):

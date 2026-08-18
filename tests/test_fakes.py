@@ -3,8 +3,7 @@ import pytest
 from mathwizard.exceptions import QuestionNotFoundError, UserNotFoundError
 from mathwizard.models.domain.figure import FigureDraft, FigureSpec, Viewport
 from mathwizard.models.domain.question import QuestionDraft
-from mathwizard.models.domain.user import UserDraft
-from mathwizard.repositories.unit_of_work import UnitOfWork
+from mathwizard.ports.unit_of_work import UnitOfWork
 from tests.fakes import FakeUnitOfWork
 
 
@@ -22,7 +21,7 @@ def test_fake_unit_of_work_reports_commit() -> None:
     uow = FakeUnitOfWork()
 
     with uow:
-        uow.users.add(UserDraft(username="root", password_hash="hash"))
+        uow.users.add(username="root", password_hash="hash")
         uow.commit()
 
     assert uow.committed is True
@@ -43,8 +42,8 @@ def test_fake_user_repository_assigns_incrementing_ids() -> None:
     uow = FakeUnitOfWork()
 
     with uow:
-        first = uow.users.add(UserDraft(username="a", password_hash="h"))
-        second = uow.users.add(UserDraft(username="b", password_hash="h"))
+        first = uow.users.add(username="a", password_hash="h")
+        second = uow.users.add(username="b", password_hash="h")
 
     assert (first.id, second.id) == (1, 2)
 
@@ -60,8 +59,8 @@ def test_fake_user_repository_get_many_returns_id_order() -> None:
     uow = FakeUnitOfWork()
 
     with uow:
-        uow.users.add(UserDraft(username="a", password_hash="h"))
-        uow.users.add(UserDraft(username="b", password_hash="h"))
+        uow.users.add(username="a", password_hash="h")
+        uow.users.add(username="b", password_hash="h")
         found = uow.users.get_many([2, 1])
 
     assert [user.id for user in found] == [1, 2]
