@@ -89,8 +89,8 @@ export default function Practice({ onUnauthorized }: PracticeProps) {
       {practiceSet && !loading && !error && (
         <div className="practice-list">
           {questions.length > 0 ? (
-            questions.map(question => (
-              <ExerciseCard key={question.id} exercise={question} />
+            questions.map((question, index) => (
+              <ExerciseCard key={question.id} exercise={question} number={index + 1} />
             ))
           ) : (
             <div className="practice-empty">

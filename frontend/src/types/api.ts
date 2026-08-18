@@ -33,14 +33,12 @@ export interface QuestionPart {
 
 export interface QuestionResponse {
   id: number;
-  number: number;
   source: QuestionSource;
   topic: string;
   tags: string[];
   title: string;
   question_text: string;
-  parts: string[];
-  part_details: QuestionPart[];
+  parts: QuestionPart[];
   max_marks: number;
   calculator_allowed?: boolean | null;
   difficulty?: number | null;
