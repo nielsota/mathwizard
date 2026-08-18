@@ -10,6 +10,9 @@ const mathJaxConfig = {
     inlineMath: [['\\(', '\\)'], ['$', '$']],
     displayMath: [['\\[', '\\]'], ['$$', '$$']],
   },
+  output: {
+    font: 'mathjax-fira',
+  },
   startup: {
     typeset: false,
   },
@@ -17,7 +20,7 @@ const mathJaxConfig = {
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <MathJaxContext config={mathJaxConfig}>
+    <MathJaxContext version={4} config={mathJaxConfig}>
       <BrowserRouter>
         <App />
       </BrowserRouter>

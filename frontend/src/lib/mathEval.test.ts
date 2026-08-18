@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { compileExpression, evaluateFinite } from './mathEval'
+import { compileExpression, evaluateFinite, expressionToTeX } from './mathEval'
 
 describe('compileExpression', () => {
   it('compiles a valid expression', () => {
@@ -26,5 +26,24 @@ describe('evaluateFinite', () => {
   it('returns NaN for a non-numeric result (complex root)', () => {
     const compiled = compileExpression('sqrt(x)')
     expect(Number.isNaN(evaluateFinite(compiled!, -1))).toBe(true)
+  })
+})
+
+describe('expressionToTeX', () => {
+  it('returns LaTeX for a power expression', () => {
+    const tex = expressionToTeX('x^2')
+    expect(tex).not.toBeNull()
+    expect(tex).toContain('^')
+  })
+
+  it('hides explicit multiplication', () => {
+    const tex = expressionToTeX('3*x')
+    expect(tex).not.toBeNull()
+    expect(tex).not.toContain('*')
+    expect(tex).not.toContain('\\cdot')
+  })
+
+  it('returns null for invalid syntax', () => {
+    expect(expressionToTeX('x^^2')).toBeNull()
   })
 })
