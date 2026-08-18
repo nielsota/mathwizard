@@ -1,15 +1,15 @@
-from mathwizard.db.tables.figure import FigureRow
-from mathwizard.db.tables.question import QuestionPartRow, QuestionRow
-from mathwizard.db.tables.roster import StudentRow, TeacherRow
-from mathwizard.db.tables.session import SessionRow
-from mathwizard.db.tables.user import UserRow
+from mathwizard.db.tables.figure import FigureSchema
+from mathwizard.db.tables.question import QuestionPartSchema, QuestionSchema
+from mathwizard.db.tables.roster import StudentSchema, TeacherSchema
+from mathwizard.db.tables.session import SessionSchema
+from mathwizard.db.tables.user import UserSchema
 
 __all__ = [
-    "FigureRow",
-    "QuestionPartRow",
-    "QuestionRow",
-    "SessionRow",
-    "StudentRow",
-    "TeacherRow",
-    "UserRow",
+    "FigureSchema",
+    "QuestionPartSchema",
+    "QuestionSchema",
+    "SessionSchema",
+    "StudentSchema",
+    "TeacherSchema",
+    "UserSchema",
 ]

@@ -5,7 +5,7 @@ from mathwizard.db.base import Base
 from mathwizard.enums import QuestionSource
 
 
-class QuestionRow(Base):
+class QuestionSchema(Base):
     __tablename__ = "questions"
 
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -25,15 +25,15 @@ class QuestionRow(Base):
     calculator_allowed: Mapped[bool | None] = mapped_column(default=None)
     difficulty: Mapped[int | None] = mapped_column(default=None)
 
-    parts: Mapped[list["QuestionPartRow"]] = relationship(
+    parts: Mapped[list["QuestionPartSchema"]] = relationship(
         back_populates="question",
         cascade="all, delete-orphan",
-        order_by="QuestionPartRow.id",
+        order_by="QuestionPartSchema.id",
         lazy="selectin",
     )
 
 
-class QuestionPartRow(Base):
+class QuestionPartSchema(Base):
     __tablename__ = "question_parts"
 
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -42,4 +42,4 @@ class QuestionPartRow(Base):
     text: Mapped[str] = mapped_column(Text)
     points: Mapped[int]
 
-    question: Mapped[QuestionRow] = relationship(back_populates="parts")
+    question: Mapped[QuestionSchema] = relationship(back_populates="parts")

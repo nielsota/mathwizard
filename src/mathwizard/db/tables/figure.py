@@ -6,7 +6,7 @@ from sqlalchemy.orm import Mapped, mapped_column
 from mathwizard.db.base import Base
 
 
-class FigureRow(Base):
+class FigureSchema(Base):
     __tablename__ = "figures"
 
     id: Mapped[int] = mapped_column(primary_key=True)

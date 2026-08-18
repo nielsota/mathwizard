@@ -6,7 +6,7 @@ from sqlalchemy.orm import Mapped, mapped_column
 from mathwizard.db.base import Base
 
 
-class SessionRow(Base):
+class SessionSchema(Base):
     __tablename__ = "sessions"
 
     token: Mapped[str] = mapped_column(String(64), primary_key=True)

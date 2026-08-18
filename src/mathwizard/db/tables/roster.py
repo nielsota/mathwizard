@@ -4,14 +4,14 @@ from sqlalchemy.orm import Mapped, mapped_column
 from mathwizard.db.base import Base
 
 
-class TeacherRow(Base):
+class TeacherSchema(Base):
     __tablename__ = "teachers"
 
     id: Mapped[int] = mapped_column(primary_key=True)
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), unique=True, index=True)
 
 
-class StudentRow(Base):
+class StudentSchema(Base):
     __tablename__ = "students"
 
     id: Mapped[int] = mapped_column(primary_key=True)
