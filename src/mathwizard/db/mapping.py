@@ -3,68 +3,44 @@ from mathwizard.db.tables.question import QuestionPartSchema, QuestionSchema
 from mathwizard.db.tables.roster import StudentSchema, TeacherSchema
 from mathwizard.db.tables.session import SessionSchema
 from mathwizard.db.tables.user import UserSchema
-from mathwizard.models.domain.figure import Figure, FigureDraft, FigureSpec
-from mathwizard.models.domain.question import Question, QuestionDraft, QuestionPart
+from mathwizard.models.domain.figure import Figure, FigureDraft
+from mathwizard.models.domain.question import Question, QuestionDraft
 from mathwizard.models.domain.roster import Student, Teacher
 from mathwizard.models.domain.session import AuthSession
 from mathwizard.models.domain.user import User
 
+# from_attributes is passed per call rather than configured on the domain models,
+# which keeps the domain free of any hint that it is ever loaded from a database.
+# A column renamed out from under an entity fails here as a ValidationError.
+
 
 def user_to_domain(row: UserSchema) -> User:
-    return User(id=row.id, username=row.username, password_hash=row.password_hash)
+    return User.model_validate(row, from_attributes=True)
 
 
 def session_to_domain(row: SessionSchema) -> AuthSession:
-    return AuthSession(
-        token=row.token,
-        user_id=row.user_id,
-        created_at=row.created_at,
-        expires_at=row.expires_at,
-        revoked_at=row.revoked_at,
-    )
+    return AuthSession.model_validate(row, from_attributes=True)
 
 
 def teacher_to_domain(row: TeacherSchema) -> Teacher:
-    return Teacher(id=row.id, user_id=row.user_id)
+    return Teacher.model_validate(row, from_attributes=True)
 
 
 def student_to_domain(row: StudentSchema) -> Student:
-    return Student(id=row.id, user_id=row.user_id, teacher_id=row.teacher_id)
+    return Student.model_validate(row, from_attributes=True)
 
 
 def question_to_domain(row: QuestionSchema) -> Question:
-    return Question(
-        id=row.id,
-        topic=row.topic,
-        title=row.title,
-        stem=row.stem,
-        source=row.source,
-        tags=list(row.tags),
-        exam_id=row.exam_id,
-        calculator_allowed=row.calculator_allowed,
-        difficulty=row.difficulty,
-        parts=[
-            QuestionPart(
-                id=part.id,
-                label=part.label,
-                text=part.text,
-                points=part.points,
-            )
-            for part in row.parts
-        ],
-    )
+    return Question.model_validate(row, from_attributes=True)
 
 
 def figure_to_domain(row: FigureSchema) -> Figure:
-    return Figure(
-        id=row.id,
-        slug=row.slug,
-        title=row.title,
-        spec=FigureSpec.model_validate(row.spec),
-        description=row.description,
-        question_id=row.question_id,
-        part_id=row.part_id,
-    )
+    return Figure.model_validate(row, from_attributes=True)
+
+
+# The write direction stays spelled out. Copying draft fields onto a row in a loop
+# would work today, but setting an attribute a table does not have is silently
+# accepted by SQLAlchemy, so a future rename would drop data instead of failing.
 
 
 def apply_question_draft(row: QuestionSchema, draft: QuestionDraft) -> None:
