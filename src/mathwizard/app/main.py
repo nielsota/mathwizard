@@ -26,10 +26,10 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None]:
     app.state.uow_factory = SqlAlchemyUnitOfWorkFactory(create_session_factory(engine))
 
     BootstrapService(db, settings).run_all()
-    app.state.auth_service = AuthService(db, settings)
+    app.state.auth_service = AuthService(settings)
     app.state.question_service = QuestionService()
     app.state.figure_service = FigureService()
-    app.state.user_service = UserService(db)
+    app.state.user_service = UserService()
 
     yield
 
