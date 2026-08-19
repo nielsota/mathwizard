@@ -28,7 +28,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None]:
     BootstrapService(db, settings).run_all()
     app.state.auth_service = AuthService(db, settings)
     app.state.question_service = QuestionService()
-    app.state.figure_service = FigureService(db)
+    app.state.figure_service = FigureService()
     app.state.user_service = UserService(db)
 
     yield
