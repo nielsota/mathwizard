@@ -2,22 +2,26 @@ import typer
 from alembic import command
 from rich import print as rprint
 
-from mathwizard.db.client import DBClient
+from mathwizard.db.engine import create_db_engine, create_session_factory
 from mathwizard.db.migrations import alembic_config
+from mathwizard.db.unit_of_work import SqlAlchemyUnitOfWorkFactory
 from mathwizard.enums import QuestionSource
 from mathwizard.services.bootstrap import BootstrapService
-from mathwizard.settings import get_settings
+from mathwizard.settings import Settings, get_settings
 
 app = typer.Typer(help="MathWizard content/admin CLI.", no_args_is_help=True)
+db_app = typer.Typer(help="Database schema management.", no_args_is_help=True)
+app.add_typer(db_app, name="db")
+
+
+def _uow_factory(settings: Settings) -> SqlAlchemyUnitOfWorkFactory:
+    engine = create_db_engine(settings.database_url)
+    return SqlAlchemyUnitOfWorkFactory(create_session_factory(engine))
 
 
 @app.callback()
 def main() -> None:
     """MathWizard content/admin CLI."""
-
-
-db_app = typer.Typer(help="Database schema management.", no_args_is_help=True)
-app.add_typer(db_app, name="db")
 
 
 @db_app.command("upgrade")
@@ -32,11 +36,12 @@ def db_upgrade() -> None:
 def seed_practice() -> None:
     """Sync practice exercise YAMLs into the database (idempotent upsert)."""
     settings = get_settings()
-    db = DBClient(settings.database_url)
-    before = len(db.list_questions(source=QuestionSource.PRACTICE))
-    BootstrapService(db, settings).seed_practice_questions()
-    after = len(db.list_questions(source=QuestionSource.PRACTICE))
-    db.engine.dispose()
+    uow_factory = _uow_factory(settings)
+    with uow_factory() as uow:
+        before = len(uow.questions.list(source=QuestionSource.PRACTICE))
+    BootstrapService(settings).seed_practice_questions(uow_factory())
+    with uow_factory() as uow:
+        after = len(uow.questions.list(source=QuestionSource.PRACTICE))
     rprint(
         f"[green]Practice sync complete.[/green] "
         f"{after} practice questions in DB (+{after - before} new)."
@@ -47,11 +52,12 @@ def seed_practice() -> None:
 def seed_figures() -> None:
     """Sync figure spec YAMLs into the database (idempotent upsert)."""
     settings = get_settings()
-    db = DBClient(settings.database_url)
-    before = len(db.list_figures())
-    BootstrapService(db, settings).seed_figures()
-    after = len(db.list_figures())
-    db.engine.dispose()
+    uow_factory = _uow_factory(settings)
+    with uow_factory() as uow:
+        before = len(uow.figures.list())
+    BootstrapService(settings).seed_figures(uow_factory())
+    with uow_factory() as uow:
+        after = len(uow.figures.list())
     rprint(
         f"[green]Figure sync complete.[/green] "
         f"{after} figures in DB (+{after - before} new)."
