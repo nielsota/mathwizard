@@ -1,50 +1,69 @@
-from pathlib import Path
-
 import pytest
 
-from mathwizard.db.client import DBClient
 from mathwizard.exceptions import DuplicateFigureSlugError, FigureNotFoundError
-from mathwizard.models.figure import FigureCreateRequest
+from mathwizard.models.domain.figure import (
+    FigureDraft,
+    FigureSpec,
+    FunctionGraph,
+    Viewport,
+)
 from mathwizard.services.figure import FigureService
+from tests.fakes import FakeUnitOfWork
 
 
-def make_service(tmp_path: Path) -> FigureService:
-    return FigureService(DBClient(f"sqlite:///{tmp_path / 'figures.db'}"))
+def _spec(fn: str = "x^2") -> FigureSpec:
+    return FigureSpec(viewport=Viewport(x=(-5.0, 5.0)), elements=[FunctionGraph(fn=fn)])
 
 
-def make_request(slug: str = "parabool") -> FigureCreateRequest:
-    return FigureCreateRequest.model_validate(
-        {
-            "slug": slug,
-            "title": "Parabool",
-            "spec": {
-                "viewport": {"x": [-5, 5]},
-                "elements": [{"type": "functionGraph", "fn": "x^2"}],
-            },
-        }
+def test_create_figure_returns_the_persisted_entity() -> None:
+    uow = FakeUnitOfWork()
+
+    figure = FigureService().create_figure(
+        uow,
+        FigureDraft(slug="parabola", title="Parabola", spec=_spec(), description="d"),
     )
 
-
-def test_create_then_get_and_list(tmp_path: Path) -> None:
-    service = make_service(tmp_path)
-
-    created = service.create_figure(make_request())
-    fetched = service.get_figure(created.id)
-    listing = service.list_figures()
-
-    assert fetched.slug == "parabool"
-    assert fetched.spec.elements[0].fn == "x^2"
-    assert [summary.slug for summary in listing.figures] == ["parabool"]
+    assert figure.id == 1
+    assert figure.slug == "parabola"
+    assert figure.description == "d"
 
 
-def test_create_duplicate_slug_raises(tmp_path: Path) -> None:
-    service = make_service(tmp_path)
-    service.create_figure(make_request())
+def test_create_figure_commits() -> None:
+    uow = FakeUnitOfWork()
+
+    FigureService().create_figure(
+        uow, FigureDraft(slug="parabola", title="Parabola", spec=_spec())
+    )
+
+    assert uow.committed is True
+
+
+def test_create_figure_rejects_a_duplicate_slug() -> None:
+    uow = FakeUnitOfWork()
+    service = FigureService()
+    service.create_figure(
+        uow, FigureDraft(slug="parabola", title="Parabola", spec=_spec())
+    )
+
     with pytest.raises(DuplicateFigureSlugError):
-        service.create_figure(make_request())
+        service.create_figure(
+            uow, FigureDraft(slug="parabola", title="Other", spec=_spec())
+        )
 
 
-def test_get_missing_raises(tmp_path: Path) -> None:
-    service = make_service(tmp_path)
+def test_list_figures_returns_domain_entities() -> None:
+    uow = FakeUnitOfWork()
+    service = FigureService()
+    service.create_figure(uow, FigureDraft(slug="a", title="A", spec=_spec()))
+    service.create_figure(uow, FigureDraft(slug="b", title="B", spec=_spec()))
+
+    figures = service.list_figures(uow)
+
+    assert [figure.slug for figure in figures] == ["a", "b"]
+
+
+def test_get_figure_raises_when_missing() -> None:
+    uow = FakeUnitOfWork()
+
     with pytest.raises(FigureNotFoundError):
-        service.get_figure(123)
+        FigureService().get_figure(uow, 99)

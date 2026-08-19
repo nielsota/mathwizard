@@ -3,12 +3,6 @@ from pydantic import BaseModel, Field
 from mathwizard.enums import QuestionSource
 
 
-class QuestionListRequest(BaseModel):
-    source: QuestionSource
-    topic: str | None = None
-    sort_by_difficulty: bool = True
-
-
 class QuestionPartResponse(BaseModel):
     label: str
     text: str
@@ -17,14 +11,14 @@ class QuestionPartResponse(BaseModel):
 
 class QuestionResponse(BaseModel):
     id: int
-    number: int
     source: QuestionSource
     topic: str
     tags: list[str] = Field(default_factory=list)
     title: str
-    question_text: str
-    parts: list[str] = Field(default_factory=list)
-    part_details: list[QuestionPartResponse] = Field(default_factory=list)
+    # validation_alias, not alias: FastAPI serialises with by_alias=True, so an
+    # alias would put the internal name `stem` on the wire.
+    question_text: str = Field(validation_alias="stem")
+    parts: list[QuestionPartResponse] = Field(default_factory=list)
     max_marks: int
     calculator_allowed: bool | None = None
     difficulty: int | None = None

@@ -1,13 +1,13 @@
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
-from sqlalchemy import Column, Enum, JSON
-from sqlmodel import SQLModel, Field, Relationship
+from sqlalchemy import JSON, Column, Enum
+from sqlmodel import Field, Relationship, SQLModel
 
 from mathwizard.enums import QuestionSource
 
 
 def _utcnow() -> datetime:
-    return datetime.now(timezone.utc).replace(tzinfo=None)
+    return datetime.now(UTC).replace(tzinfo=None)
 
 
 class User(SQLModel, table=True):
@@ -18,8 +18,8 @@ class User(SQLModel, table=True):
 
 
 class Session(SQLModel, table=True):
-    __tablename__ = "sessions"
-
+    # Deliberately not named "sessions": that belongs to SessionSchema, which uses a
+    # different primary key. This model and its table go away with the legacy stack.
     id: str = Field(primary_key=True)
     user_id: int = Field(foreign_key="user.id", index=True)
     created_at: datetime = Field(default_factory=_utcnow)

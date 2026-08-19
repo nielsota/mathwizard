@@ -1,26 +1,6 @@
-from typing import Literal
+from pydantic import BaseModel
 
-from pydantic import BaseModel, Field
-
-
-class FunctionGraph(BaseModel):
-    type: Literal["functionGraph"] = "functionGraph"
-    fn: str
-    domain: tuple[float, float] | None = None
-    color: str | None = None
-
-
-class Viewport(BaseModel):
-    x: tuple[float, float]
-    y: tuple[float, float] | None = None
-
-
-class FigureSpec(BaseModel):
-    viewport: Viewport
-    show_grid: bool = True
-    x_label: str = "x"
-    y_label: str = "y"
-    elements: list[FunctionGraph] = Field(default_factory=list)
+from mathwizard.models.domain.figure import FigureSpec
 
 
 class FigureCreateRequest(BaseModel):
