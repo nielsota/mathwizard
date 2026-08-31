@@ -261,13 +261,24 @@ class FakeFigureRepository(FigureRepository):
         )
 
 
+_REPOSITORY_ATTRIBUTES = ("users", "sessions", "roster", "questions", "figures")
+
+
 class FakeUnitOfWork(UnitOfWork):
-    def __init__(self) -> None:
-        self.users = FakeUserRepository()
-        self.sessions = FakeSessionRepository()
-        self.roster = FakeRosterRepository()
-        self.questions = FakeQuestionRepository()
-        self.figures = FakeFigureRepository()
+    def __init__(
+        self,
+        *,
+        users: FakeUserRepository | None = None,
+        sessions: FakeSessionRepository | None = None,
+        roster: FakeRosterRepository | None = None,
+        questions: FakeQuestionRepository | None = None,
+        figures: FakeFigureRepository | None = None,
+    ) -> None:
+        self._users = users or FakeUserRepository()
+        self._sessions = sessions or FakeSessionRepository()
+        self._roster = roster or FakeRosterRepository()
+        self._questions = questions or FakeQuestionRepository()
+        self._figures = figures or FakeFigureRepository()
         self.committed = False
         self.open = False
 
@@ -276,6 +287,11 @@ class FakeUnitOfWork(UnitOfWork):
             raise RuntimeError("FakeUnitOfWork is already open")
         self.open = True
         self.committed = False
+        self.users = self._users
+        self.sessions = self._sessions
+        self.roster = self._roster
+        self.questions = self._questions
+        self.figures = self._figures
         return self
 
     def __exit__(
@@ -285,6 +301,8 @@ class FakeUnitOfWork(UnitOfWork):
         traceback: TracebackType | None,
     ) -> None:
         self.open = False
+        for name in _REPOSITORY_ATTRIBUTES:
+            self.__dict__.pop(name, None)
 
     def commit(self) -> None:
         self.committed = True
@@ -294,8 +312,18 @@ class FakeUnitOfWork(UnitOfWork):
 
 
 class FakeUnitOfWorkFactory(UnitOfWorkFactory):
-    def __init__(self, uow: FakeUnitOfWork) -> None:
-        self._uow = uow
+    def __init__(self) -> None:
+        self._users = FakeUserRepository()
+        self._sessions = FakeSessionRepository()
+        self._roster = FakeRosterRepository()
+        self._questions = FakeQuestionRepository()
+        self._figures = FakeFigureRepository()
 
     def __call__(self) -> FakeUnitOfWork:
-        return self._uow
+        return FakeUnitOfWork(
+            users=self._users,
+            sessions=self._sessions,
+            roster=self._roster,
+            questions=self._questions,
+            figures=self._figures,
+        )

@@ -3,8 +3,8 @@ import pytest
 from mathwizard.exceptions import QuestionNotFoundError, UserNotFoundError
 from mathwizard.models.domain.figure import FigureDraft, FigureSpec, Viewport
 from mathwizard.models.domain.question import QuestionDraft
-from mathwizard.ports.unit_of_work import UnitOfWork
-from tests.fakes import FakePasswordHasher, FakeUnitOfWork
+from mathwizard.ports.unit_of_work import UnitOfWork, UnitOfWorkFactory
+from tests.fakes import FakePasswordHasher, FakeUnitOfWork, FakeUnitOfWorkFactory
 
 
 def test_fake_password_hasher_round_trip() -> None:
@@ -113,3 +113,51 @@ def test_fake_figure_repository_upsert_updates_existing_slug() -> None:
 
     assert updated.id == created.id
     assert updated.title == "New"
+
+
+def test_fake_unit_of_work_factory_satisfies_the_factory_protocol() -> None:
+    factory: UnitOfWorkFactory = FakeUnitOfWorkFactory()
+
+    assert factory is not None
+
+
+def test_fake_unit_of_work_factory_returns_a_new_instance_each_call() -> None:
+    factory = FakeUnitOfWorkFactory()
+
+    first = factory()
+    second = factory()
+
+    assert first is not second
+
+
+def test_fake_unit_of_work_factory_shares_committed_state_across_instances() -> None:
+    factory = FakeUnitOfWorkFactory()
+
+    with factory() as uow:
+        uow.users.add(username="root", password_hash="h")
+        uow.commit()
+
+    with factory() as uow:
+        found = uow.users.get_by_username("root")
+
+    assert found is not None
+    assert found.username == "root"
+
+
+def test_unopened_fake_unit_of_work_has_no_repository_attributes() -> None:
+    uow = FakeUnitOfWorkFactory()()
+
+    assert not hasattr(uow, "users")
+    assert not hasattr(uow, "sessions")
+    assert not hasattr(uow, "roster")
+    assert not hasattr(uow, "questions")
+    assert not hasattr(uow, "figures")
+
+
+def test_fake_unit_of_work_drops_repositories_on_exit() -> None:
+    uow = FakeUnitOfWork()
+
+    with uow:
+        uow.users.add(username="root", password_hash="h")
+
+    assert not hasattr(uow, "users")
