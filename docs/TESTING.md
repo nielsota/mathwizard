@@ -25,39 +25,38 @@ Run the app locally without Docker for rapid iteration:
 
 ---
 
-### 2. ✅ Automated Tests (Most Safe)
+## Automated Tests
 
-Run automated tests that make HTTP requests to your app:
+Install extra deps, then pick a loop:
 
 ```bash
-# Install dev dependencies (includes httpx for TestClient)
-uv sync --group dev
+uv sync --extra dev
 
-# Run all web tests
-uv run pytest tests/test_web/ -v
+# Fast inner loop — fakes only, no SQLite
+uv run pytest -m "not db"
 
-# Run specific test class
-uv run pytest tests/test_web/test_routes.py::TestPracticeRoutes -v
+# Adapter tests — real SQLAlchemy repositories, UoW, migrations
+uv run pytest -m db
 
-# Run with coverage
-uv run pytest tests/test_web/ --cov=mathwizard.web
+# Full suite
+uv run pytest
 ```
 
-**Advantages:**
-- Automated, repeatable tests
-- Catches regressions automatically
-- No manual clicking required
-- Fast feedback loop
-- Can run in CI/CD
+### What runs where
 
-**Test file location:**
-- `tests/test_web/test_routes.py` - Route/endpoint tests
+| Layer | Location | Persistence |
+| --- | --- | --- |
+| Domain / ports / fakes | `tests/test_models`, `tests/test_ports`, `tests/test_fakes` | none |
+| Services | `tests/test_services` | `FakeUnitOfWork` |
+| HTTP routes | `tests/test_app` | `FakeUnitOfWorkFactory` via `tests/app_client.py` |
+| Bootstrap | `tests/test_bootstrap_*.py` | `FakeUnitOfWorkFactory` |
+| SQLAlchemy adapters | `tests/test_db` (marked `db`) | temp SQLite file |
 
-**When to use:**
-- Before committing code
-- Before deploying
-- Continuous integration
-- Regression testing
+HTTP and bootstrap tests use real service classes. They must not construct `SqlAlchemyUnitOfWorkFactory`. Transaction rollback, unique constraints, and Alembic drift stay in `tests/test_db`.
+
+Auth tests inject `FakePasswordHasher` (`fake:{plain}`). Production keeps `BcryptPasswordHasher`. One bcrypt round-trip lives in `tests/test_services/test_auth.py::test_bcrypt_password_hasher_round_trip`.
+
+Fake units of work do not roll back in-memory writes. `commit()` / `rollback()` only flip `uow.committed`. Prove real transactions in `tests/test_db/test_unit_of_work.py`.
 
 ---
 
@@ -102,16 +101,6 @@ docker compose down
 # 4. Or manually refresh: http://localhost:8001
 ```
 
-### Before Committing
-
-```bash
-# Run all tests
-uv run pytest -xvs
-
-# Or just web tests
-uv run pytest tests/test_web/ -v
-```
-
 ### Before Deploying
 
 ```bash
@@ -133,23 +122,6 @@ docker compose down
 ---
 
 ## Writing New Tests
-
-### Example: Test a New Practice Page
-
-```python
-# tests/test_web/test_routes.py
-
-
-def test_new_topic_page_loads(self, client):
-    """New topic page should load successfully."""
-    with patch("mathwizard.web.app.routes.practice.require_authentication"):
-        response = client.get("/practice/newtopic")
-        assert response.status_code == 200
-
-        # Check content
-        content = response.content.decode()
-        assert "expected text" in content.lower()
-```
 
 ### Example: Test API Endpoint
 
@@ -275,7 +247,7 @@ jobs:
 
 Instead:
 1. **Develop** with `./scripts/dev-local.sh`
-2. **Test** with `uv run pytest tests/test_web/`
+2. **Test** with `uv run pytest -m "not db"`
 3. **Verify** with Docker before deploying
 
 This workflow is:
