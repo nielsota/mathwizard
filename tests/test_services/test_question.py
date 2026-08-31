@@ -1,107 +1,101 @@
-from pathlib import Path
-
-from mathwizard.db.client import DBClient
 from mathwizard.enums import QuestionSource
-from mathwizard.models.question import QuestionListRequest
+from mathwizard.models.domain.question import QuestionDraft
 from mathwizard.services.question import QuestionService
+from tests.fakes import FakeUnitOfWork
 
 
-def make_db(tmp_path: Path) -> DBClient:
-    return DBClient(f"sqlite:///{tmp_path / 'practice.db'}")
-
-
-def seed_question(
-    db: DBClient,
+def _seed(
+    uow: FakeUnitOfWork,
     *,
-    topic: str,
     title: str,
-    source: QuestionSource = QuestionSource.PRACTICE,
-    difficulty: int | None = None,
-    exam_id: str | None = None,
+    difficulty: int | None,
+    topic: str = "derivatives",
 ) -> None:
-    db.create_question(
-        title=title,
-        stem=f"Stem for {title}",
-        parts=[{"text": f"Part for {title}", "points": 2}],
-        topic=topic,
-        source=source,
-        tags=[topic],
-        difficulty=difficulty,
-        calculator_allowed=False,
-        exam_id=exam_id,
-    )
+    with uow:
+        uow.questions.add(
+            QuestionDraft(
+                topic=topic,
+                title=title,
+                stem=f"Stem for {title}",
+                source=QuestionSource.PRACTICE,
+                tags=["practice", topic],
+                difficulty=difficulty,
+                calculator_allowed=False,
+                parts=[{"text": f"Part for {title}", "points": 2}],
+            )
+        )
+        uow.commit()
 
 
-def test_list_questions_filters_source_and_topic(tmp_path: Path) -> None:
-    db = make_db(tmp_path)
-    seed_question(db, topic="derivatives", title="Practice derivative")
-    seed_question(db, topic="goniometry", title="Practice goniometry")
-    seed_question(
-        db,
-        topic="derivatives",
-        title="Exam derivative",
-        source=QuestionSource.EXAM,
-        exam_id="EXAM-1",
-    )
+def test_list_questions_sorts_by_difficulty_then_title() -> None:
+    uow = FakeUnitOfWork()
+    _seed(uow, title="Hard", difficulty=5)
+    _seed(uow, title="Easy", difficulty=1)
+    _seed(uow, title="Unknown", difficulty=None)
 
-    questions = db.list_questions(
+    questions = QuestionService().list_questions(
+        uow,
         topic="derivatives",
         source=QuestionSource.PRACTICE,
+        sort_by_difficulty=True,
     )
 
-    assert [q.title for q in questions] == ["Practice derivative"]
-    assert questions[0].topic == "derivatives"
-    assert questions[0].source == QuestionSource.PRACTICE
-    assert questions[0].parts[0].text == "Part for Practice derivative"
+    assert [question.title for question in questions] == ["Easy", "Hard", "Unknown"]
 
 
-def test_list_questions_returns_response_models_sorted_by_difficulty(
-    tmp_path: Path,
-) -> None:
-    db = make_db(tmp_path)
-    seed_question(db, topic="derivatives", title="Hard", difficulty=5)
-    seed_question(db, topic="derivatives", title="Easy", difficulty=1)
-    seed_question(db, topic="derivatives", title="Medium", difficulty=3)
-    service = QuestionService(db)
+def test_list_questions_preserves_insertion_order_when_sorting_is_off() -> None:
+    uow = FakeUnitOfWork()
+    _seed(uow, title="Hard", difficulty=5)
+    _seed(uow, title="Easy", difficulty=1)
 
-    response = service.list_questions(
-        QuestionListRequest(
-            source=QuestionSource.PRACTICE,
-            topic="derivatives",
-        ),
+    questions = QuestionService().list_questions(
+        uow,
+        topic="derivatives",
+        source=QuestionSource.PRACTICE,
+        sort_by_difficulty=False,
     )
 
-    assert response.topic == "derivatives"
-    assert response.source == QuestionSource.PRACTICE
-    assert [question.title for question in response.questions] == [
-        "Easy",
-        "Medium",
-        "Hard",
-    ]
-    assert [question.number for question in response.questions] == [1, 2, 3]
-    assert response.questions[0].source == QuestionSource.PRACTICE
-    assert response.questions[0].tags == ["derivatives"]
-    assert response.questions[0].question_text == "Stem for Easy"
-    assert response.questions[0].parts == ["Part for Easy"]
-    assert response.questions[0].max_marks == 2
-    assert response.questions[0].calculator_allowed is False
-    assert response.questions[0].difficulty == 1
-    assert response.questions[0].figure_images == []
+    assert [question.title for question in questions] == ["Hard", "Easy"]
 
 
-def test_list_questions_can_preserve_database_order(tmp_path: Path) -> None:
-    db = make_db(tmp_path)
-    seed_question(db, topic="derivatives", title="Hard", difficulty=5)
-    seed_question(db, topic="derivatives", title="Easy", difficulty=1)
-    service = QuestionService(db)
+def test_list_questions_filters_by_topic() -> None:
+    uow = FakeUnitOfWork()
+    _seed(uow, title="Derivative", difficulty=1)
+    _seed(uow, title="Trig", difficulty=1, topic="goniometrie")
 
-    response = service.list_questions(
-        QuestionListRequest(
-            source=QuestionSource.PRACTICE,
-            topic="derivatives",
-            sort_by_difficulty=False,
-        ),
+    questions = QuestionService().list_questions(
+        uow,
+        topic="derivatives",
+        source=QuestionSource.PRACTICE,
+        sort_by_difficulty=True,
     )
 
-    assert [question.title for question in response.questions] == ["Hard", "Easy"]
-    assert [question.number for question in response.questions] == [1, 2]
+    assert [question.title for question in questions] == ["Derivative"]
+
+
+def test_list_questions_returns_domain_entities_with_max_marks() -> None:
+    uow = FakeUnitOfWork()
+    _seed(uow, title="Easy", difficulty=1)
+
+    questions = QuestionService().list_questions(
+        uow,
+        topic="derivatives",
+        source=QuestionSource.PRACTICE,
+        sort_by_difficulty=True,
+    )
+
+    assert questions[0].max_marks == 2
+    assert questions[0].stem == "Stem for Easy"
+
+
+def test_list_questions_does_not_commit_for_a_read() -> None:
+    uow = FakeUnitOfWork()
+
+    QuestionService().list_questions(
+        uow,
+        topic="derivatives",
+        source=QuestionSource.PRACTICE,
+        sort_by_difficulty=True,
+    )
+
+    assert uow.committed is False

@@ -1,7 +1,7 @@
 import pytest
 from pydantic import ValidationError
 
-from mathwizard.models.figure import FigureSpec
+from mathwizard.models.domain.figure import FigureSpec
 
 
 def test_valid_function_graph_spec_parses() -> None:

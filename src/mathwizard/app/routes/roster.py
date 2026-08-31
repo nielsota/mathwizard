@@ -1,21 +1,23 @@
+from typing import Any
+
 from fastapi import APIRouter, HTTPException, status
 
 from mathwizard.app.auth import CurrentUserDep
-from mathwizard.app.dependencies import UserServiceDep
+from mathwizard.app.dependencies import UnitOfWorkDep, UserServiceDep
 from mathwizard.exceptions import AuthorizationError
-from mathwizard.models.user import MyTeacherResponse, StudentsResponse
-
+from mathwizard.models.api.user import MyTeacherResponse, StudentsResponse
 
 router = APIRouter(prefix="/api/v1/roster", tags=["roster"])
 
 
-@router.get("/students")
+@router.get("/students", response_model=StudentsResponse)
 def list_students(
+    uow: UnitOfWorkDep,
     user: CurrentUserDep,
     user_service: UserServiceDep,
-) -> StudentsResponse:
+) -> dict[str, Any]:
     try:
-        return user_service.list_students(user)
+        return {"students": user_service.list_student_users(uow, user)}
     except AuthorizationError as exc:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
@@ -23,13 +25,14 @@ def list_students(
         ) from exc
 
 
-@router.get("/my-teacher")
+@router.get("/my-teacher", response_model=MyTeacherResponse)
 def my_teacher(
+    uow: UnitOfWorkDep,
     user: CurrentUserDep,
     user_service: UserServiceDep,
-) -> MyTeacherResponse:
+) -> dict[str, Any]:
     try:
-        return user_service.get_my_teacher(user)
+        return {"teacher": user_service.get_teacher_user(uow, user)}
     except AuthorizationError as exc:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,

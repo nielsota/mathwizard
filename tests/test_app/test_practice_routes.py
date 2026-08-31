@@ -2,19 +2,25 @@ from pathlib import Path
 
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
+from sqlalchemy import Engine
 
 from mathwizard.app.auth import router as auth_router
 from mathwizard.app.routes.practice import router as practice_router
-from mathwizard.db.client import DBClient
+from mathwizard.db.base import Base
+from mathwizard.db.engine import create_db_engine, create_session_factory
+from mathwizard.db.unit_of_work import SqlAlchemyUnitOfWorkFactory
 from mathwizard.enums import QuestionSource
+from mathwizard.models.domain.question import QuestionDraft
 from mathwizard.services.auth import AuthService, hash_password
 from mathwizard.services.question import QuestionService
 from mathwizard.services.user import UserService
 from mathwizard.settings import Settings
 
 
-def make_db(tmp_path: Path) -> DBClient:
-    return DBClient(f"sqlite:///{tmp_path / 'api.db'}")
+def make_uow_factory(tmp_path: Path) -> SqlAlchemyUnitOfWorkFactory:
+    engine: Engine = create_db_engine(f"sqlite:///{tmp_path / 'api.db'}")
+    Base.metadata.create_all(engine)
+    return SqlAlchemyUnitOfWorkFactory(create_session_factory(engine))
 
 
 def make_settings(tmp_path: Path) -> Settings:
@@ -25,20 +31,28 @@ def make_settings(tmp_path: Path) -> Settings:
     )
 
 
-def make_client(db: DBClient, tmp_path: Path) -> TestClient:
+def make_client(
+    uow_factory: SqlAlchemyUnitOfWorkFactory,
+    tmp_path: Path,
+) -> TestClient:
     app = FastAPI()
-    app.state.auth_service = AuthService(db, make_settings(tmp_path))
-    app.state.question_service = QuestionService(db)
-    app.state.user_service = UserService(db)
+    app.state.uow_factory = uow_factory
+    app.state.auth_service = AuthService(make_settings(tmp_path))
+    app.state.question_service = QuestionService()
+    app.state.user_service = UserService()
     app.include_router(auth_router)
     app.include_router(practice_router)
     return TestClient(app)
 
 
-def authenticate(client: TestClient, db: DBClient) -> None:
-    user = db.create_user("root", hash_password("secret"))
-    assert user.id is not None
-    db.create_teacher(user.id)
+def authenticate(
+    client: TestClient,
+    uow_factory: SqlAlchemyUnitOfWorkFactory,
+) -> None:
+    with uow_factory() as uow:
+        user = uow.users.add(username="root", password_hash=hash_password("secret"))
+        uow.roster.add_teacher(user.id)
+        uow.commit()
     response = client.post(
         "/auth/login",
         json={"username": "root", "password": "secret"},
@@ -47,27 +61,30 @@ def authenticate(client: TestClient, db: DBClient) -> None:
 
 
 def seed_question(
-    db: DBClient,
+    uow_factory: SqlAlchemyUnitOfWorkFactory,
     *,
     topic: str,
     title: str,
     difficulty: int,
 ) -> None:
-    db.create_question(
-        title=title,
-        stem=f"Stem for {title}",
-        parts=[{"text": f"Part for {title}", "points": difficulty}],
-        topic=topic,
-        source=QuestionSource.PRACTICE,
-        tags=["practice", topic],
-        difficulty=difficulty,
-        calculator_allowed=False,
-    )
+    with uow_factory() as uow:
+        uow.questions.add(
+            QuestionDraft(
+                topic=topic,
+                title=title,
+                stem=f"Stem for {title}",
+                source=QuestionSource.PRACTICE,
+                tags=["practice", topic],
+                difficulty=difficulty,
+                calculator_allowed=False,
+                parts=[{"text": f"Part for {title}", "points": difficulty}],
+            )
+        )
+        uow.commit()
 
 
 def test_get_practice_topic_requires_authentication(tmp_path: Path) -> None:
-    db = make_db(tmp_path)
-    client = make_client(db, tmp_path)
+    client = make_client(make_uow_factory(tmp_path), tmp_path)
 
     response = client.get("/api/v1/practice/derivatives")
 
@@ -75,12 +92,12 @@ def test_get_practice_topic_requires_authentication(tmp_path: Path) -> None:
     assert response.json()["detail"] == "Not authenticated"
 
 
-def test_get_practice_topic_returns_service_response(tmp_path: Path) -> None:
-    db = make_db(tmp_path)
-    seed_question(db, topic="derivatives", title="Hard", difficulty=5)
-    seed_question(db, topic="derivatives", title="Easy", difficulty=1)
-    client = make_client(db, tmp_path)
-    authenticate(client, db)
+def test_get_practice_topic_returns_the_filtered_response(tmp_path: Path) -> None:
+    uow_factory = make_uow_factory(tmp_path)
+    seed_question(uow_factory, topic="derivatives", title="Hard", difficulty=5)
+    seed_question(uow_factory, topic="derivatives", title="Easy", difficulty=1)
+    client = make_client(uow_factory, tmp_path)
+    authenticate(client, uow_factory)
 
     response = client.get("/api/v1/practice/derivatives")
 
@@ -89,17 +106,35 @@ def test_get_practice_topic_returns_service_response(tmp_path: Path) -> None:
     assert data["source"] == "practice"
     assert data["topic"] == "derivatives"
     assert [question["title"] for question in data["questions"]] == ["Easy", "Hard"]
-    assert data["questions"][0]["source"] == "practice"
-    assert data["questions"][0]["tags"] == ["practice", "derivatives"]
-    assert "exam_id" not in data["questions"][0]
+    assert data["questions"][0]["question_text"] == "Stem for Easy"
+    assert data["questions"][0]["max_marks"] == 1
+    assert data["questions"][0]["parts"] == [
+        {"label": "a", "text": "Part for Easy", "points": 1}
+    ]
+    assert data["questions"][0]["figure_images"] == []
+
+
+def test_get_practice_topic_omits_internal_fields(tmp_path: Path) -> None:
+    uow_factory = make_uow_factory(tmp_path)
+    seed_question(uow_factory, topic="derivatives", title="Easy", difficulty=1)
+    client = make_client(uow_factory, tmp_path)
+    authenticate(client, uow_factory)
+
+    response = client.get("/api/v1/practice/derivatives")
+
+    question = response.json()["questions"][0]
+    assert "stem" not in question
+    assert "exam_id" not in question
+    assert "number" not in question
+    assert "part_details" not in question
 
 
 def test_get_practice_topic_can_disable_difficulty_sort(tmp_path: Path) -> None:
-    db = make_db(tmp_path)
-    seed_question(db, topic="derivatives", title="Hard", difficulty=5)
-    seed_question(db, topic="derivatives", title="Easy", difficulty=1)
-    client = make_client(db, tmp_path)
-    authenticate(client, db)
+    uow_factory = make_uow_factory(tmp_path)
+    seed_question(uow_factory, topic="derivatives", title="Hard", difficulty=5)
+    seed_question(uow_factory, topic="derivatives", title="Easy", difficulty=1)
+    client = make_client(uow_factory, tmp_path)
+    authenticate(client, uow_factory)
 
     response = client.get("/api/v1/practice/derivatives?sort_by_difficulty=false")
 

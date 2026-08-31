@@ -112,10 +112,28 @@ cd frontend && npm run build && npm run lint
 ```text
 src/mathwizard/
   app/       FastAPI app, dependencies, and routes
-  db/        SQLModel database client and mixins
-  models/    Database and API request/response models
-  services/  Bootstrap and question service logic
+  db/        SQLAlchemy tables, repositories, unit of work, and migrations
+  models/    Domain entities and API request/response models
+  ports/     Repository and unit-of-work protocols
+  services/  Bootstrap, auth, question, and figure service logic
 frontend/    React, TypeScript, and Vite frontend
 data/        Tracked practice question YAML and local database files
 tests/       Backend unit and route tests
 ```
+
+## Layering
+
+- `models/domain/` — pydantic entities and drafts. No storage or HTTP concerns.
+- `models/api/` — request/response DTOs. FastAPI's `response_model` filters domain
+  entities down to these shapes, so routes return entities directly.
+- `ports/` — abstract repository and `UnitOfWork` protocols, one narrow slice
+  per service.
+- `db/` — the only package that imports SQLAlchemy: tables, concrete repositories,
+  `SqlAlchemyUnitOfWork`, and Alembic helpers.
+- `services/` — workflow logic. Each method takes a `UnitOfWork` slice, opens exactly
+  one `with uow:` block, and calls `uow.commit()` for writes. A service method never
+  calls another service's transactional method.
+
+Schema changes are Alembic migrations: edit `db/tables/`, run
+`uv run alembic revision --autogenerate -m "..."`, then `uv run python -m mathwizard.cli db upgrade`.
+`tests/test_db/test_migrations.py` fails if migrations drift from the table metadata.

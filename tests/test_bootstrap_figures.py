@@ -2,7 +2,7 @@ from pathlib import Path
 
 import yaml
 
-from mathwizard.db.client import DBClient
+from mathwizard.db.unit_of_work import SqlAlchemyUnitOfWorkFactory
 from mathwizard.services.bootstrap import BootstrapService
 from mathwizard.settings import Settings
 
@@ -24,38 +24,44 @@ def write_figure(figures_dir: Path, slug: str, fn: str) -> None:
 
 
 def make_settings(tmp_path: Path) -> Settings:
-    return Settings(
-        database_url=f"sqlite:///{tmp_path / 'boot.db'}",
-        repo_root=tmp_path,
-    )
+    return Settings(database_url="sqlite:///unused.db", repo_root=tmp_path)
 
 
-def test_seed_figures_loads_yaml(tmp_path: Path) -> None:
+def test_seed_figures_loads_yaml(
+    tmp_path: Path,
+    uow_factory: SqlAlchemyUnitOfWorkFactory,
+) -> None:
     settings = make_settings(tmp_path)
     write_figure(settings.figures_dir, "parabool", "x^2")
-    db = DBClient(settings.database_url)
 
-    BootstrapService(db, settings).seed_figures()
+    BootstrapService(settings).seed_figures(uow_factory())
 
-    figures = db.list_figures()
-    assert [f.slug for f in figures] == ["parabool"]
-    assert figures[0].spec["elements"][0]["fn"] == "x^2"
+    with uow_factory() as uow:
+        figures = uow.figures.list()
+    assert [figure.slug for figure in figures] == ["parabool"]
+    assert figures[0].spec.elements[0].fn == "x^2"
 
 
-def test_seed_figures_is_idempotent(tmp_path: Path) -> None:
+def test_seed_figures_is_idempotent(
+    tmp_path: Path,
+    uow_factory: SqlAlchemyUnitOfWorkFactory,
+) -> None:
     settings = make_settings(tmp_path)
     write_figure(settings.figures_dir, "parabool", "x^2")
-    db = DBClient(settings.database_url)
-    service = BootstrapService(db, settings)
+    service = BootstrapService(settings)
 
-    service.seed_figures()
-    service.seed_figures()
+    service.seed_figures(uow_factory())
+    service.seed_figures(uow_factory())
 
-    assert len(db.list_figures()) == 1
+    with uow_factory() as uow:
+        assert len(uow.figures.list()) == 1
 
 
-def test_seed_figures_no_dir_is_noop(tmp_path: Path) -> None:
-    settings = make_settings(tmp_path)
-    db = DBClient(settings.database_url)
-    BootstrapService(db, settings).seed_figures()
-    assert db.list_figures() == []
+def test_seed_figures_without_a_directory_is_a_noop(
+    tmp_path: Path,
+    uow_factory: SqlAlchemyUnitOfWorkFactory,
+) -> None:
+    BootstrapService(make_settings(tmp_path)).seed_figures(uow_factory())
+
+    with uow_factory() as uow:
+        assert uow.figures.list() == []

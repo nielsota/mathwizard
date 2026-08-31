@@ -6,6 +6,7 @@ import './ExerciseCard.css'
 
 interface ExerciseCardProps {
   exercise: QuestionResponse
+  number: number
 }
 
 type DifficultyTone = 'easy' | 'med' | 'hard' | 'neutral'
@@ -26,7 +27,7 @@ function difficultyMeta(difficulty?: number | null): { label: string; tone: Diff
   return { label: 'Moeilijk', tone: 'hard' }
 }
 
-export default function ExerciseCard({ exercise }: ExerciseCardProps) {
+export default function ExerciseCard({ exercise, number }: ExerciseCardProps) {
   const [expanded, setExpanded] = useState(false)
   const difficulty = difficultyMeta(exercise.difficulty)
   const bodyId = `exercise-${exercise.id}-body`
@@ -36,7 +37,7 @@ export default function ExerciseCard({ exercise }: ExerciseCardProps) {
     <article className={`ex-card ${expanded ? 'ex-card--expanded' : ''}`}>
       <header className="ex-card-header" onClick={toggleExpanded}>
         <div className="ex-card-title-row">
-          <span className="ex-card-number">Opgave {exercise.number}</span>
+          <span className="ex-card-number">Opgave {number}</span>
           {exercise.title && <span className="ex-card-title">{exercise.title}</span>}
         </div>
         <div className="ex-card-meta">
@@ -81,8 +82,8 @@ export default function ExerciseCard({ exercise }: ExerciseCardProps) {
             />
             {exercise.parts.length > 0 && (
               <ol className="ex-card-parts" type="a">
-                {exercise.parts.map((part, i) => (
-                  <li key={i} dangerouslySetInnerHTML={{ __html: part }} />
+                {exercise.parts.map(part => (
+                  <li key={part.label} dangerouslySetInnerHTML={{ __html: part.text }} />
                 ))}
               </ol>
             )}

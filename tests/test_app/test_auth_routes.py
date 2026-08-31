@@ -2,45 +2,55 @@ from pathlib import Path
 
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
+from sqlalchemy import Engine
 
 from mathwizard.app.auth import router
-from mathwizard.db.client import DBClient
+from mathwizard.db.base import Base
+from mathwizard.db.engine import create_db_engine, create_session_factory
+from mathwizard.db.unit_of_work import SqlAlchemyUnitOfWorkFactory
 from mathwizard.services.auth import AuthService, hash_password
 from mathwizard.services.user import UserService
 from mathwizard.settings import Settings
 
 
-def make_db(tmp_path: Path) -> DBClient:
-    return DBClient(f"sqlite:///{tmp_path / 'auth-routes.db'}")
+def make_uow_factory(tmp_path: Path) -> SqlAlchemyUnitOfWorkFactory:
+    engine: Engine = create_db_engine(f"sqlite:///{tmp_path / 'api.db'}")
+    Base.metadata.create_all(engine)
+    return SqlAlchemyUnitOfWorkFactory(create_session_factory(engine))
 
 
 def make_settings(tmp_path: Path) -> Settings:
     return Settings(
-        database_url=f"sqlite:///{tmp_path / 'auth-routes.db'}",
+        database_url=f"sqlite:///{tmp_path / 'api.db'}",
         cookie_secure=False,
         session_ttl_days=7,
     )
 
 
-def make_client(db: DBClient, settings: Settings) -> TestClient:
+def make_client(
+    uow_factory: SqlAlchemyUnitOfWorkFactory,
+    settings: Settings,
+) -> TestClient:
     app = FastAPI()
-    app.state.auth_service = AuthService(db, settings)
-    app.state.user_service = UserService(db)
+    app.state.uow_factory = uow_factory
+    app.state.auth_service = AuthService(settings)
+    app.state.user_service = UserService()
     app.include_router(router)
     return TestClient(app)
 
 
-def seed_user(db: DBClient) -> None:
-    user = db.create_user("root", hash_password("secret"))
-    assert user.id is not None
-    db.create_teacher(user.id)
+def seed_user(uow_factory: SqlAlchemyUnitOfWorkFactory) -> None:
+    with uow_factory() as uow:
+        user = uow.users.add(username="root", password_hash=hash_password("secret"))
+        uow.roster.add_teacher(user.id)
+        uow.commit()
 
 
 def test_login_sets_cookie_and_me_returns_user(tmp_path: Path) -> None:
-    db = make_db(tmp_path)
-    seed_user(db)
+    uow_factory = make_uow_factory(tmp_path)
+    seed_user(uow_factory)
     settings = make_settings(tmp_path)
-    client = make_client(db, settings)
+    client = make_client(uow_factory, settings)
 
     response = client.post(
         "/auth/login",
@@ -59,10 +69,23 @@ def test_login_sets_cookie_and_me_returns_user(tmp_path: Path) -> None:
     assert me.json() == {"id": 1, "username": "root", "role": "teacher"}
 
 
+def test_login_never_returns_the_password_hash(tmp_path: Path) -> None:
+    uow_factory = make_uow_factory(tmp_path)
+    seed_user(uow_factory)
+    client = make_client(uow_factory, make_settings(tmp_path))
+
+    response = client.post(
+        "/auth/login",
+        json={"username": "root", "password": "secret"},
+    )
+
+    assert "password_hash" not in response.json()
+
+
 def test_login_rejects_invalid_credentials(tmp_path: Path) -> None:
-    db = make_db(tmp_path)
-    seed_user(db)
-    client = make_client(db, make_settings(tmp_path))
+    uow_factory = make_uow_factory(tmp_path)
+    seed_user(uow_factory)
+    client = make_client(uow_factory, make_settings(tmp_path))
 
     response = client.post(
         "/auth/login",
@@ -75,9 +98,9 @@ def test_login_rejects_invalid_credentials(tmp_path: Path) -> None:
 
 
 def test_unknown_user_and_wrong_password_share_error(tmp_path: Path) -> None:
-    db = make_db(tmp_path)
-    seed_user(db)
-    client = make_client(db, make_settings(tmp_path))
+    uow_factory = make_uow_factory(tmp_path)
+    seed_user(uow_factory)
+    client = make_client(uow_factory, make_settings(tmp_path))
 
     response = client.post(
         "/auth/login",
@@ -89,10 +112,10 @@ def test_unknown_user_and_wrong_password_share_error(tmp_path: Path) -> None:
 
 
 def test_logout_revokes_session_and_clears_cookie(tmp_path: Path) -> None:
-    db = make_db(tmp_path)
-    seed_user(db)
+    uow_factory = make_uow_factory(tmp_path)
+    seed_user(uow_factory)
     settings = make_settings(tmp_path)
-    client = make_client(db, settings)
+    client = make_client(uow_factory, settings)
     login = client.post(
         "/auth/login",
         json={"username": "root", "password": "secret"},
@@ -115,15 +138,15 @@ def test_logout_revokes_session_and_clears_cookie(tmp_path: Path) -> None:
 
 
 def test_auth_routes_use_configured_session_cookie_name(tmp_path: Path) -> None:
-    db = make_db(tmp_path)
-    seed_user(db)
+    uow_factory = make_uow_factory(tmp_path)
+    seed_user(uow_factory)
     settings = Settings(
-        database_url=f"sqlite:///{tmp_path / 'auth-routes.db'}",
+        database_url=f"sqlite:///{tmp_path / 'api.db'}",
         session_cookie_name="custom_session",
         cookie_secure=False,
         session_ttl_days=7,
     )
-    client = make_client(db, settings)
+    client = make_client(uow_factory, settings)
 
     response = client.post(
         "/auth/login",
