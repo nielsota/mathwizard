@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field
 
-from mathwizard.enums import QuestionSource
+from mathwizard.models.domain.question import QuestionSource
 
 
 class QuestionPartResponse(BaseModel):

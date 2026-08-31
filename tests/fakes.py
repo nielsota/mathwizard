@@ -3,14 +3,18 @@ from datetime import datetime
 from types import TracebackType
 from typing import Self
 
-from mathwizard.enums import QuestionSource
 from mathwizard.exceptions import (
     FigureNotFoundError,
     QuestionNotFoundError,
     UserNotFoundError,
 )
 from mathwizard.models.domain.figure import Figure, FigureDraft
-from mathwizard.models.domain.question import Question, QuestionDraft, QuestionPart
+from mathwizard.models.domain.question import (
+    Question,
+    QuestionDraft,
+    QuestionPart,
+    QuestionSource,
+)
 from mathwizard.models.domain.roster import Student, Teacher
 from mathwizard.models.domain.session import AuthSession
 from mathwizard.models.domain.user import User
@@ -51,7 +55,9 @@ class FakeUserRepository(UserRepository):
 
     def get_many(self, user_ids: Sequence[int]) -> list[User]:
         wanted = set(user_ids)
-        return [user for user_id, user in sorted(self._users.items()) if user_id in wanted]
+        return [
+            user for user_id, user in sorted(self._users.items()) if user_id in wanted
+        ]
 
 
 class FakeSessionRepository(SessionRepository):
@@ -81,7 +87,9 @@ class FakeSessionRepository(SessionRepository):
     def revoke(self, token: str, revoked_at: datetime) -> None:
         session = self._sessions.get(token)
         if session is not None and session.revoked_at is None:
-            self._sessions[token] = session.model_copy(update={"revoked_at": revoked_at})
+            self._sessions[token] = session.model_copy(
+                update={"revoked_at": revoked_at}
+            )
 
 
 class FakeRosterRepository(RosterRepository):
@@ -165,7 +173,9 @@ class FakeQuestionRepository(QuestionRepository):
         if topic is not None:
             questions = [question for question in questions if question.topic == topic]
         if source is not None:
-            questions = [question for question in questions if question.source == source]
+            questions = [
+                question for question in questions if question.source == source
+            ]
         return questions
 
     def _build(self, question_id: int, draft: QuestionDraft) -> Question:

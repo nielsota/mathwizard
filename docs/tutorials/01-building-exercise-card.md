@@ -314,11 +314,7 @@ Update your CSS to use classes:
 **Example:**
 ```python
 # Python
-exercise = {
-    "number": 5,
-    "question": "What is 2+2?",
-    "exam_id": "exam-123"
-}
+exercise = {"number": 5, "question": "What is 2+2?", "exam_id": "exam-123"}
 ```
 
 ```jinja2
@@ -378,12 +374,11 @@ async def test_card(request: Request) -> HTMLResponse:
         "number": 5,
         "exam_id": "VW-1025-a-19-1-o",
         "question_text": "What is the derivative of f(x) = x² + 3x?",
-        "figure_images": ["fig1.png", "fig2.png"]
+        "figure_images": ["fig1.png", "fig2.png"],
     }
-    return templates.TemplateResponse("exercise_card_test.html", {
-        "request": request,
-        "exercise": exercise
-    })
+    return templates.TemplateResponse(
+        "exercise_card_test.html", {"request": request, "exercise": exercise}
+    )
 ```
 
 **Visit**: http://localhost:8000/test-card
@@ -521,10 +516,13 @@ Now use it in `exercise_card_test.html`:
 @router.get("/exercises")
 async def exercises():
     exercises = fetch_from_database()  # Python function
-    return templates.TemplateResponse("exercises.html", {
-        "request": request,
-        "exercises": exercises  # Pass to template
-    })
+    return templates.TemplateResponse(
+        "exercises.html",
+        {
+            "request": request,
+            "exercises": exercises,  # Pass to template
+        },
+    )
 ```
 
 ### Your Task
@@ -533,7 +531,9 @@ Update `src/mathwizard/web/app/routes.py`:
 
 ```python
 @router.get("/exercises", response_class=HTMLResponse)
-async def exercises(request: Request, authenticated: bool = Depends(require_authentication)) -> HTMLResponse:
+async def exercises(
+    request: Request, authenticated: bool = Depends(require_authentication)
+) -> HTMLResponse:
     """
     Render the exercises page.
     """
@@ -544,26 +544,25 @@ async def exercises(request: Request, authenticated: bool = Depends(require_auth
             "number": 1,
             "exam_id": "VW-1025-a-19-1-o",
             "question_text": "Calculate the limit of f(x) = (x²-1)/(x-1) as x→1",
-            "figure_images": ["fig1.png"]
+            "figure_images": ["fig1.png"],
         },
         {
             "number": 2,
             "exam_id": "VW-1025-a-19-1-o",
             "question_text": "Find the derivative of g(x) = sin(x) · cos(x)",
-            "figure_images": []
+            "figure_images": [],
         },
         {
             "number": 3,
             "exam_id": "VW-1025-a-19-1-o",
             "question_text": "Solve the integral ∫(2x + 3)dx",
-            "figure_images": ["fig1.png", "fig2.png"]
-        }
+            "figure_images": ["fig1.png", "fig2.png"],
+        },
     ]
-    
-    return templates.TemplateResponse("exercises.html", {
-        "request": request,
-        "exercises": exercises
-    })
+
+    return templates.TemplateResponse(
+        "exercises.html", {"request": request, "exercises": exercises}
+    )
 ```
 
 Update `src/mathwizard/web/templates/exercises.html`:

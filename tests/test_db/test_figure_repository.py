@@ -45,9 +45,8 @@ def test_add_round_trips_the_typed_spec(
 def test_get_raises_when_the_figure_is_missing(
     session_factory: sessionmaker[Session],
 ) -> None:
-    with session_factory() as session:
-        with pytest.raises(FigureNotFoundError):
-            SqlAlchemyFigureRepository(session).get(99)
+    with session_factory() as session, pytest.raises(FigureNotFoundError):
+        SqlAlchemyFigureRepository(session).get(99)
 
 
 def test_get_by_slug_returns_none_when_missing(

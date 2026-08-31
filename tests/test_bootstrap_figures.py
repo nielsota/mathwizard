@@ -4,7 +4,7 @@ import yaml
 
 from mathwizard.db.unit_of_work import SqlAlchemyUnitOfWorkFactory
 from mathwizard.services.bootstrap import BootstrapService
-from mathwizard.settings import Settings
+from mathwizard.settings import DatabaseSettings, PathSettings, Settings
 
 
 def write_figure(figures_dir: Path, slug: str, fn: str) -> None:
@@ -24,7 +24,10 @@ def write_figure(figures_dir: Path, slug: str, fn: str) -> None:
 
 
 def make_settings(tmp_path: Path) -> Settings:
-    return Settings(database_url="sqlite:///unused.db", repo_root=tmp_path)
+    return Settings(
+        db=DatabaseSettings(url="sqlite:///unused.db"),
+        paths=PathSettings(repo_root=tmp_path),
+    )
 
 
 def test_seed_figures_loads_yaml(
@@ -32,7 +35,7 @@ def test_seed_figures_loads_yaml(
     uow_factory: SqlAlchemyUnitOfWorkFactory,
 ) -> None:
     settings = make_settings(tmp_path)
-    write_figure(settings.figures_dir, "parabool", "x^2")
+    write_figure(settings.paths.figures_dir, "parabool", "x^2")
 
     BootstrapService(settings).seed_figures(uow_factory())
 
@@ -47,7 +50,7 @@ def test_seed_figures_is_idempotent(
     uow_factory: SqlAlchemyUnitOfWorkFactory,
 ) -> None:
     settings = make_settings(tmp_path)
-    write_figure(settings.figures_dir, "parabool", "x^2")
+    write_figure(settings.paths.figures_dir, "parabool", "x^2")
     service = BootstrapService(settings)
 
     service.seed_figures(uow_factory())

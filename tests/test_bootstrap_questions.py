@@ -3,9 +3,9 @@ from pathlib import Path
 import yaml
 
 from mathwizard.db.unit_of_work import SqlAlchemyUnitOfWorkFactory
-from mathwizard.enums import QuestionSource
+from mathwizard.models.domain.question import QuestionSource
 from mathwizard.services.bootstrap import BootstrapService
-from mathwizard.settings import Settings
+from mathwizard.settings import DatabaseSettings, PathSettings, Settings
 
 
 def _write_practice_yaml(repo_root: Path, *, title: str, difficulty: int) -> None:
@@ -28,7 +28,10 @@ def test_seed_practice_questions_inserts_from_yaml(
     uow_factory: SqlAlchemyUnitOfWorkFactory,
 ) -> None:
     _write_practice_yaml(tmp_path, title="Machtsfuncties", difficulty=1)
-    settings = Settings(database_url="sqlite:///unused.db", repo_root=tmp_path)
+    settings = Settings(
+        db=DatabaseSettings(url="sqlite:///unused.db"),
+        paths=PathSettings(repo_root=tmp_path),
+    )
 
     BootstrapService(settings).seed_practice_questions(uow_factory())
 
@@ -43,7 +46,10 @@ def test_seed_practice_questions_is_idempotent(
     uow_factory: SqlAlchemyUnitOfWorkFactory,
 ) -> None:
     _write_practice_yaml(tmp_path, title="Machtsfuncties", difficulty=1)
-    settings = Settings(database_url="sqlite:///unused.db", repo_root=tmp_path)
+    settings = Settings(
+        db=DatabaseSettings(url="sqlite:///unused.db"),
+        paths=PathSettings(repo_root=tmp_path),
+    )
     service = BootstrapService(settings)
 
     service.seed_practice_questions(uow_factory())
@@ -59,7 +65,10 @@ def test_seed_practice_questions_updates_an_existing_question(
     uow_factory: SqlAlchemyUnitOfWorkFactory,
 ) -> None:
     _write_practice_yaml(tmp_path, title="Machtsfuncties", difficulty=1)
-    settings = Settings(database_url="sqlite:///unused.db", repo_root=tmp_path)
+    settings = Settings(
+        db=DatabaseSettings(url="sqlite:///unused.db"),
+        paths=PathSettings(repo_root=tmp_path),
+    )
     service = BootstrapService(settings)
     service.seed_practice_questions(uow_factory())
 

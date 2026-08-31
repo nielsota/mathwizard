@@ -5,9 +5,11 @@ from mathwizard.db.repositories.user import SqlAlchemyUserRepository
 
 
 def _add_user(session: Session, username: str) -> int:
-    return SqlAlchemyUserRepository(session).add(
-        username=username, password_hash="hash"
-    ).id
+    return (
+        SqlAlchemyUserRepository(session)
+        .add(username=username, password_hash="hash")
+        .id
+    )
 
 
 def test_add_teacher_and_lookup_by_user_id(

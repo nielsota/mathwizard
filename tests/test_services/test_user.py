@@ -1,9 +1,9 @@
 import pytest
-
-from mathwizard.enums import UserRole
-from mathwizard.exceptions import AuthorizationError, RoleNotAssignedError
-from mathwizard.services.user import UserService
 from tests.fakes import FakeUnitOfWork
+
+from mathwizard.exceptions import AuthorizationError, RoleNotAssignedError
+from mathwizard.models.domain.user import UserRole
+from mathwizard.services.user import UserService
 
 
 def test_with_role_reports_teacher() -> None:

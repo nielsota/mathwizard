@@ -1,8 +1,7 @@
 from abc import abstractmethod
 from typing import Protocol
 
-from mathwizard.enums import QuestionSource
-from mathwizard.models.domain.question import Question, QuestionDraft
+from mathwizard.models.domain.question import Question, QuestionDraft, QuestionSource
 
 
 class QuestionRepository(Protocol):

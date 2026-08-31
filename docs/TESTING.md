@@ -139,12 +139,13 @@ docker compose down
 ```python
 # tests/test_web/test_routes.py
 
+
 def test_new_topic_page_loads(self, client):
     """New topic page should load successfully."""
     with patch("mathwizard.web.app.routes.practice.require_authentication"):
         response = client.get("/practice/newtopic")
         assert response.status_code == 200
-        
+
         # Check content
         content = response.content.decode()
         assert "expected text" in content.lower()
@@ -155,10 +156,7 @@ def test_new_topic_page_loads(self, client):
 ```python
 def test_api_search_endpoint(self, client):
     """Search API should return results."""
-    response = client.post(
-        "/api/v1/search",
-        json={"query": "test query"}
-    )
+    response = client.post("/api/v1/search", json={"query": "test query"})
     assert response.status_code == 200
     data = response.json()
     assert "results" in data
@@ -187,7 +185,9 @@ When running locally (`./scripts/dev-local.sh`), you can use:
 
 ```python
 # In your route handler
-import pdb; pdb.set_trace()
+import pdb
+
+pdb.set_trace()
 ```
 
 Or use your IDE's debugger:

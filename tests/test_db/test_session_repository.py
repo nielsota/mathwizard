@@ -9,9 +9,7 @@ NOW = datetime(2026, 8, 17, 12, 0, 0)
 
 
 def _seed_user(session: Session) -> int:
-    user = SqlAlchemyUserRepository(session).add(
-        username="root", password_hash="hash"
-    )
+    user = SqlAlchemyUserRepository(session).add(username="root", password_hash="hash")
     session.commit()
     return user.id
 

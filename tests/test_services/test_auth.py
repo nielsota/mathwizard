@@ -1,19 +1,18 @@
 from datetime import timedelta
 
 import pytest
+from tests.fakes import FakeUnitOfWork
 
 from mathwizard.clock import utcnow
 from mathwizard.exceptions import AuthenticationError
 from mathwizard.services.auth import AuthService, hash_password
-from mathwizard.settings import Settings
-from tests.fakes import FakeUnitOfWork
+from mathwizard.settings import DatabaseSettings, Settings, WebSettings
 
 
 def _settings() -> Settings:
     return Settings(
-        database_url="sqlite:///unused.db",
-        cookie_secure=False,
-        session_ttl_days=7,
+        db=DatabaseSettings(url="sqlite:///unused.db"),
+        web=WebSettings(cookie_secure=False, session_ttl_days=7),
     )
 
 

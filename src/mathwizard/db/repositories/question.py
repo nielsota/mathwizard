@@ -3,9 +3,8 @@ from sqlalchemy.orm import Session
 
 from mathwizard.db.mapping import apply_question_draft, question_to_domain
 from mathwizard.db.tables.question import QuestionSchema
-from mathwizard.enums import QuestionSource
 from mathwizard.exceptions import QuestionNotFoundError
-from mathwizard.models.domain.question import Question, QuestionDraft
+from mathwizard.models.domain.question import Question, QuestionDraft, QuestionSource
 from mathwizard.ports.question import QuestionRepository
 
 
@@ -45,4 +44,6 @@ class SqlAlchemyQuestionRepository(QuestionRepository):
             statement = statement.where(QuestionSchema.topic == topic)
         if source is not None:
             statement = statement.where(QuestionSchema.source == source)
-        return [question_to_domain(row) for row in self._session.scalars(statement).all()]
+        return [
+            question_to_domain(row) for row in self._session.scalars(statement).all()
+        ]

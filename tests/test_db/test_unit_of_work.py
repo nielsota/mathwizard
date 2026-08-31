@@ -43,10 +43,9 @@ def test_leaving_the_block_without_commit_discards_the_write(
 def test_an_exception_rolls_back_the_transaction(
     uow_factory: SqlAlchemyUnitOfWorkFactory,
 ) -> None:
-    with pytest.raises(RuntimeError):
-        with uow_factory() as uow:
-            uow.users.add(username="root", password_hash="hash")
-            raise RuntimeError("boom")
+    with pytest.raises(RuntimeError), uow_factory() as uow:
+        uow.users.add(username="root", password_hash="hash")
+        raise RuntimeError("boom")
 
     with uow_factory() as uow:
         assert uow.users.get_by_username("root") is None
@@ -55,11 +54,10 @@ def test_an_exception_rolls_back_the_transaction(
 def test_a_write_committed_before_a_later_failure_survives(
     uow_factory: SqlAlchemyUnitOfWorkFactory,
 ) -> None:
-    with pytest.raises(RuntimeError):
-        with uow_factory() as uow:
-            uow.users.add(username="root", password_hash="hash")
-            uow.commit()
-            raise RuntimeError("boom")
+    with pytest.raises(RuntimeError), uow_factory() as uow:
+        uow.users.add(username="root", password_hash="hash")
+        uow.commit()
+        raise RuntimeError("boom")
 
     with uow_factory() as uow:
         assert uow.users.get_by_username("root") is not None
@@ -82,10 +80,8 @@ def test_the_same_unit_of_work_can_be_reused_sequentially(
 def test_nested_entry_is_rejected(uow_factory: SqlAlchemyUnitOfWorkFactory) -> None:
     uow = uow_factory()
 
-    with uow:
-        with pytest.raises(RuntimeError, match="nested"):
-            with uow:
-                pass
+    with uow, pytest.raises(RuntimeError, match="nested"), uow:
+        pass
 
 
 def test_commit_outside_a_block_is_rejected(
@@ -112,13 +108,13 @@ def test_repositories_are_unreachable_outside_the_block(
     uow = uow_factory()
 
     with pytest.raises(AttributeError):
-        uow.users
+        _ = uow.users
 
     with uow:
         pass
 
     with pytest.raises(AttributeError):
-        uow.users
+        _ = uow.users
 
 
 def test_the_factory_returns_a_new_unit_of_work_each_call(
