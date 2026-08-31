@@ -3,13 +3,14 @@ from pathlib import Path
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 from sqlalchemy import Engine
+from tests.fakes import FakePasswordHasher
 
 from mathwizard.app.auth import router as auth_router
 from mathwizard.app.routes.roster import router as roster_router
 from mathwizard.db.base import Base
 from mathwizard.db.engine import create_db_engine, create_session_factory
 from mathwizard.db.unit_of_work import SqlAlchemyUnitOfWorkFactory
-from mathwizard.services.auth import AuthService, hash_password
+from mathwizard.services.auth import AuthService
 from mathwizard.services.user import UserService
 from mathwizard.settings import DatabaseSettings, Settings, WebSettings
 
@@ -33,7 +34,9 @@ def make_client(
 ) -> TestClient:
     app = FastAPI()
     app.state.uow_factory = uow_factory
-    app.state.auth_service = AuthService(make_settings(tmp_path))
+    app.state.auth_service = AuthService(
+        make_settings(tmp_path), hasher=FakePasswordHasher()
+    )
     app.state.user_service = UserService()
     app.include_router(auth_router)
     app.include_router(roster_router)
@@ -43,12 +46,14 @@ def make_client(
 def seed_teacher_and_students(uow_factory: SqlAlchemyUnitOfWorkFactory) -> None:
     with uow_factory() as uow:
         teacher_user = uow.users.add(
-            username="teacher", password_hash=hash_password("secret")
+            username="teacher",
+            password_hash=FakePasswordHasher().hash("secret"),
         )
         teacher = uow.roster.add_teacher(teacher_user.id)
         for name in ("alice", "bob"):
             student_user = uow.users.add(
-                username=name, password_hash=hash_password("secret")
+                username=name,
+                password_hash=FakePasswordHasher().hash("secret"),
             )
             uow.roster.add_student(student_user.id, teacher.id)
         uow.commit()

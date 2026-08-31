@@ -1,12 +1,16 @@
 from datetime import timedelta
 
 import pytest
-from tests.fakes import FakeUnitOfWork
+from tests.fakes import FakePasswordHasher, FakeUnitOfWork
 
 from mathwizard.clock import utcnow
 from mathwizard.exceptions import AuthenticationError
-from mathwizard.services.auth import AuthService, hash_password
+from mathwizard.services.auth import AuthService, BcryptPasswordHasher
 from mathwizard.settings import DatabaseSettings, Settings, WebSettings
+
+
+def _hasher() -> FakePasswordHasher:
+    return FakePasswordHasher()
 
 
 def _settings() -> Settings:
@@ -16,17 +20,31 @@ def _settings() -> Settings:
     )
 
 
+def _service() -> AuthService:
+    return AuthService(_settings(), hasher=_hasher())
+
+
 def _seed_root(uow: FakeUnitOfWork) -> None:
+    hasher = _hasher()
     with uow:
-        uow.users.add(username="root", password_hash=hash_password("secret"))
+        uow.users.add(username="root", password_hash=hasher.hash("secret"))
         uow.commit()
+
+
+def test_login_accepts_a_password_hashed_by_the_injected_hasher() -> None:
+    uow = FakeUnitOfWork()
+    _seed_root(uow)
+
+    result = _service().login(uow, "root", "secret")
+
+    assert result.user.username == "root"
 
 
 def test_login_returns_a_session_token_and_cookie_settings() -> None:
     uow = FakeUnitOfWork()
     _seed_root(uow)
 
-    result = AuthService(_settings()).login(uow, "root", "secret")
+    result = _service().login(uow, "root", "secret")
 
     assert result.user.username == "root"
     assert result.session_token
@@ -38,7 +56,7 @@ def test_login_commits_the_new_session() -> None:
     uow = FakeUnitOfWork()
     _seed_root(uow)
 
-    AuthService(_settings()).login(uow, "root", "secret")
+    _service().login(uow, "root", "secret")
 
     assert uow.committed is True
 
@@ -48,20 +66,20 @@ def test_login_rejects_a_wrong_password() -> None:
     _seed_root(uow)
 
     with pytest.raises(AuthenticationError):
-        AuthService(_settings()).login(uow, "root", "wrong")
+        _service().login(uow, "root", "wrong")
 
 
 def test_login_rejects_an_unknown_username() -> None:
     uow = FakeUnitOfWork()
 
     with pytest.raises(AuthenticationError):
-        AuthService(_settings()).login(uow, "nobody", "secret")
+        _service().login(uow, "nobody", "secret")
 
 
 def test_get_current_user_resolves_an_active_session() -> None:
     uow = FakeUnitOfWork()
     _seed_root(uow)
-    service = AuthService(_settings())
+    service = _service()
     token = service.login(uow, "root", "secret").session_token
 
     user = service.get_current_user(uow, token)
@@ -73,7 +91,7 @@ def test_get_current_user_rejects_a_missing_token() -> None:
     uow = FakeUnitOfWork()
 
     with pytest.raises(AuthenticationError, match="Not authenticated"):
-        AuthService(_settings()).get_current_user(uow, None)
+        _service().get_current_user(uow, None)
 
 
 def test_get_current_user_rejects_an_expired_session() -> None:
@@ -90,13 +108,13 @@ def test_get_current_user_rejects_an_expired_session() -> None:
         uow.commit()
 
     with pytest.raises(AuthenticationError, match="Invalid session"):
-        AuthService(_settings()).get_current_user(uow, "stale")
+        _service().get_current_user(uow, "stale")
 
 
 def test_logout_revokes_the_session() -> None:
     uow = FakeUnitOfWork()
     _seed_root(uow)
-    service = AuthService(_settings())
+    service = _service()
     token = service.login(uow, "root", "secret").session_token
 
     service.logout(uow, token)
@@ -108,6 +126,17 @@ def test_logout_revokes_the_session() -> None:
 def test_logout_without_a_token_is_a_no_op() -> None:
     uow = FakeUnitOfWork()
 
-    AuthService(_settings()).logout(uow, None)
+    _service().logout(uow, None)
 
     assert uow.committed is False
+
+
+def test_bcrypt_password_hasher_round_trip() -> None:
+    hasher = BcryptPasswordHasher()
+
+    hashed = hasher.hash("s3cret")
+
+    assert hashed != "s3cret"
+    assert hasher.verify("s3cret", hashed) is True
+    assert hasher.verify("wrong", hashed) is False
+    assert hasher.verify("s3cret", hasher.dummy_hash) is False

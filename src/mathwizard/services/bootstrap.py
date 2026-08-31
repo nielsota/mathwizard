@@ -5,8 +5,9 @@ import yaml
 
 from mathwizard.models.domain.figure import FigureDraft, FigureSpec
 from mathwizard.models.domain.question import QuestionDraft, QuestionSource
+from mathwizard.ports.password import PasswordHasher
 from mathwizard.ports.unit_of_work import BootstrapUnitOfWork
-from mathwizard.services.auth import hash_password
+from mathwizard.services.auth import BcryptPasswordHasher
 from mathwizard.settings import Settings
 
 
@@ -51,8 +52,13 @@ def _to_draft(exercise: ExerciseYaml) -> QuestionDraft:
 
 
 class BootstrapService:
-    def __init__(self, settings: Settings) -> None:
+    def __init__(
+        self,
+        settings: Settings,
+        hasher: PasswordHasher | None = None,
+    ) -> None:
         self.settings = settings
+        self._hasher = hasher or BcryptPasswordHasher()
 
     def seed_root_user(self, uow: BootstrapUnitOfWork) -> None:
         username = self.settings.bootstrap.username
@@ -60,7 +66,7 @@ class BootstrapService:
             if uow.users.get_by_username(username) is None:
                 uow.users.add(
                     username=username,
-                    password_hash=hash_password(self.settings.bootstrap.password),
+                    password_hash=self._hasher.hash(self.settings.bootstrap.password),
                 )
                 uow.commit()
 
@@ -90,7 +96,7 @@ class BootstrapService:
                     continue
                 student_user = uow.users.add(
                     username=username,
-                    password_hash=hash_password(
+                    password_hash=self._hasher.hash(
                         self.settings.bootstrap.student_password
                     ),
                 )

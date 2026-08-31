@@ -19,11 +19,22 @@ from mathwizard.models.domain.roster import Student, Teacher
 from mathwizard.models.domain.session import AuthSession
 from mathwizard.models.domain.user import User
 from mathwizard.ports.figure import FigureRepository
+from mathwizard.ports.password import PasswordHasher
 from mathwizard.ports.question import QuestionRepository
 from mathwizard.ports.roster import RosterRepository
 from mathwizard.ports.session import SessionRepository
 from mathwizard.ports.unit_of_work import UnitOfWork, UnitOfWorkFactory
 from mathwizard.ports.user import UserRepository
+
+
+class FakePasswordHasher(PasswordHasher):
+    dummy_hash = "fake:__not_a_real_password__"
+
+    def hash(self, plain: str) -> str:
+        return f"fake:{plain}"
+
+    def verify(self, plain: str, hashed: str) -> bool:
+        return hashed == f"fake:{plain}"
 
 
 class FakeUserRepository(UserRepository):

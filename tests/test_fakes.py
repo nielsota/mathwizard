@@ -4,7 +4,23 @@ from mathwizard.exceptions import QuestionNotFoundError, UserNotFoundError
 from mathwizard.models.domain.figure import FigureDraft, FigureSpec, Viewport
 from mathwizard.models.domain.question import QuestionDraft
 from mathwizard.ports.unit_of_work import UnitOfWork
-from tests.fakes import FakeUnitOfWork
+from tests.fakes import FakePasswordHasher, FakeUnitOfWork
+
+
+def test_fake_password_hasher_round_trip() -> None:
+    hasher = FakePasswordHasher()
+
+    hashed = hasher.hash("secret")
+
+    assert hashed == "fake:secret"
+    assert hasher.verify("secret", hashed) is True
+    assert hasher.verify("wrong", hashed) is False
+
+
+def test_fake_password_hasher_dummy_hash_does_not_match_a_real_password() -> None:
+    hasher = FakePasswordHasher()
+
+    assert hasher.verify("secret", hasher.dummy_hash) is False
 
 
 def _spec() -> FigureSpec:

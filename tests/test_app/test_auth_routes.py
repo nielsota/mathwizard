@@ -3,12 +3,13 @@ from pathlib import Path
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 from sqlalchemy import Engine
+from tests.fakes import FakePasswordHasher
 
 from mathwizard.app.auth import router
 from mathwizard.db.base import Base
 from mathwizard.db.engine import create_db_engine, create_session_factory
 from mathwizard.db.unit_of_work import SqlAlchemyUnitOfWorkFactory
-from mathwizard.services.auth import AuthService, hash_password
+from mathwizard.services.auth import AuthService
 from mathwizard.services.user import UserService
 from mathwizard.settings import DatabaseSettings, Settings, WebSettings
 
@@ -32,7 +33,7 @@ def make_client(
 ) -> TestClient:
     app = FastAPI()
     app.state.uow_factory = uow_factory
-    app.state.auth_service = AuthService(settings)
+    app.state.auth_service = AuthService(settings, hasher=FakePasswordHasher())
     app.state.user_service = UserService()
     app.include_router(router)
     return TestClient(app)
@@ -40,7 +41,10 @@ def make_client(
 
 def seed_user(uow_factory: SqlAlchemyUnitOfWorkFactory) -> None:
     with uow_factory() as uow:
-        user = uow.users.add(username="root", password_hash=hash_password("secret"))
+        user = uow.users.add(
+            username="root",
+            password_hash=FakePasswordHasher().hash("secret"),
+        )
         uow.roster.add_teacher(user.id)
         uow.commit()
 
