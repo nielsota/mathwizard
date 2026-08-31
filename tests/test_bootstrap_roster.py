@@ -2,17 +2,24 @@ from pathlib import Path
 
 from mathwizard.db.unit_of_work import SqlAlchemyUnitOfWorkFactory
 from mathwizard.services.bootstrap import BootstrapService
-from mathwizard.settings import Settings
+from mathwizard.settings import (
+    BootstrapSettings,
+    DatabaseSettings,
+    PathSettings,
+    Settings,
+)
 
 
 def _settings(tmp_path: Path) -> Settings:
     return Settings(
-        database_url="sqlite:///unused.db",
-        repo_root=tmp_path,
-        bootstrap_username="root",
-        bootstrap_password="root",
-        bootstrap_student_usernames=["alice", "bob"],
-        bootstrap_student_password="student",
+        db=DatabaseSettings(url="sqlite:///unused.db"),
+        paths=PathSettings(repo_root=tmp_path),
+        bootstrap=BootstrapSettings(
+            username="root",
+            password="root",
+            student_usernames=["alice", "bob"],
+            student_password="student",
+        ),
     )
 
 

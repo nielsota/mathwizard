@@ -137,8 +137,7 @@ class RosterMixin(NeedsEngine):
 
 ```python
 # db/client.py
-class DBClient(UserMixin, SessionsMixin, QuestionsMixin, RosterMixin):
-    ...
+class DBClient(UserMixin, SessionsMixin, QuestionsMixin, RosterMixin): ...
 ```
 
 **Files to create/modify**:
@@ -295,7 +294,9 @@ class UserService:
 
     def to_response(self, user: User) -> UserResponse:
         assert user.id is not None
-        return UserResponse(id=user.id, username=user.username, role=self.get_role(user))
+        return UserResponse(
+            id=user.id, username=user.username, role=self.get_role(user)
+        )
 
     def list_students(self, user: User) -> StudentsResponse:
         assert user.id is not None
@@ -404,10 +405,16 @@ def login(
     try:
         result = auth_service.login(body)
     except AuthenticationError as exc:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=str(exc)) from exc
-    _set_session_cookie(response, cookie_name=auth_service.session_cookie_name,
-                        token=result.session_token, max_age_seconds=result.max_age_seconds,
-                        secure=result.cookie_secure)
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail=str(exc)
+        ) from exc
+    _set_session_cookie(
+        response,
+        cookie_name=auth_service.session_cookie_name,
+        token=result.session_token,
+        max_age_seconds=result.max_age_seconds,
+        secure=result.cookie_secure,
+    )
     return user_service.to_response(result.user)
 
 
@@ -429,11 +436,15 @@ router = APIRouter(prefix="/api/v1/roster", tags=["roster"])
 
 
 @router.get("/students")
-def list_students(user: CurrentUserDep, user_service: UserServiceDep) -> StudentsResponse:
+def list_students(
+    user: CurrentUserDep, user_service: UserServiceDep
+) -> StudentsResponse:
     try:
         return user_service.list_students(user)
     except AuthorizationError as exc:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(exc)) from exc
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN, detail=str(exc)
+        ) from exc
 
 
 @router.get("/my-teacher")
@@ -441,7 +452,9 @@ def my_teacher(user: CurrentUserDep, user_service: UserServiceDep) -> MyTeacherR
     try:
         return user_service.get_my_teacher(user)
     except AuthorizationError as exc:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(exc)) from exc
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN, detail=str(exc)
+        ) from exc
 ```
 
 ```python
@@ -511,6 +524,7 @@ def seed_root_teacher(self) -> None:
     if self.db.get_teacher_by_user_id(user.id) is None:
         self.db.create_teacher(user.id)
 
+
 def seed_students(self) -> None:
     root = self.db.get_user_by_username(self.settings.bootstrap_username)
     if root is None or root.id is None:
@@ -526,6 +540,7 @@ def seed_students(self) -> None:
         )
         assert user.id is not None
         self.db.create_student(user.id, teacher.id)
+
 
 def run_all(self) -> None:
     self.seed_root_user()

@@ -1,7 +1,6 @@
 from typing import Annotated
 
-from fastapi import Depends
-from fastapi import Request
+from fastapi import Depends, Request
 
 from mathwizard.ports.unit_of_work import UnitOfWork
 from mathwizard.services.auth import AuthService

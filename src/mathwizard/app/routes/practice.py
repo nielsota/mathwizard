@@ -4,8 +4,8 @@ from fastapi import APIRouter, Query
 
 from mathwizard.app.auth import CurrentUserDep
 from mathwizard.app.dependencies import QuestionServiceDep, UnitOfWorkDep
-from mathwizard.enums import QuestionSource
 from mathwizard.models.api.question import QuestionListResponse
+from mathwizard.models.domain.question import QuestionSource
 
 router = APIRouter(prefix="/api/v1/practice", tags=["practice"])
 

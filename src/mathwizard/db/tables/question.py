@@ -2,7 +2,7 @@ from sqlalchemy import JSON, Enum, ForeignKey, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from mathwizard.db.base import Base
-from mathwizard.enums import QuestionSource
+from mathwizard.models.domain.question import QuestionSource
 
 
 class QuestionSchema(Base):

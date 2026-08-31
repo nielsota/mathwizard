@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-from mathwizard.enums import UserRole
+from mathwizard.models.domain.user import UserRole
 
 
 class LoginRequest(BaseModel):

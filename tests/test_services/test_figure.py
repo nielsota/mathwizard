@@ -1,4 +1,5 @@
 import pytest
+from tests.fakes import FakeUnitOfWork
 
 from mathwizard.exceptions import DuplicateFigureSlugError, FigureNotFoundError
 from mathwizard.models.domain.figure import (
@@ -8,7 +9,6 @@ from mathwizard.models.domain.figure import (
     Viewport,
 )
 from mathwizard.services.figure import FigureService
-from tests.fakes import FakeUnitOfWork
 
 
 def _spec(fn: str = "x^2") -> FigureSpec:

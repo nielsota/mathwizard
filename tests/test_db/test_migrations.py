@@ -8,12 +8,14 @@ from sqlalchemy import inspect
 from mathwizard.db.base import Base
 from mathwizard.db.engine import create_db_engine
 from mathwizard.db.migrations import alembic_config
-from mathwizard.settings import Settings
+from mathwizard.settings import DatabaseSettings, Settings
 
 
 def _upgrade_to_head(tmp_path: Path) -> str:
     database_url = f"sqlite:///{tmp_path / 'migrated.db'}"
-    command.upgrade(alembic_config(Settings(database_url=database_url)), "head")
+    command.upgrade(
+        alembic_config(Settings(db=DatabaseSettings(url=database_url))), "head"
+    )
     return database_url
 
 

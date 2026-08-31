@@ -1,8 +1,13 @@
+from enum import StrEnum
 from typing import Self
 
 from pydantic import BaseModel, Field, computed_field, model_validator
 
-from mathwizard.enums import QuestionSource
+
+class QuestionSource(StrEnum):
+    PRACTICE = "practice"
+    EXAM = "exam"
+    GENERATED = "generated"
 
 
 class QuestionPartDraft(BaseModel):

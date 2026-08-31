@@ -5,7 +5,7 @@ from rich import print as rprint
 from mathwizard.db.engine import create_db_engine, create_session_factory
 from mathwizard.db.migrations import alembic_config
 from mathwizard.db.unit_of_work import SqlAlchemyUnitOfWorkFactory
-from mathwizard.enums import QuestionSource
+from mathwizard.models.domain.question import QuestionSource
 from mathwizard.services.bootstrap import BootstrapService
 from mathwizard.settings import Settings, get_settings
 
@@ -15,7 +15,7 @@ app.add_typer(db_app, name="db")
 
 
 def _uow_factory(settings: Settings) -> SqlAlchemyUnitOfWorkFactory:
-    engine = create_db_engine(settings.database_url)
+    engine = create_db_engine(settings.db.url)
     return SqlAlchemyUnitOfWorkFactory(create_session_factory(engine))
 
 
@@ -29,7 +29,7 @@ def db_upgrade() -> None:
     """Apply all pending Alembic migrations."""
     settings = get_settings()
     command.upgrade(alembic_config(settings), "head")
-    rprint(f"[green]Schema up to date.[/green] {settings.database_url}")
+    rprint(f"[green]Schema up to date.[/green] {settings.db.url}")
 
 
 @app.command()

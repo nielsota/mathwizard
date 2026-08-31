@@ -30,9 +30,8 @@ def test_add_does_not_commit(session_factory: sessionmaker[Session]) -> None:
 def test_get_raises_when_the_user_is_missing(
     session_factory: sessionmaker[Session],
 ) -> None:
-    with session_factory() as session:
-        with pytest.raises(UserNotFoundError):
-            SqlAlchemyUserRepository(session).get(99)
+    with session_factory() as session, pytest.raises(UserNotFoundError):
+        SqlAlchemyUserRepository(session).get(99)
 
 
 def test_get_by_username_returns_none_when_missing(

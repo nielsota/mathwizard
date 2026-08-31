@@ -35,6 +35,8 @@ class SqlAlchemyUserRepository(UserRepository):
         if not user_ids:
             return []
         statement = (
-            select(UserSchema).where(UserSchema.id.in_(user_ids)).order_by(UserSchema.id)
+            select(UserSchema)
+            .where(UserSchema.id.in_(user_ids))
+            .order_by(UserSchema.id)
         )
         return [user_to_domain(row) for row in self._session.scalars(statement).all()]

@@ -1,11 +1,10 @@
 from pathlib import Path
 from typing import NotRequired, TypedDict
 
-import yaml  # type: ignore[import-untyped]
+import yaml
 
-from mathwizard.enums import QuestionSource
 from mathwizard.models.domain.figure import FigureDraft, FigureSpec
-from mathwizard.models.domain.question import QuestionDraft
+from mathwizard.models.domain.question import QuestionDraft, QuestionSource
 from mathwizard.ports.unit_of_work import BootstrapUnitOfWork
 from mathwizard.services.auth import hash_password
 from mathwizard.settings import Settings
@@ -56,21 +55,21 @@ class BootstrapService:
         self.settings = settings
 
     def seed_root_user(self, uow: BootstrapUnitOfWork) -> None:
-        username = self.settings.bootstrap_username
+        username = self.settings.bootstrap.username
         with uow:
             if uow.users.get_by_username(username) is None:
                 uow.users.add(
                     username=username,
-                    password_hash=hash_password(self.settings.bootstrap_password),
+                    password_hash=hash_password(self.settings.bootstrap.password),
                 )
                 uow.commit()
 
     def seed_root_teacher(self, uow: BootstrapUnitOfWork) -> None:
         with uow:
-            user = uow.users.get_by_username(self.settings.bootstrap_username)
+            user = uow.users.get_by_username(self.settings.bootstrap.username)
             if user is None:
                 raise RuntimeError(
-                    f"Bootstrap user {self.settings.bootstrap_username} does not exist"
+                    f"Bootstrap user {self.settings.bootstrap.username} does not exist"
                 )
             if uow.roster.get_teacher_by_user_id(user.id) is None:
                 uow.roster.add_teacher(user.id)
@@ -78,28 +77,28 @@ class BootstrapService:
 
     def seed_students(self, uow: BootstrapUnitOfWork) -> None:
         with uow:
-            root = uow.users.get_by_username(self.settings.bootstrap_username)
+            root = uow.users.get_by_username(self.settings.bootstrap.username)
             if root is None:
                 raise RuntimeError(
-                    f"Bootstrap user {self.settings.bootstrap_username} does not exist"
+                    f"Bootstrap user {self.settings.bootstrap.username} does not exist"
                 )
             teacher = uow.roster.get_teacher_by_user_id(root.id)
             if teacher is None:
                 raise RuntimeError("Bootstrap teacher does not exist")
-            for username in self.settings.bootstrap_student_usernames:
+            for username in self.settings.bootstrap.student_usernames:
                 if uow.users.get_by_username(username) is not None:
                     continue
                 student_user = uow.users.add(
                     username=username,
                     password_hash=hash_password(
-                        self.settings.bootstrap_student_password
+                        self.settings.bootstrap.student_password
                     ),
                 )
                 uow.roster.add_student(student_user.id, teacher.id)
             uow.commit()
 
     def seed_practice_questions(self, uow: BootstrapUnitOfWork) -> None:
-        practice_dir = self.settings.practice_dir
+        practice_dir = self.settings.paths.practice_dir
         if not practice_dir.exists():
             raise FileNotFoundError(
                 f"Practice question directory not found: {practice_dir}"
@@ -141,7 +140,7 @@ class BootstrapService:
             uow.commit()
 
     def seed_figures(self, uow: BootstrapUnitOfWork) -> None:
-        figures_dir = self.settings.figures_dir
+        figures_dir = self.settings.paths.figures_dir
         if not figures_dir.exists():
             return
         with uow:

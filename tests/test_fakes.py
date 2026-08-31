@@ -88,8 +88,12 @@ def test_fake_figure_repository_upsert_updates_existing_slug() -> None:
     uow = FakeUnitOfWork()
 
     with uow:
-        created = uow.figures.add(FigureDraft(slug="parabola", title="Old", spec=_spec()))
-        updated = uow.figures.upsert(FigureDraft(slug="parabola", title="New", spec=_spec()))
+        created = uow.figures.add(
+            FigureDraft(slug="parabola", title="Old", spec=_spec())
+        )
+        updated = uow.figures.upsert(
+            FigureDraft(slug="parabola", title="New", spec=_spec())
+        )
 
     assert updated.id == created.id
     assert updated.title == "New"

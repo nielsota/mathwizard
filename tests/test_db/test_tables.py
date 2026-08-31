@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session, sessionmaker
 
 from mathwizard.db.tables.question import QuestionPartSchema, QuestionSchema
 from mathwizard.db.tables.user import UserSchema
-from mathwizard.enums import QuestionSource
+from mathwizard.models.domain.question import QuestionSource
 
 
 def test_metadata_creates_every_expected_table(engine: Engine) -> None:
@@ -97,6 +97,8 @@ def test_deleting_a_question_deletes_its_parts(
         session.commit()
 
     with engine.connect() as connection:
-        remaining = connection.execute(text("select count(*) from question_parts")).scalar()
+        remaining = connection.execute(
+            text("select count(*) from question_parts")
+        ).scalar()
 
     assert remaining == 0

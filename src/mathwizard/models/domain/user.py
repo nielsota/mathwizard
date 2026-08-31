@@ -1,6 +1,11 @@
+from enum import StrEnum
+
 from pydantic import BaseModel
 
-from mathwizard.enums import UserRole
+
+class UserRole(StrEnum):
+    TEACHER = "teacher"
+    STUDENT = "student"
 
 
 class User(BaseModel):

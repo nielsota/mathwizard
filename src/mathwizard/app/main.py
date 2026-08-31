@@ -20,7 +20,7 @@ from mathwizard.settings import get_settings
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncGenerator[None]:
     settings = get_settings()
-    engine = create_db_engine(settings.database_url)
+    engine = create_db_engine(settings.db.url)
     uow_factory = SqlAlchemyUnitOfWorkFactory(create_session_factory(engine))
 
     BootstrapService(settings).run_all(uow_factory())

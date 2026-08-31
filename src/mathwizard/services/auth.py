@@ -37,10 +37,10 @@ class AuthService:
 
     @property
     def session_cookie_name(self) -> str:
-        return self.settings.session_cookie_name
+        return self.settings.web.session_cookie_name
 
     def login(self, uow: AuthUnitOfWork, username: str, password: str) -> LoginResult:
-        ttl = timedelta(days=self.settings.session_ttl_days)
+        ttl = timedelta(days=self.settings.web.session_ttl_days)
         with uow:
             user = uow.users.get_by_username(username)
             # An unknown username still pays for a hash comparison, so the response
@@ -61,7 +61,7 @@ class AuthService:
             user=user,
             session_token=session.token,
             max_age_seconds=int(ttl.total_seconds()),
-            cookie_secure=self.settings.cookie_secure,
+            cookie_secure=self.settings.web.cookie_secure,
         )
 
     def logout(self, uow: AuthUnitOfWork, session_token: str | None) -> None:

@@ -1,8 +1,12 @@
 from datetime import datetime, timedelta
 
-from mathwizard.enums import QuestionSource
 from mathwizard.models.domain.figure import FigureSpec, FunctionGraph, Viewport
-from mathwizard.models.domain.question import Question, QuestionDraft, QuestionPart
+from mathwizard.models.domain.question import (
+    Question,
+    QuestionDraft,
+    QuestionPart,
+    QuestionSource,
+)
 from mathwizard.models.domain.session import AuthSession
 
 

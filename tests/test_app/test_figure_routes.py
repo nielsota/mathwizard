@@ -13,7 +13,7 @@ from mathwizard.models.domain.figure import FigureDraft, FigureSpec, Viewport
 from mathwizard.services.auth import AuthService, hash_password
 from mathwizard.services.figure import FigureService
 from mathwizard.services.user import UserService
-from mathwizard.settings import Settings
+from mathwizard.settings import DatabaseSettings, Settings, WebSettings
 
 
 def make_uow_factory(tmp_path: Path) -> SqlAlchemyUnitOfWorkFactory:
@@ -24,9 +24,8 @@ def make_uow_factory(tmp_path: Path) -> SqlAlchemyUnitOfWorkFactory:
 
 def make_settings(tmp_path: Path) -> Settings:
     return Settings(
-        database_url=f"sqlite:///{tmp_path / 'api.db'}",
-        cookie_secure=False,
-        session_ttl_days=7,
+        db=DatabaseSettings(url=f"sqlite:///{tmp_path / 'api.db'}"),
+        web=WebSettings(cookie_secure=False, session_ttl_days=7),
     )
 
 
@@ -52,7 +51,9 @@ def authenticate(
         user = uow.users.add(username="root", password_hash=hash_password("secret"))
         uow.roster.add_teacher(user.id)
         uow.commit()
-    response = client.post("/auth/login", json={"username": "root", "password": "secret"})
+    response = client.post(
+        "/auth/login", json={"username": "root", "password": "secret"}
+    )
     assert response.status_code == 200
 
 
@@ -137,8 +138,11 @@ def test_post_malformed_spec_is_422(tmp_path: Path) -> None:
     uow_factory = make_uow_factory(tmp_path)
     client = make_client(uow_factory, tmp_path)
     authenticate(client, uow_factory)
-    bad = {"slug": "x", "title": "x", "spec": {"viewport": {"x": [-5, 5]},
-           "elements": [{"type": "banana"}]}}
+    bad = {
+        "slug": "x",
+        "title": "x",
+        "spec": {"viewport": {"x": [-5, 5]}, "elements": [{"type": "banana"}]},
+    }
     assert client.post("/api/v1/figures", json=bad).status_code == 422
 
 

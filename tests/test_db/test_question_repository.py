@@ -3,9 +3,8 @@ from sqlalchemy import Engine, text
 from sqlalchemy.orm import Session, sessionmaker
 
 from mathwizard.db.repositories.question import SqlAlchemyQuestionRepository
-from mathwizard.enums import QuestionSource
 from mathwizard.exceptions import QuestionNotFoundError
-from mathwizard.models.domain.question import QuestionDraft
+from mathwizard.models.domain.question import QuestionDraft, QuestionSource
 
 
 def _draft(**overrides: object) -> QuestionDraft:
@@ -18,7 +17,7 @@ def _draft(**overrides: object) -> QuestionDraft:
         "parts": [{"text": r"\(f(x)=x^2\)", "points": 2}],
     }
     values.update(overrides)
-    return QuestionDraft(**values)
+    return QuestionDraft.model_validate(values)
 
 
 def test_add_persists_metadata_and_auto_labelled_parts(
@@ -53,9 +52,8 @@ def test_add_persists_metadata_and_auto_labelled_parts(
 def test_get_raises_when_the_question_is_missing(
     session_factory: sessionmaker[Session],
 ) -> None:
-    with session_factory() as session:
-        with pytest.raises(QuestionNotFoundError):
-            SqlAlchemyQuestionRepository(session).get(99)
+    with session_factory() as session, pytest.raises(QuestionNotFoundError):
+        SqlAlchemyQuestionRepository(session).get(99)
 
 
 def test_list_filters_by_topic_and_source(
@@ -136,9 +134,8 @@ def test_replace_deletes_the_orphaned_parts(
 def test_replace_raises_when_the_question_is_missing(
     session_factory: sessionmaker[Session],
 ) -> None:
-    with session_factory() as session:
-        with pytest.raises(QuestionNotFoundError):
-            SqlAlchemyQuestionRepository(session).replace(99, _draft())
+    with session_factory() as session, pytest.raises(QuestionNotFoundError):
+        SqlAlchemyQuestionRepository(session).replace(99, _draft())
 
 
 def test_add_does_not_commit(session_factory: sessionmaker[Session]) -> None:

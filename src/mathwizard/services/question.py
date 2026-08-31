@@ -1,5 +1,4 @@
-from mathwizard.enums import QuestionSource
-from mathwizard.models.domain.question import Question
+from mathwizard.models.domain.question import Question, QuestionSource
 from mathwizard.ports.unit_of_work import QuestionUnitOfWork
 
 

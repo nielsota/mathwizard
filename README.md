@@ -33,16 +33,16 @@ cd frontend && npm run dev -- --host 0.0.0.0 --port 3001
 MathWizard uses first-party cookie authentication. On startup, the backend seeds a bootstrap user from `.env` settings:
 
 ```text
-bootstrap_username=root
-bootstrap_password=root
-session_ttl_days=7
-session_cookie_name=mw_session
-cookie_secure=false
+BOOTSTRAP__USERNAME=root
+BOOTSTRAP__PASSWORD=root
+WEB__SESSION_TTL_DAYS=7
+WEB__SESSION_COOKIE_NAME=mw_session
+WEB__COOKIE_SECURE=false
 ```
 
-Login happens through `POST /auth/login`. Successful login sets an `HttpOnly` cookie named by `session_cookie_name`. The frontend restores sessions with `GET /auth/me` and logs out with `POST /auth/logout`.
+Login happens through `POST /auth/login`. Successful login sets an `HttpOnly` cookie named by `WEB__SESSION_COOKIE_NAME`. The frontend restores sessions with `GET /auth/me` and logs out with `POST /auth/logout`.
 
-For production, set `cookie_secure=true` so browsers only send the session cookie over HTTPS.
+For production, set `WEB__COOKIE_SECURE=true` so browsers only send the session cookie over HTTPS.
 
 ## Practice Questions
 

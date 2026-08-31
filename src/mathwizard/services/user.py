@@ -1,6 +1,5 @@
-from mathwizard.enums import UserRole
 from mathwizard.exceptions import AuthorizationError, RoleNotAssignedError
-from mathwizard.models.domain.user import User, UserWithRole
+from mathwizard.models.domain.user import User, UserRole, UserWithRole
 from mathwizard.ports.unit_of_work import RosterUnitOfWork
 
 

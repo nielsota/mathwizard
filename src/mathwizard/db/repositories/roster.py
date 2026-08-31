@@ -43,4 +43,6 @@ class SqlAlchemyRosterRepository(RosterRepository):
             .where(StudentSchema.teacher_id == teacher_id)
             .order_by(StudentSchema.id)
         )
-        return [student_to_domain(row) for row in self._session.scalars(statement).all()]
+        return [
+            student_to_domain(row) for row in self._session.scalars(statement).all()
+        ]

@@ -11,7 +11,7 @@ from mathwizard.db.engine import create_db_engine, create_session_factory
 from mathwizard.db.unit_of_work import SqlAlchemyUnitOfWorkFactory
 from mathwizard.services.auth import AuthService, hash_password
 from mathwizard.services.user import UserService
-from mathwizard.settings import Settings
+from mathwizard.settings import DatabaseSettings, Settings, WebSettings
 
 
 def make_uow_factory(tmp_path: Path) -> SqlAlchemyUnitOfWorkFactory:
@@ -22,9 +22,8 @@ def make_uow_factory(tmp_path: Path) -> SqlAlchemyUnitOfWorkFactory:
 
 def make_settings(tmp_path: Path) -> Settings:
     return Settings(
-        database_url=f"sqlite:///{tmp_path / 'api.db'}",
-        cookie_secure=False,
-        session_ttl_days=7,
+        db=DatabaseSettings(url=f"sqlite:///{tmp_path / 'api.db'}"),
+        web=WebSettings(cookie_secure=False, session_ttl_days=7),
     )
 
 

@@ -1,7 +1,7 @@
-from mathwizard.enums import QuestionSource
-from mathwizard.models.domain.question import QuestionDraft
-from mathwizard.services.question import QuestionService
 from tests.fakes import FakeUnitOfWork
+
+from mathwizard.models.domain.question import QuestionDraft, QuestionSource
+from mathwizard.services.question import QuestionService
 
 
 def _seed(
