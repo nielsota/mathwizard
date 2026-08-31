@@ -1,60 +1,24 @@
-from pathlib import Path
+from tests.app_client import make_test_client
+from tests.fakes import FakePasswordHasher, FakeUnitOfWorkFactory
 
-from fastapi import FastAPI
-from fastapi.testclient import TestClient
-from sqlalchemy import Engine
-from tests.fakes import FakePasswordHasher
-
-from mathwizard.app.auth import router as auth_router
 from mathwizard.app.routes.figures import router as figures_router
-from mathwizard.db.base import Base
-from mathwizard.db.engine import create_db_engine, create_session_factory
-from mathwizard.db.unit_of_work import SqlAlchemyUnitOfWorkFactory
 from mathwizard.models.domain.figure import FigureDraft, FigureSpec, Viewport
-from mathwizard.services.auth import AuthService
-from mathwizard.services.figure import FigureService
-from mathwizard.services.user import UserService
-from mathwizard.settings import DatabaseSettings, Settings, WebSettings
+from mathwizard.ports.unit_of_work import UnitOfWorkFactory
+
+VALID_BODY = {
+    "slug": "parabool",
+    "title": "Parabool",
+    "spec": {
+        "viewport": {"x": [-5, 5]},
+        "elements": [{"type": "functionGraph", "fn": "x^2"}],
+    },
+}
 
 
-def make_uow_factory(tmp_path: Path) -> SqlAlchemyUnitOfWorkFactory:
-    engine: Engine = create_db_engine(f"sqlite:///{tmp_path / 'api.db'}")
-    Base.metadata.create_all(engine)
-    return SqlAlchemyUnitOfWorkFactory(create_session_factory(engine))
-
-
-def make_settings(tmp_path: Path) -> Settings:
-    return Settings(
-        db=DatabaseSettings(url=f"sqlite:///{tmp_path / 'api.db'}"),
-        web=WebSettings(cookie_secure=False, session_ttl_days=7),
-    )
-
-
-def make_client(
-    uow_factory: SqlAlchemyUnitOfWorkFactory,
-    tmp_path: Path,
-) -> TestClient:
-    app = FastAPI()
-    app.state.uow_factory = uow_factory
-    app.state.auth_service = AuthService(
-        make_settings(tmp_path), hasher=FakePasswordHasher()
-    )
-    app.state.figure_service = FigureService()
-    app.state.user_service = UserService()
-    app.include_router(auth_router)
-    app.include_router(figures_router)
-    return TestClient(app)
-
-
-def authenticate(
-    client: TestClient,
-    uow_factory: SqlAlchemyUnitOfWorkFactory,
-) -> None:
+def authenticate(client, uow_factory: UnitOfWorkFactory) -> None:
+    hasher = FakePasswordHasher()
     with uow_factory() as uow:
-        user = uow.users.add(
-            username="root",
-            password_hash=FakePasswordHasher().hash("secret"),
-        )
+        user = uow.users.add(username="root", password_hash=hasher.hash("secret"))
         uow.roster.add_teacher(user.id)
         uow.commit()
     response = client.post(
@@ -64,7 +28,7 @@ def authenticate(
 
 
 def seed_figure(
-    uow_factory: SqlAlchemyUnitOfWorkFactory,
+    uow_factory: UnitOfWorkFactory,
     *,
     slug: str,
     title: str,
@@ -81,24 +45,14 @@ def seed_figure(
     return figure.id
 
 
-VALID_BODY = {
-    "slug": "parabool",
-    "title": "Parabool",
-    "spec": {
-        "viewport": {"x": [-5, 5]},
-        "elements": [{"type": "functionGraph", "fn": "x^2"}],
-    },
-}
-
-
-def test_list_requires_authentication(tmp_path: Path) -> None:
-    client = make_client(make_uow_factory(tmp_path), tmp_path)
+def test_list_requires_authentication() -> None:
+    client = make_test_client(FakeUnitOfWorkFactory(), figures_router)
     assert client.get("/api/v1/figures").status_code == 401
 
 
-def test_post_then_list_and_get(tmp_path: Path) -> None:
-    uow_factory = make_uow_factory(tmp_path)
-    client = make_client(uow_factory, tmp_path)
+def test_post_then_list_and_get() -> None:
+    uow_factory = FakeUnitOfWorkFactory()
+    client = make_test_client(uow_factory, figures_router)
     authenticate(client, uow_factory)
 
     created = client.post("/api/v1/figures", json=VALID_BODY)
@@ -114,10 +68,10 @@ def test_post_then_list_and_get(tmp_path: Path) -> None:
     assert detail.json()["spec"]["elements"][0]["fn"] == "x^2"
 
 
-def test_list_figures_omits_spec_and_description(tmp_path: Path) -> None:
-    uow_factory = make_uow_factory(tmp_path)
+def test_list_figures_omits_spec_and_description() -> None:
+    uow_factory = FakeUnitOfWorkFactory()
     seed_figure(uow_factory, slug="parabola", title="Parabola")
-    client = make_client(uow_factory, tmp_path)
+    client = make_test_client(uow_factory, figures_router)
     authenticate(client, uow_factory)
 
     response = client.get("/api/v1/figures")
@@ -132,17 +86,17 @@ def test_list_figures_omits_spec_and_description(tmp_path: Path) -> None:
     }
 
 
-def test_post_duplicate_slug_conflicts(tmp_path: Path) -> None:
-    uow_factory = make_uow_factory(tmp_path)
-    client = make_client(uow_factory, tmp_path)
+def test_post_duplicate_slug_conflicts() -> None:
+    uow_factory = FakeUnitOfWorkFactory()
+    client = make_test_client(uow_factory, figures_router)
     authenticate(client, uow_factory)
     client.post("/api/v1/figures", json=VALID_BODY)
     assert client.post("/api/v1/figures", json=VALID_BODY).status_code == 409
 
 
-def test_post_malformed_spec_is_422(tmp_path: Path) -> None:
-    uow_factory = make_uow_factory(tmp_path)
-    client = make_client(uow_factory, tmp_path)
+def test_post_malformed_spec_is_422() -> None:
+    uow_factory = FakeUnitOfWorkFactory()
+    client = make_test_client(uow_factory, figures_router)
     authenticate(client, uow_factory)
     bad = {
         "slug": "x",
@@ -152,8 +106,8 @@ def test_post_malformed_spec_is_422(tmp_path: Path) -> None:
     assert client.post("/api/v1/figures", json=bad).status_code == 422
 
 
-def test_get_missing_is_404(tmp_path: Path) -> None:
-    uow_factory = make_uow_factory(tmp_path)
-    client = make_client(uow_factory, tmp_path)
+def test_get_missing_is_404() -> None:
+    uow_factory = FakeUnitOfWorkFactory()
+    client = make_test_client(uow_factory, figures_router)
     authenticate(client, uow_factory)
     assert client.get("/api/v1/figures/999").status_code == 404
