@@ -25,7 +25,7 @@ Run the app locally without Docker for rapid iteration:
 
 ---
 
-## Automated Tests
+### 2. ✅ Automated Tests
 
 Install extra deps, then pick a loop:
 

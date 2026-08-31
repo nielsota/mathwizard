@@ -5,7 +5,7 @@ import yaml
 from mathwizard.models.domain.question import QuestionSource
 from mathwizard.services.bootstrap import BootstrapService
 from mathwizard.settings import DatabaseSettings, PathSettings, Settings
-from tests.fakes import FakeUnitOfWorkFactory
+from tests.fakes import FakePasswordHasher, FakeUnitOfWorkFactory
 
 
 def _write_practice_yaml(repo_root: Path, *, title: str, difficulty: int) -> None:
@@ -31,7 +31,9 @@ def test_seed_practice_questions_inserts_from_yaml(tmp_path: Path) -> None:
     )
     uow_factory = FakeUnitOfWorkFactory()
 
-    BootstrapService(settings).seed_practice_questions(uow_factory())
+    BootstrapService(settings, hasher=FakePasswordHasher()).seed_practice_questions(
+        uow_factory()
+    )
 
     with uow_factory() as uow:
         questions = uow.questions.list(source=QuestionSource.PRACTICE)
@@ -45,7 +47,7 @@ def test_seed_practice_questions_is_idempotent(tmp_path: Path) -> None:
         db=DatabaseSettings(url="sqlite:///unused.db"),
         paths=PathSettings(repo_root=tmp_path),
     )
-    service = BootstrapService(settings)
+    service = BootstrapService(settings, hasher=FakePasswordHasher())
     uow_factory = FakeUnitOfWorkFactory()
 
     service.seed_practice_questions(uow_factory())
@@ -62,7 +64,7 @@ def test_seed_practice_questions_updates_an_existing_question(tmp_path: Path) ->
         db=DatabaseSettings(url="sqlite:///unused.db"),
         paths=PathSettings(repo_root=tmp_path),
     )
-    service = BootstrapService(settings)
+    service = BootstrapService(settings, hasher=FakePasswordHasher())
     uow_factory = FakeUnitOfWorkFactory()
     service.seed_practice_questions(uow_factory())
 

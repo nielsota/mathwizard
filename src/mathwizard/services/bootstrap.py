@@ -58,7 +58,7 @@ class BootstrapService:
         hasher: PasswordHasher | None = None,
     ) -> None:
         self.settings = settings
-        self._hasher = hasher or BcryptPasswordHasher()
+        self._hasher: PasswordHasher = hasher or BcryptPasswordHasher()
 
     def seed_root_user(self, uow: BootstrapUnitOfWork) -> None:
         username = self.settings.bootstrap.username

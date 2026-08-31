@@ -1,6 +1,7 @@
 import secrets
 from dataclasses import dataclass
 from datetime import timedelta
+from functools import cached_property
 
 from pwdlib import PasswordHash
 from pwdlib.hashers.bcrypt import BcryptHasher
@@ -15,9 +16,10 @@ from mathwizard.settings import Settings
 _BCRYPT = PasswordHash((BcryptHasher(),))
 
 
-class BcryptPasswordHasher:
-    def __init__(self) -> None:
-        self.dummy_hash = _BCRYPT.hash("__not_a_real_password__")
+class BcryptPasswordHasher(PasswordHasher):
+    @cached_property
+    def dummy_hash(self) -> str:
+        return _BCRYPT.hash("__not_a_real_password__")
 
     def hash(self, plain: str) -> str:
         return _BCRYPT.hash(plain)
@@ -41,7 +43,7 @@ class AuthService:
         hasher: PasswordHasher | None = None,
     ) -> None:
         self.settings = settings
-        self._hasher = hasher or BcryptPasswordHasher()
+        self._hasher: PasswordHasher = hasher or BcryptPasswordHasher()
 
     @property
     def session_cookie_name(self) -> str:

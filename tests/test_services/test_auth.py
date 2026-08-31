@@ -1,12 +1,12 @@
 from datetime import timedelta
 
 import pytest
-from tests.fakes import FakePasswordHasher, FakeUnitOfWork
 
 from mathwizard.clock import utcnow
 from mathwizard.exceptions import AuthenticationError
 from mathwizard.services.auth import AuthService, BcryptPasswordHasher
 from mathwizard.settings import DatabaseSettings, Settings, WebSettings
+from tests.fakes import FakePasswordHasher, FakeUnitOfWork
 
 
 def _hasher() -> FakePasswordHasher:
@@ -140,3 +140,17 @@ def test_bcrypt_password_hasher_round_trip() -> None:
     assert hasher.verify("s3cret", hashed) is True
     assert hasher.verify("wrong", hashed) is False
     assert hasher.verify("s3cret", hasher.dummy_hash) is False
+
+
+def test_default_auth_service_accepts_a_bcrypt_password() -> None:
+    uow = FakeUnitOfWork()
+    with uow:
+        uow.users.add(
+            username="root",
+            password_hash=BcryptPasswordHasher().hash("s3cret"),
+        )
+        uow.commit()
+
+    result = AuthService(_settings()).login(uow, "root", "s3cret")
+
+    assert result.user.username == "root"

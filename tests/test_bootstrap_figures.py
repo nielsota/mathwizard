@@ -4,7 +4,7 @@ import yaml
 
 from mathwizard.services.bootstrap import BootstrapService
 from mathwizard.settings import DatabaseSettings, PathSettings, Settings
-from tests.fakes import FakeUnitOfWorkFactory
+from tests.fakes import FakePasswordHasher, FakeUnitOfWorkFactory
 
 
 def write_figure(figures_dir: Path, slug: str, fn: str) -> None:
@@ -35,7 +35,7 @@ def test_seed_figures_loads_yaml(tmp_path: Path) -> None:
     write_figure(settings.paths.figures_dir, "parabool", "x^2")
     uow_factory = FakeUnitOfWorkFactory()
 
-    BootstrapService(settings).seed_figures(uow_factory())
+    BootstrapService(settings, hasher=FakePasswordHasher()).seed_figures(uow_factory())
 
     with uow_factory() as uow:
         figures = uow.figures.list()
@@ -46,7 +46,7 @@ def test_seed_figures_loads_yaml(tmp_path: Path) -> None:
 def test_seed_figures_is_idempotent(tmp_path: Path) -> None:
     settings = make_settings(tmp_path)
     write_figure(settings.paths.figures_dir, "parabool", "x^2")
-    service = BootstrapService(settings)
+    service = BootstrapService(settings, hasher=FakePasswordHasher())
     uow_factory = FakeUnitOfWorkFactory()
 
     service.seed_figures(uow_factory())
@@ -58,7 +58,9 @@ def test_seed_figures_is_idempotent(tmp_path: Path) -> None:
 
 def test_seed_figures_without_a_directory_is_a_noop(tmp_path: Path) -> None:
     uow_factory = FakeUnitOfWorkFactory()
-    BootstrapService(make_settings(tmp_path)).seed_figures(uow_factory())
+    BootstrapService(make_settings(tmp_path), hasher=FakePasswordHasher()).seed_figures(
+        uow_factory()
+    )
 
     with uow_factory() as uow:
         assert uow.figures.list() == []
