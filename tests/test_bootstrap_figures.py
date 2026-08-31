@@ -2,9 +2,9 @@ from pathlib import Path
 
 import yaml
 
-from mathwizard.db.unit_of_work import SqlAlchemyUnitOfWorkFactory
 from mathwizard.services.bootstrap import BootstrapService
 from mathwizard.settings import DatabaseSettings, PathSettings, Settings
+from tests.fakes import FakeUnitOfWorkFactory
 
 
 def write_figure(figures_dir: Path, slug: str, fn: str) -> None:
@@ -30,12 +30,10 @@ def make_settings(tmp_path: Path) -> Settings:
     )
 
 
-def test_seed_figures_loads_yaml(
-    tmp_path: Path,
-    uow_factory: SqlAlchemyUnitOfWorkFactory,
-) -> None:
+def test_seed_figures_loads_yaml(tmp_path: Path) -> None:
     settings = make_settings(tmp_path)
     write_figure(settings.paths.figures_dir, "parabool", "x^2")
+    uow_factory = FakeUnitOfWorkFactory()
 
     BootstrapService(settings).seed_figures(uow_factory())
 
@@ -45,13 +43,11 @@ def test_seed_figures_loads_yaml(
     assert figures[0].spec.elements[0].fn == "x^2"
 
 
-def test_seed_figures_is_idempotent(
-    tmp_path: Path,
-    uow_factory: SqlAlchemyUnitOfWorkFactory,
-) -> None:
+def test_seed_figures_is_idempotent(tmp_path: Path) -> None:
     settings = make_settings(tmp_path)
     write_figure(settings.paths.figures_dir, "parabool", "x^2")
     service = BootstrapService(settings)
+    uow_factory = FakeUnitOfWorkFactory()
 
     service.seed_figures(uow_factory())
     service.seed_figures(uow_factory())
@@ -60,10 +56,8 @@ def test_seed_figures_is_idempotent(
         assert len(uow.figures.list()) == 1
 
 
-def test_seed_figures_without_a_directory_is_a_noop(
-    tmp_path: Path,
-    uow_factory: SqlAlchemyUnitOfWorkFactory,
-) -> None:
+def test_seed_figures_without_a_directory_is_a_noop(tmp_path: Path) -> None:
+    uow_factory = FakeUnitOfWorkFactory()
     BootstrapService(make_settings(tmp_path)).seed_figures(uow_factory())
 
     with uow_factory() as uow:
