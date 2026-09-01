@@ -79,6 +79,20 @@ def test_login_rejects_invalid_credentials() -> None:
     assert "set-cookie" not in response.headers
 
 
+def test_login_rejects_overlong_password() -> None:
+    uow_factory = FakeUnitOfWorkFactory()
+    seed_user(uow_factory)
+    client = make_test_client(uow_factory)
+
+    response = client.post(
+        "/auth/login",
+        json={"username": "root", "password": "x" * 200},
+    )
+
+    assert response.status_code == 422
+    assert "set-cookie" not in response.headers
+
+
 def test_unknown_user_and_wrong_password_share_error() -> None:
     uow_factory = FakeUnitOfWorkFactory()
     seed_user(uow_factory)
@@ -241,6 +255,25 @@ def test_signup_rejects_short_password() -> None:
     )
 
     assert response.status_code == 422
+
+
+def test_signup_rejects_overlong_password() -> None:
+    uow_factory = FakeUnitOfWorkFactory()
+    seed_teacher(uow_factory)
+    client = make_test_client(uow_factory)
+    password = "x" * 200
+
+    response = client.post(
+        "/auth/signup",
+        json={
+            "username": "ada",
+            "password": password,
+            "password_confirm": password,
+        },
+    )
+
+    assert response.status_code == 422
+    assert "set-cookie" not in response.headers
 
 
 def test_signup_rejects_blank_username() -> None:

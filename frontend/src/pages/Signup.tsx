@@ -96,6 +96,7 @@ export default function Signup({ onLogin }: SignupProps) {
               onChange={e => setPassword(e.target.value)}
               autoComplete="new-password"
               minLength={8}
+              maxLength={64}
               required
             />
 
@@ -107,6 +108,7 @@ export default function Signup({ onLogin }: SignupProps) {
               onChange={e => setPasswordConfirm(e.target.value)}
               autoComplete="new-password"
               minLength={8}
+              maxLength={64}
               required
             />
 

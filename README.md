@@ -54,7 +54,7 @@ WEB__SESSION_COOKIE_NAME=mw_session
 WEB__COOKIE_SECURE=false
 ```
 
-The seeded classroom teacher is `BOOTSTRAP__USERNAME` (default `niels`). If a local `.env` still sets `BOOTSTRAP__USERNAME=root`, update it; an existing SQLite `root` user is not renamed.
+The seeded classroom teacher is `BOOTSTRAP__USERNAME` (default `niels`). If a local `.env` still sets `BOOTSTRAP__USERNAME=root`, update it; an existing SQLite `root` user is not renamed. Seeded and existing students remain assigned to their current teacher, while new signups attach to `BOOTSTRAP__USERNAME` (`niels` by default). Changing that username on an existing database creates two teachers unless operators deliberately keep `.env` or `env.prod` aligned with the existing teacher.
 
 Login happens through `POST /auth/login`. Successful login sets an `HttpOnly` cookie named by `WEB__SESSION_COOKIE_NAME`. The frontend restores sessions with `GET /auth/me` and logs out with `POST /auth/logout`.
 
