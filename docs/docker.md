@@ -61,12 +61,25 @@ Create `env.prod` next to the compose files. Docker Compose requires the file to
 ```bash
 TUNNEL_TOKEN=eyJ...
 
+DB__URL=postgresql://mathwizard:change-me@host.docker.internal:5432/mathwizard
+
 WEB__COOKIE_SECURE=true
 BOOTSTRAP__USERNAME=niels
 BOOTSTRAP__PASSWORD=change-me
 BOOTSTRAP__STUDENT_USERNAMES=["student1","student2"]
 BOOTSTRAP__STUDENT_PASSWORD=change-me
 ```
+
+The production container does not run Postgres. The Mini already runs it as a
+host daemon. From inside Docker, `localhost` is the container, so the URL host
+must be `host.docker.internal`. `./scripts/dev_deploy.sh` does not read
+`env.prod` and keeps the default SQLite file.
+
+On first start the app applies Alembic migrations to that database, then seeds
+bootstrap users and practice YAML. If the container cannot connect, confirm
+Postgres is listening on `127.0.0.1:5432` and that `pg_hba.conf` allows the
+`mathwizard` user from Docker's bridge (on Docker Desktop this is typically
+treated as a local connection).
 
 `WEB__COOKIE_SECURE` is also forced to `true` in `docker-compose.prod.yml`.
 

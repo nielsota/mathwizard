@@ -10,6 +10,8 @@ services:
     build: .
     env_file:
       - env.prod
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     environment:
       PYTHONUNBUFFERED: "1"
       WEB__COOKIE_SECURE: "true"
@@ -28,7 +30,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-      start_period: 20s
+      start_period: 40s
 
   cloudflared:
     image: cloudflare/cloudflared:latest

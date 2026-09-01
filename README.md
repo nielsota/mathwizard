@@ -40,7 +40,10 @@ docker compose up
 docker compose -f docker-compose.prod.yml up -d
 ```
 
-Production reads `TUNNEL_TOKEN` from `env.prod`. FastAPI serves the built React app from the same origin. In the Cloudflare dashboard, point the public hostname at `http://app:8080`.
+Production reads `TUNNEL_TOKEN` and `DB__URL` from `env.prod`. Local
+`./scripts/dev_deploy.sh` keeps SQLite. FastAPI serves the built React app from
+the same origin. In the Cloudflare dashboard, point the public hostname at
+`http://app:8080`.
 
 ## Authentication
 
