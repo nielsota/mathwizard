@@ -6,6 +6,18 @@ class AuthenticationError(MathWizardError):
     pass
 
 
+class DuplicateUsernameError(MathWizardError):
+    def __init__(self, username: str) -> None:
+        super().__init__(f"Username '{username}' is already taken")
+        self.username = username
+
+
+class BootstrapTeacherMissingError(MathWizardError):
+    def __init__(self, username: str) -> None:
+        super().__init__(f"Bootstrap teacher '{username}' is not configured")
+        self.username = username
+
+
 class AuthorizationError(MathWizardError):
     pass
 

@@ -31,6 +31,7 @@ class Transaction(Protocol):
 class AuthUnitOfWork(Transaction, Protocol):
     users: UserRepository
     sessions: SessionRepository
+    roster: RosterRepository
 
 
 class RosterUnitOfWork(Transaction, Protocol):

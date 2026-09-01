@@ -7,7 +7,12 @@ from pwdlib import PasswordHash
 from pwdlib.hashers.bcrypt import BcryptHasher
 
 from mathwizard.clock import utcnow
-from mathwizard.exceptions import AuthenticationError, UserNotFoundError
+from mathwizard.exceptions import (
+    AuthenticationError,
+    BootstrapTeacherMissingError,
+    DuplicateUsernameError,
+    UserNotFoundError,
+)
 from mathwizard.models.domain.user import User
 from mathwizard.ports.password import PasswordHasher
 from mathwizard.ports.unit_of_work import AuthUnitOfWork
@@ -59,6 +64,39 @@ class AuthService:
             password_ok = self._hasher.verify(password, hashed)
             if user is None or not password_ok:
                 raise AuthenticationError("Invalid username or password")
+            now = utcnow()
+            session = uow.sessions.add(
+                token=secrets.token_urlsafe(32),
+                user_id=user.id,
+                created_at=now,
+                expires_at=now + ttl,
+            )
+            uow.commit()
+        return LoginResult(
+            user=user,
+            session_token=session.token,
+            max_age_seconds=int(ttl.total_seconds()),
+            cookie_secure=self.settings.web.cookie_secure,
+        )
+
+    def signup(self, uow: AuthUnitOfWork, username: str, password: str) -> LoginResult:
+        username = username.strip()
+        ttl = timedelta(days=self.settings.web.session_ttl_days)
+        teacher_username = self.settings.bootstrap.username
+        with uow:
+            if uow.users.get_by_username(username) is not None:
+                raise DuplicateUsernameError(username)
+            teacher_user = uow.users.get_by_username(teacher_username)
+            if teacher_user is None:
+                raise BootstrapTeacherMissingError(teacher_username)
+            teacher = uow.roster.get_teacher_by_user_id(teacher_user.id)
+            if teacher is None:
+                raise BootstrapTeacherMissingError(teacher_username)
+            user = uow.users.add(
+                username=username,
+                password_hash=self._hasher.hash(password),
+            )
+            uow.roster.add_student(user.id, teacher.id)
             now = utcnow()
             session = uow.sessions.add(
                 token=secrets.token_urlsafe(32),

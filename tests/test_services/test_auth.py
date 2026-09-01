@@ -3,9 +3,18 @@ from datetime import timedelta
 import pytest
 
 from mathwizard.clock import utcnow
-from mathwizard.exceptions import AuthenticationError
+from mathwizard.exceptions import (
+    AuthenticationError,
+    BootstrapTeacherMissingError,
+    DuplicateUsernameError,
+)
 from mathwizard.services.auth import AuthService, BcryptPasswordHasher
-from mathwizard.settings import DatabaseSettings, Settings, WebSettings
+from mathwizard.settings import (
+    BootstrapSettings,
+    DatabaseSettings,
+    Settings,
+    WebSettings,
+)
 from tests.fakes import FakePasswordHasher, FakeUnitOfWork
 
 
@@ -17,6 +26,7 @@ def _settings() -> Settings:
     return Settings(
         db=DatabaseSettings(url="sqlite:///unused.db"),
         web=WebSettings(cookie_secure=False, session_ttl_days=7),
+        bootstrap=BootstrapSettings(username="niels", password="root"),
     )
 
 
@@ -28,6 +38,14 @@ def _seed_root(uow: FakeUnitOfWork) -> None:
     hasher = _hasher()
     with uow:
         uow.users.add(username="root", password_hash=hasher.hash("secret"))
+        uow.commit()
+
+
+def _seed_teacher(uow: FakeUnitOfWork) -> None:
+    hasher = _hasher()
+    with uow:
+        user = uow.users.add(username="niels", password_hash=hasher.hash("secret"))
+        uow.roster.add_teacher(user.id)
         uow.commit()
 
 
@@ -154,3 +172,90 @@ def test_default_auth_service_accepts_a_bcrypt_password() -> None:
     result = AuthService(_settings()).login(uow, "root", "s3cret")
 
     assert result.user.username == "root"
+
+
+def test_signup_creates_a_student_session() -> None:
+    uow = FakeUnitOfWork()
+    _seed_teacher(uow)
+
+    result = _service().signup(uow, "ada", "password1")
+
+    assert result.user.username == "ada"
+    assert result.session_token
+    assert result.max_age_seconds == 7 * 24 * 60 * 60
+    assert result.cookie_secure is False
+    assert result.user.password_hash == "fake:password1"
+
+
+def test_signup_assigns_the_student_to_the_bootstrap_teacher() -> None:
+    uow = FakeUnitOfWork()
+    _seed_teacher(uow)
+    result = _service().signup(uow, "ada", "password1")
+
+    with uow:
+        student = uow.roster.get_student_by_user_id(result.user.id)
+        teacher_user = uow.users.get_by_username("niels")
+        assert teacher_user is not None
+        teacher = uow.roster.get_teacher_by_user_id(teacher_user.id)
+        assert teacher is not None
+        assert student is not None
+        assert student.teacher_id == teacher.id
+
+
+def test_signup_commits() -> None:
+    uow = FakeUnitOfWork()
+    _seed_teacher(uow)
+
+    _service().signup(uow, "ada", "password1")
+
+    assert uow.committed is True
+
+
+def test_signup_strips_username() -> None:
+    uow = FakeUnitOfWork()
+    _seed_teacher(uow)
+
+    result = _service().signup(uow, "  ada  ", "password1")
+
+    assert result.user.username == "ada"
+
+
+def test_signup_rejects_a_duplicate_username() -> None:
+    uow = FakeUnitOfWork()
+    _seed_teacher(uow)
+    _service().signup(uow, "ada", "password1")
+
+    with pytest.raises(DuplicateUsernameError):
+        _service().signup(uow, "ada", "password1")
+
+
+def test_signup_rejects_the_teacher_username() -> None:
+    uow = FakeUnitOfWork()
+    _seed_teacher(uow)
+
+    with pytest.raises(DuplicateUsernameError):
+        _service().signup(uow, "niels", "password1")
+
+
+def test_signup_fails_closed_without_a_bootstrap_user() -> None:
+    uow = FakeUnitOfWork()
+
+    with pytest.raises(BootstrapTeacherMissingError):
+        _service().signup(uow, "ada", "password1")
+
+    with uow:
+        assert uow.users.get_by_username("ada") is None
+
+
+def test_signup_fails_closed_without_a_teacher_profile() -> None:
+    uow = FakeUnitOfWork()
+    hasher = _hasher()
+    with uow:
+        uow.users.add(username="niels", password_hash=hasher.hash("secret"))
+        uow.commit()
+
+    with pytest.raises(BootstrapTeacherMissingError):
+        _service().signup(uow, "ada", "password1")
+
+    with uow:
+        assert uow.users.get_by_username("ada") is None
