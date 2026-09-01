@@ -1,3 +1,5 @@
+import pytest
+
 from mathwizard.settings import BootstrapSettings, Settings
 
 
@@ -17,6 +19,20 @@ def test_default_database_url_uses_data_db_directory() -> None:
     settings = Settings()
 
     assert settings.db.url == "sqlite:///data/db/mathwizard.db"
+
+
+def test_database_url_reads_db_url_env(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv(
+        "DB__URL",
+        "postgresql://mathwizard:secret@host.docker.internal:5432/mathwizard",
+    )
+
+    settings = Settings()
+
+    assert (
+        settings.db.url
+        == "postgresql://mathwizard:secret@host.docker.internal:5432/mathwizard"
+    )
 
 
 def test_bootstrap_username_defaults_to_niels() -> None:
