@@ -3,6 +3,7 @@ import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-
 import Header from './components/Header'
 import Home from './pages/Home'
 import Login from './pages/Login'
+import Signup from './pages/Signup'
 import Practice from './pages/Practice'
 import Figures from './pages/Figures'
 import StyleGuide from './pages/StyleGuide'
@@ -77,6 +78,10 @@ function App() {
           <Route
             path="/login"
             element={user ? <Navigate to="/" replace /> : <Login onLogin={handleLogin} />}
+          />
+          <Route
+            path="/signup"
+            element={user ? <Navigate to="/" replace /> : <Signup onLogin={handleLogin} />}
           />
           <Route
             path="/"

@@ -110,6 +110,17 @@
   font-weight: 500;
 }
 
+.login-switch {
+  margin: var(--space-4) 0 0;
+  color: var(--color-text-muted);
+  font-size: 14px;
+}
+
+.login-switch a {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
 @media (max-width: 760px) {
   .login-shell {
     grid-template-columns: 1fr;

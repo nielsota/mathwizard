@@ -30,6 +30,12 @@ export interface LoginRequest {
   password: string;
 }
 
+export interface SignupRequest {
+  username: string
+  password: string
+  password_confirm: string
+}
+
 export type UserRole = 'teacher' | 'student';
 
 export interface UserResponse {
