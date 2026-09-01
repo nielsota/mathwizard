@@ -36,7 +36,7 @@ docker compose up
 None of these are required for local development. `Settings` has defaults, and the development Compose file still expects a `.env` file to exist (an empty one is enough). Nested names use `SECTION__FIELD`:
 
 ```bash
-DB__URL=sqlite:///data/mathwizard.db
+DB__URL=sqlite:///data/db/mathwizard.db
 
 WEB__SESSION_TTL_DAYS=7
 WEB__SESSION_COOKIE_NAME=mw_session

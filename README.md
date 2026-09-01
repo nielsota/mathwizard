@@ -11,7 +11,7 @@ uv sync --extra dev
 cd frontend && npm install
 ```
 
-Optional local settings can go in `.env`. By default, MathWizard uses `sqlite:///data/mathwizard.db`, seeds the `root` user with password `root`, and uses non-secure cookies for local development.
+Optional local settings can go in `.env`. By default, MathWizard uses `sqlite:///data/db/mathwizard.db`, seeds the `root` user with password `root`, and uses non-secure cookies for local development.
 
 Start both local dev servers with hot reload:
 
@@ -132,7 +132,7 @@ src/mathwizard/
   ports/     Repository and unit-of-work protocols
   services/  Bootstrap, auth, question, and figure service logic
 frontend/                 React, TypeScript, and Vite frontend
-data/                     Tracked practice question YAML and local database files
+data/                     Tracked practice question YAML; local SQLite files in data/db/
 tests/                    Backend unit and route tests
 docker-compose.yml        Development stack with hot-reload
 docker-compose.prod.yml   Production stack with Cloudflare Tunnel

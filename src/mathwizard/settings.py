@@ -31,7 +31,7 @@ class PathSettings(BaseModel):
 
 
 class DatabaseSettings(BaseModel):
-    url: str = "sqlite:///data/mathwizard.db"
+    url: str = "sqlite:///data/db/mathwizard.db"
 
 
 class WebSettings(BaseModel):
