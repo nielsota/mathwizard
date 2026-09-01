@@ -28,6 +28,20 @@ uv run uvicorn mathwizard.app.main:app --reload --host 0.0.0.0 --port 8001
 cd frontend && npm run dev -- --host 0.0.0.0 --port 3001
 ```
 
+## Docker
+
+Development and production Compose setups are documented in [docs/docker.md](docs/docker.md).
+
+```bash
+# API + built UI at http://localhost:8001
+docker compose up
+
+# Production behind a Cloudflare Tunnel
+docker compose -f docker-compose.prod.yml up -d
+```
+
+Production reads `TUNNEL_TOKEN` from `env.prod`. FastAPI serves the built React app from the same origin. In the Cloudflare dashboard, point the public hostname at `http://app:8080`.
+
 ## Authentication
 
 MathWizard uses first-party cookie authentication. On startup, the backend seeds a bootstrap user from `.env` settings:
@@ -68,7 +82,7 @@ On startup, the backend seeds practice questions from this directory into the co
 Health check:
 
 ```bash
-curl http://localhost:8001/
+curl http://localhost:8001/health
 ```
 
 Practice questions by topic:
@@ -117,9 +131,11 @@ src/mathwizard/
   models/    Domain entities and API request/response models
   ports/     Repository and unit-of-work protocols
   services/  Bootstrap, auth, question, and figure service logic
-frontend/    React, TypeScript, and Vite frontend
-data/        Tracked practice question YAML and local database files
-tests/       Backend unit and route tests
+frontend/                 React, TypeScript, and Vite frontend
+data/                     Tracked practice question YAML and local database files
+tests/                    Backend unit and route tests
+docker-compose.yml        Development stack with hot-reload
+docker-compose.prod.yml   Production stack with Cloudflare Tunnel
 ```
 
 ## Layering

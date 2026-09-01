@@ -70,7 +70,6 @@ def test_get_practice_topic_returns_the_filtered_response() -> None:
     assert data["questions"][0]["parts"] == [
         {"label": "a", "text": "Part for Easy", "points": 1}
     ]
-    assert data["questions"][0]["figure_images"] == []
 
 
 def test_get_practice_topic_omits_internal_fields() -> None:
@@ -84,6 +83,7 @@ def test_get_practice_topic_omits_internal_fields() -> None:
     question = response.json()["questions"][0]
     assert "stem" not in question
     assert "exam_id" not in question
+    assert "figure_images" not in question
     assert "number" not in question
     assert "part_details" not in question
 

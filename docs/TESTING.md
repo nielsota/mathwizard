@@ -115,9 +115,11 @@ docker compose up
 # 4. Stop Docker
 docker compose down
 
-# 5. Deploy
-./scripts/deploy.sh
+# 5. Deploy behind Cloudflare Tunnel (requires env.prod with TUNNEL_TOKEN)
+docker compose -f docker-compose.prod.yml up -d
 ```
+
+See [docs/docker.md](docker.md) for `env.prod` and tunnel hostname setup.
 
 ---
 
@@ -126,12 +128,12 @@ docker compose down
 ### Example: Test API Endpoint
 
 ```python
-def test_api_search_endpoint(self, client):
-    """Search API should return results."""
-    response = client.post("/api/v1/search", json={"query": "test query"})
+def test_get_practice_topic(self, client):
+    """Practice API should return questions for a topic."""
+    response = client.get("/api/v1/practice/derivatives")
     assert response.status_code == 200
     data = response.json()
-    assert "results" in data
+    assert "questions" in data
 ```
 
 ---

@@ -131,20 +131,6 @@
   font-weight: 600;
 }
 
-.ex-card-figures {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: var(--space-3);
-  margin-top: var(--space-4);
-}
-
-.ex-card-figures img {
-  width: 100%;
-  height: auto;
-  border-radius: var(--radius-md);
-  border: var(--outline-width) solid var(--color-hairline);
-}
-
 /* Mobile */
 @media (max-width: 640px) {
   .ex-card-header {

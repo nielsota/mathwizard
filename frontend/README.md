@@ -43,3 +43,5 @@ GET /api/v1/practice/:topic
 The response shape is defined in `src/types/api.ts` as `QuestionListResponse`. Exercise cards render MathJax question text, part text, marks, difficulty, topic, and tags from that response.
 
 During local development, run the backend at http://localhost:8001 and this frontend at http://localhost:3001.
+
+In Docker and production, FastAPI serves the Vite build from `frontend/dist` on the same origin as `/api` and `/auth`.

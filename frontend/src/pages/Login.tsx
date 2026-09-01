@@ -58,7 +58,7 @@ export default function Login({ onLogin }: LoginProps) {
         <Card hard className="login-card">
           <h1 id="login-title" className="login-title">Welkom terug</h1>
           <p className="login-subtitle">
-            Log in om oefenopgaven, examenmateriaal en je MathWizard werkruimte te openen.
+            Log in om oefenopgaven en je MathWizard werkruimte te openen.
           </p>
 
           <form className="login-form" onSubmit={handleSubmit} aria-busy={loading}>

@@ -22,7 +22,6 @@ class QuestionResponse(BaseModel):
     max_marks: int
     calculator_allowed: bool | None = None
     difficulty: int | None = None
-    figure_images: list[str] = Field(default_factory=list)
 
 
 class QuestionListResponse(BaseModel):

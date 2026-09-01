@@ -12,6 +12,7 @@ wheels/
 # environment variables
 .env
 .env.*
+env.prod
 
 # Backups
 backups/
@@ -59,3 +60,6 @@ backups/
 # review in a diff
 docs/superpowers/
 .superpowers/sdd/
+
+# artifacts
+artifacts/

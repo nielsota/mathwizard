@@ -1,6 +1,6 @@
 # Docker Guide
 
-## Running the App
+## Development
 
 ```bash
 # Start the app with hot-reload
@@ -14,7 +14,7 @@ docker compose up
 docker compose down
 ```
 
-That's it! The app runs at **http://localhost:8001**
+That's it! After a build, the app (API and the React UI) runs at **http://localhost:8001**. Frontend hot-reload still uses `./scripts/dev_deploy.sh`.
 
 ---
 
@@ -33,19 +33,50 @@ docker compose up
 
 ## Environment Variables
 
-Required in `.env`:
+None of these are required for local development. `Settings` has defaults, and the development Compose file still expects a `.env` file to exist (an empty one is enough). Nested names use `SECTION__FIELD`:
+
 ```bash
-OPENAI_API_KEY=sk-...
-SESSION_SECRET_KEY=your-secret-key
-AUTH_PASSWORD=your-password
-EXAMS_ROOT=data/questions/exams/raw
+DB__URL=sqlite:///data/mathwizard.db
+
+WEB__SESSION_TTL_DAYS=7
+WEB__SESSION_COOKIE_NAME=mw_session
+WEB__COOKIE_SECURE=false
+
+BOOTSTRAP__USERNAME=root
+BOOTSTRAP__PASSWORD=root
+BOOTSTRAP__STUDENT_USERNAMES=["student1","student2"]
+BOOTSTRAP__STUDENT_PASSWORD=student
 ```
+
+Sessions are opaque tokens stored in the database. There is no session signing secret.
+
+For production, set `WEB__COOKIE_SECURE=true` so browsers only send the session cookie over HTTPS.
 
 ---
 
-## Deployment
+## Production (Cloudflare Tunnel)
 
-For AWS deployment, use:
+Create `env.prod` next to the compose files. Docker Compose requires the file to exist. Add the Cloudflare tunnel token and any production overrides:
+
 ```bash
-./scripts/deploy.sh
+TUNNEL_TOKEN=eyJ...
+
+WEB__COOKIE_SECURE=true
+BOOTSTRAP__USERNAME=root
+BOOTSTRAP__PASSWORD=change-me
+BOOTSTRAP__STUDENT_USERNAMES=["student1","student2"]
+BOOTSTRAP__STUDENT_PASSWORD=change-me
 ```
+
+`WEB__COOKIE_SECURE` is also forced to `true` in `docker-compose.prod.yml`.
+
+The production image builds the React app and FastAPI serves it from the same origin as `/api` and `/auth`. In the Cloudflare dashboard (Zero Trust → Networks → Tunnels), create a tunnel, copy the token into `TUNNEL_TOKEN`, and add a public hostname whose origin is **`http://app:8080`**. Use the Docker service name `app`, not `localhost` — `cloudflared` runs in its own container. The health check is `/health`.
+
+```bash
+docker compose -f docker-compose.prod.yml up -d
+docker compose -f docker-compose.prod.yml logs -f
+docker compose -f docker-compose.prod.yml down
+```
+
+The app is not published on the host. Traffic reaches it only through the tunnel.
+

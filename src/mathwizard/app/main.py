@@ -4,6 +4,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 
 from mathwizard.app.auth import router as auth_router
+from mathwizard.app.frontend import mount_frontend
 from mathwizard.app.routes.figures import router as figures_router
 from mathwizard.app.routes.practice import router as practice_router
 from mathwizard.app.routes.roster import router as roster_router
@@ -43,6 +44,9 @@ app.include_router(figures_router)
 app.include_router(roster_router)
 
 
-@app.get("/")
-def health():
+@app.get("/health")
+def health() -> dict[str, str]:
     return {"message": "OK"}
+
+
+mount_frontend(app, get_settings().paths.frontend_dist_dir)

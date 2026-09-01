@@ -126,50 +126,6 @@
   transform: translateX(0);
 }
 
-/* Exam search lane */
-.home-search {
-  display: flex;
-  align-items: center;
-  gap: var(--space-5);
-  cursor: pointer;
-}
-
-.home-search-body {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-  flex: 1;
-}
-
-.home-search-kicker {
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--color-primary);
-}
-
-.home-search-title {
-  font-family: var(--font-display);
-  font-size: 30px;
-  font-weight: 700;
-  line-height: 1.1;
-  color: var(--color-heading);
-}
-
-.home-search-desc {
-  font-size: 14px;
-  color: var(--color-text-muted);
-  max-width: 460px;
-}
-
-.home-search-cta {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-  flex-shrink: 0;
-}
-
 /* Mobile */
 @media (max-width: 640px) {
   .home {
@@ -186,15 +142,5 @@
 
   .home-topic-grid {
     grid-template-columns: 1fr;
-  }
-
-  .home-search {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .home-search-cta {
-    align-self: stretch;
-    justify-content: center;
   }
 }

@@ -40,4 +40,6 @@ data/questions/
 *.log
 .env
 .env.*
+frontend/node_modules
+
 

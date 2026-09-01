@@ -25,7 +25,7 @@ export default function Home({ user }: HomeProps) {
         <p className="home-eyebrow">Welkom terug, {user.username}</p>
         <h1 className="home-title">Waar wil je mee aan de slag?</h1>
         <p className="home-lede">
-          Oefen gericht per onderwerp of doorzoek de examenbank met AI-zoeken.
+          Kies een onderwerp en oefen gericht met opgaven uit de databank.
         </p>
       </Card>
 
@@ -57,32 +57,6 @@ export default function Home({ user }: HomeProps) {
             </Card>
           ))}
         </div>
-      </section>
-
-      <section className="home-section">
-        <Card
-          hard
-          role="button"
-          tabIndex={0}
-          className="home-search"
-          onClick={() => navigate('/search')}
-          onKeyDown={event => handleCardKeyDown(event, '/search')}
-        >
-          <div className="home-search-body">
-            <span className="home-search-kicker">Examenbank</span>
-            <span className="home-search-title">Examenopgaven zoeken</span>
-            <span className="home-search-desc">
-              Beschrijf een opgave en vind met AI de meest relevante examenopgaven.
-            </span>
-          </div>
-
-          <span className="ui-btn ui-btn--primary home-search-cta" aria-hidden="true">
-            Zoeken
-            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-              <path d="M4 9h10M10 5l4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </span>
-        </Card>
       </section>
     </div>
   )

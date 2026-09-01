@@ -61,13 +61,6 @@ export default function Header({ user, onLogout, onUnauthorized }: HeaderProps) 
             )}
           </div>
 
-          <Link
-            to="/search"
-            className={`mw-nav-link ${location.pathname === '/search' ? 'active' : ''}`}
-          >
-            Examenopgaven zoeken
-          </Link>
-
           <UserMenu user={user} onUnauthorized={onUnauthorized} onLogout={onLogout} />
         </nav>
       </div>

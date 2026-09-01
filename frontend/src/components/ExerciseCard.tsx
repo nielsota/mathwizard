@@ -88,14 +88,6 @@ export default function ExerciseCard({ exercise, number }: ExerciseCardProps) {
               </ol>
             )}
           </MathJax>
-
-          {exercise.figure_images.length > 0 && (
-            <div className="ex-card-figures">
-              {exercise.figure_images.map((src, i) => (
-                <img key={i} src={src} alt={`Figuur ${i + 1}`} loading="lazy" />
-              ))}
-            </div>
-          )}
         </div>
       )}
     </article>

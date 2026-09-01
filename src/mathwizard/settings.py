@@ -25,6 +25,10 @@ class PathSettings(BaseModel):
     def figures_dir(self) -> Path:
         return self.data_dir / "questions" / "figures"
 
+    @property
+    def frontend_dist_dir(self) -> Path:
+        return self.repo_root / "frontend" / "dist"
+
 
 class DatabaseSettings(BaseModel):
     url: str = "sqlite:///data/mathwizard.db"

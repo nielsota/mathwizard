@@ -1,7 +1,8 @@
 # Default Docker Compose (Development with Hot-Reload)
 # Usage: docker compose up
 #
-# This is the DEFAULT configuration used when you run `docker compose up`
+# This is the DEFAULT configuration used when you run `docker compose up`.
+# After a rebuild it serves the API and the built React app at http://localhost:8001.
 
 services:
   app:
