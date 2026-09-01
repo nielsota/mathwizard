@@ -28,6 +28,9 @@ def create_session_factory(engine: Engine) -> sessionmaker[Session]:
 
 
 def _with_psycopg_driver(url: URL) -> URL:
-    if url.get_backend_name() == "postgresql" and "+" not in url.drivername:
+    if (
+        url.get_backend_name() in ("postgresql", "postgres")
+        and "+" not in url.drivername
+    ):
         return url.set(drivername="postgresql+psycopg")
     return url

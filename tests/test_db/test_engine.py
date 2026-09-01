@@ -27,6 +27,19 @@ def test_sqlalchemy_database_url_pins_psycopg_on_bare_postgresql() -> None:
     assert url.password == "secret"
 
 
+def test_sqlalchemy_database_url_pins_psycopg_on_bare_postgres() -> None:
+    raw = "postgres://mathwizard:secret@host.docker.internal:5432/mathwizard"
+
+    url = make_url(sqlalchemy_database_url(raw))
+
+    assert url.drivername == "postgresql+psycopg"
+    assert url.host == "host.docker.internal"
+    assert url.port == 5432
+    assert url.database == "mathwizard"
+    assert url.username == "mathwizard"
+    assert url.password == "secret"
+
+
 def test_sqlalchemy_database_url_leaves_explicit_psycopg_driver() -> None:
     raw = "postgresql+psycopg://mathwizard:secret@host.docker.internal:5432/mathwizard"
 
