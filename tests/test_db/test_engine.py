@@ -15,33 +15,33 @@ def test_sqlalchemy_database_url_leaves_sqlite_unchanged() -> None:
 
 
 def test_sqlalchemy_database_url_pins_psycopg_on_bare_postgresql() -> None:
-    raw = "postgresql://mathwizard:secret@host.docker.internal:5432/mathwizard"
+    raw = "postgresql://app:test@example:5432/app"
 
     url = make_url(sqlalchemy_database_url(raw))
 
     assert url.drivername == "postgresql+psycopg"
-    assert url.host == "host.docker.internal"
+    assert url.host == "example"
     assert url.port == 5432
-    assert url.database == "mathwizard"
-    assert url.username == "mathwizard"
-    assert url.password == "secret"
+    assert url.database == "app"
+    assert url.username == "app"
+    assert url.password == "test"
 
 
 def test_sqlalchemy_database_url_pins_psycopg_on_bare_postgres() -> None:
-    raw = "postgres://mathwizard:secret@host.docker.internal:5432/mathwizard"
+    raw = "postgres://app:test@example:5432/app"
 
     url = make_url(sqlalchemy_database_url(raw))
 
     assert url.drivername == "postgresql+psycopg"
-    assert url.host == "host.docker.internal"
+    assert url.host == "example"
     assert url.port == 5432
-    assert url.database == "mathwizard"
-    assert url.username == "mathwizard"
-    assert url.password == "secret"
+    assert url.database == "app"
+    assert url.username == "app"
+    assert url.password == "test"
 
 
 def test_sqlalchemy_database_url_leaves_explicit_psycopg_driver() -> None:
-    raw = "postgresql+psycopg://mathwizard:secret@host.docker.internal:5432/mathwizard"
+    raw = "postgresql+psycopg://app:test@example:5432/app"
 
     url = make_url(sqlalchemy_database_url(raw))
 
@@ -58,13 +58,11 @@ def test_create_db_engine_creates_sqlite_parent_directory(tmp_path: Path) -> Non
 
 
 def test_create_db_engine_uses_psycopg_for_prod_style_url() -> None:
-    engine = create_db_engine(
-        "postgresql://mathwizard:secret@host.docker.internal:5432/mathwizard"
-    )
+    engine = create_db_engine("postgresql://app:test@example:5432/app")
     try:
         assert engine.dialect.name == "postgresql"
         assert engine.dialect.driver == "psycopg"
-        assert engine.url.host == "host.docker.internal"
-        assert engine.url.database == "mathwizard"
+        assert engine.url.host == "example"
+        assert engine.url.database == "app"
     finally:
         engine.dispose()
