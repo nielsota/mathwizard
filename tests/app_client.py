@@ -7,7 +7,12 @@ from mathwizard.services.auth import AuthService
 from mathwizard.services.figure import FigureService
 from mathwizard.services.question import QuestionService
 from mathwizard.services.user import UserService
-from mathwizard.settings import DatabaseSettings, Settings, WebSettings
+from mathwizard.settings import (
+    BootstrapSettings,
+    DatabaseSettings,
+    Settings,
+    WebSettings,
+)
 from tests.fakes import FakePasswordHasher
 
 
@@ -19,6 +24,7 @@ def make_settings(*, session_cookie_name: str = "mw_session") -> Settings:
             cookie_secure=False,
             session_ttl_days=7,
         ),
+        bootstrap=BootstrapSettings(username="niels", password="root"),
     )
 
 

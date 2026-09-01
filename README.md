@@ -47,12 +47,14 @@ Production reads `TUNNEL_TOKEN` from `env.prod`. FastAPI serves the built React 
 MathWizard uses first-party cookie authentication. On startup, the backend seeds a bootstrap user from `.env` settings:
 
 ```text
-BOOTSTRAP__USERNAME=root
+BOOTSTRAP__USERNAME=niels
 BOOTSTRAP__PASSWORD=root
 WEB__SESSION_TTL_DAYS=7
 WEB__SESSION_COOKIE_NAME=mw_session
 WEB__COOKIE_SECURE=false
 ```
+
+The seeded classroom teacher is `BOOTSTRAP__USERNAME` (default `niels`). If a local `.env` still sets `BOOTSTRAP__USERNAME=root`, update it; an existing SQLite `root` user is not renamed.
 
 Login happens through `POST /auth/login`. Successful login sets an `HttpOnly` cookie named by `WEB__SESSION_COOKIE_NAME`. The frontend restores sessions with `GET /auth/me` and logs out with `POST /auth/logout`.
 

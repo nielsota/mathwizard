@@ -42,7 +42,7 @@ WEB__SESSION_TTL_DAYS=7
 WEB__SESSION_COOKIE_NAME=mw_session
 WEB__COOKIE_SECURE=false
 
-BOOTSTRAP__USERNAME=root
+BOOTSTRAP__USERNAME=niels
 BOOTSTRAP__PASSWORD=root
 BOOTSTRAP__STUDENT_USERNAMES=["student1","student2"]
 BOOTSTRAP__STUDENT_PASSWORD=student
@@ -62,7 +62,7 @@ Create `env.prod` next to the compose files. Docker Compose requires the file to
 TUNNEL_TOKEN=eyJ...
 
 WEB__COOKIE_SECURE=true
-BOOTSTRAP__USERNAME=root
+BOOTSTRAP__USERNAME=niels
 BOOTSTRAP__PASSWORD=change-me
 BOOTSTRAP__STUDENT_USERNAMES=["student1","student2"]
 BOOTSTRAP__STUDENT_PASSWORD=change-me

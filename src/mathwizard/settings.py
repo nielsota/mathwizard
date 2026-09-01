@@ -41,7 +41,7 @@ class WebSettings(BaseModel):
 
 
 class BootstrapSettings(BaseModel):
-    username: str = "root"
+    username: str = "niels"
     password: str = "root"
     student_usernames: list[str] = ["student1", "student2"]
     student_password: str = "student"
