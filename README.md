@@ -58,6 +58,8 @@ The seeded classroom teacher is `BOOTSTRAP__USERNAME` (default `niels`). If a lo
 
 Login happens through `POST /auth/login`. Successful login sets an `HttpOnly` cookie named by `WEB__SESSION_COOKIE_NAME`. The frontend restores sessions with `GET /auth/me` and logs out with `POST /auth/logout`.
 
+Students create an account with `POST /auth/signup` (`username`, `password`, `password_confirm`). That attaches them to the bootstrap teacher, sets the same session cookie as login, and returns `role: "student"`.
+
 For production, set `WEB__COOKIE_SECURE=true` so browsers only send the session cookie over HTTPS.
 
 ## Practice Questions

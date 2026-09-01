@@ -3,8 +3,12 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, Request, Response, status
 
 from mathwizard.app.dependencies import AuthServiceDep, UnitOfWorkDep, UserServiceDep
-from mathwizard.exceptions import AuthenticationError
-from mathwizard.models.api.auth import LoginRequest, UserResponse
+from mathwizard.exceptions import (
+    AuthenticationError,
+    BootstrapTeacherMissingError,
+    DuplicateUsernameError,
+)
+from mathwizard.models.api.auth import LoginRequest, SignupRequest, UserResponse
 from mathwizard.models.domain.user import User, UserWithRole
 
 
@@ -59,6 +63,36 @@ def login(
     except AuthenticationError as exc:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
+            detail=str(exc),
+        ) from exc
+    _set_session_cookie(
+        response,
+        cookie_name=auth_service.session_cookie_name,
+        token=result.session_token,
+        max_age_seconds=result.max_age_seconds,
+        secure=result.cookie_secure,
+    )
+    return user_service.with_role(uow, result.user)
+
+
+@router.post("/signup", response_model=UserResponse)
+def signup(
+    body: SignupRequest,
+    response: Response,
+    uow: UnitOfWorkDep,
+    auth_service: AuthServiceDep,
+    user_service: UserServiceDep,
+) -> UserWithRole:
+    try:
+        result = auth_service.signup(uow, body.username, body.password)
+    except DuplicateUsernameError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=str(exc),
+        ) from exc
+    except BootstrapTeacherMissingError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=str(exc),
         ) from exc
     _set_session_cookie(

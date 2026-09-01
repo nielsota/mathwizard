@@ -1,13 +1,29 @@
 from tests.app_client import make_settings, make_test_client
 from tests.fakes import FakePasswordHasher, FakeUnitOfWorkFactory
 
+from mathwizard.app.routes.roster import router as roster_router
 from mathwizard.ports.unit_of_work import UnitOfWorkFactory
+from mathwizard.settings import Settings
 
 
 def seed_user(uow_factory: UnitOfWorkFactory) -> None:
     hasher = FakePasswordHasher()
     with uow_factory() as uow:
         user = uow.users.add(username="root", password_hash=hasher.hash("secret"))
+        uow.roster.add_teacher(user.id)
+        uow.commit()
+
+
+def seed_teacher(
+    uow_factory: UnitOfWorkFactory, settings: Settings | None = None
+) -> None:
+    settings = settings or make_settings()
+    hasher = FakePasswordHasher()
+    with uow_factory() as uow:
+        user = uow.users.add(
+            username=settings.bootstrap.username,
+            password_hash=hasher.hash("secret"),
+        )
         uow.roster.add_teacher(user.id)
         uow.commit()
 
@@ -121,3 +137,143 @@ def test_auth_routes_use_configured_session_cookie_name() -> None:
 
     me = client.get("/auth/me")
     assert me.status_code == 200
+
+
+def test_signup_sets_cookie_and_returns_student() -> None:
+    uow_factory = FakeUnitOfWorkFactory()
+    seed_teacher(uow_factory)
+    settings = make_settings()
+    client = make_test_client(uow_factory, settings=settings)
+
+    response = client.post(
+        "/auth/signup",
+        json={
+            "username": "ada",
+            "password": "password1",
+            "password_confirm": "password1",
+        },
+    )
+
+    assert response.status_code == 200
+    assert response.json() == {"id": 2, "username": "ada", "role": "student"}
+    cookie = response.headers["set-cookie"]
+    assert f"{settings.web.session_cookie_name}=" in cookie
+    assert "HttpOnly" in cookie
+    assert "SameSite=lax" in cookie
+
+    me = client.get("/auth/me")
+    assert me.status_code == 200
+    assert me.json() == {"id": 2, "username": "ada", "role": "student"}
+
+
+def test_signup_student_appears_on_teacher_roster() -> None:
+    uow_factory = FakeUnitOfWorkFactory()
+    seed_teacher(uow_factory)
+    client = make_test_client(uow_factory, roster_router)
+
+    client.post(
+        "/auth/signup",
+        json={
+            "username": "ada",
+            "password": "password1",
+            "password_confirm": "password1",
+        },
+    )
+    login = client.post(
+        "/auth/login",
+        json={"username": "niels", "password": "secret"},
+    )
+    assert login.status_code == 200
+
+    roster = client.get("/api/v1/roster/students")
+    assert roster.status_code == 200
+    assert any(row["username"] == "ada" for row in roster.json()["students"])
+
+
+def test_signup_rejects_duplicate_username() -> None:
+    uow_factory = FakeUnitOfWorkFactory()
+    seed_teacher(uow_factory)
+    client = make_test_client(uow_factory)
+    payload = {
+        "username": "ada",
+        "password": "password1",
+        "password_confirm": "password1",
+    }
+    assert client.post("/auth/signup", json=payload).status_code == 200
+
+    response = client.post("/auth/signup", json=payload)
+
+    assert response.status_code == 409
+    assert response.json()["detail"] == "Username 'ada' is already taken"
+    assert "set-cookie" not in response.headers
+
+
+def test_signup_rejects_password_mismatch() -> None:
+    uow_factory = FakeUnitOfWorkFactory()
+    seed_teacher(uow_factory)
+    client = make_test_client(uow_factory)
+
+    response = client.post(
+        "/auth/signup",
+        json={
+            "username": "ada",
+            "password": "password1",
+            "password_confirm": "password2",
+        },
+    )
+
+    assert response.status_code == 422
+    assert "set-cookie" not in response.headers
+
+
+def test_signup_rejects_short_password() -> None:
+    uow_factory = FakeUnitOfWorkFactory()
+    seed_teacher(uow_factory)
+    client = make_test_client(uow_factory)
+
+    response = client.post(
+        "/auth/signup",
+        json={
+            "username": "ada",
+            "password": "short",
+            "password_confirm": "short",
+        },
+    )
+
+    assert response.status_code == 422
+
+
+def test_signup_rejects_blank_username() -> None:
+    uow_factory = FakeUnitOfWorkFactory()
+    seed_teacher(uow_factory)
+    client = make_test_client(uow_factory)
+
+    response = client.post(
+        "/auth/signup",
+        json={
+            "username": "   ",
+            "password": "password1",
+            "password_confirm": "password1",
+        },
+    )
+
+    assert response.status_code == 422
+
+
+def test_signup_fails_closed_without_teacher() -> None:
+    uow_factory = FakeUnitOfWorkFactory()
+    client = make_test_client(uow_factory)
+
+    response = client.post(
+        "/auth/signup",
+        json={
+            "username": "ada",
+            "password": "password1",
+            "password_confirm": "password1",
+        },
+    )
+
+    assert response.status_code == 500
+    assert response.json()["detail"] == "Bootstrap teacher 'niels' is not configured"
+    with uow_factory() as uow:
+        assert uow.users.get_by_username("ada") is None
