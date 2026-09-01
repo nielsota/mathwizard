@@ -1,6 +1,7 @@
 import secrets
 from dataclasses import dataclass
 from datetime import timedelta
+from functools import cached_property
 
 from pwdlib import PasswordHash
 from pwdlib.hashers.bcrypt import BcryptHasher
@@ -8,11 +9,23 @@ from pwdlib.hashers.bcrypt import BcryptHasher
 from mathwizard.clock import utcnow
 from mathwizard.exceptions import AuthenticationError, UserNotFoundError
 from mathwizard.models.domain.user import User
+from mathwizard.ports.password import PasswordHasher
 from mathwizard.ports.unit_of_work import AuthUnitOfWork
 from mathwizard.settings import Settings
 
-_password_hash = PasswordHash((BcryptHasher(),))
-DUMMY_PASSWORD_HASH = _password_hash.hash("__not_a_real_password__")
+_BCRYPT = PasswordHash((BcryptHasher(),))
+
+
+class BcryptPasswordHasher(PasswordHasher):
+    @cached_property
+    def dummy_hash(self) -> str:
+        return _BCRYPT.hash("__not_a_real_password__")
+
+    def hash(self, plain: str) -> str:
+        return _BCRYPT.hash(plain)
+
+    def verify(self, plain: str, hashed: str) -> bool:
+        return _BCRYPT.verify(plain, hashed)
 
 
 @dataclass(frozen=True)
@@ -23,17 +36,14 @@ class LoginResult:
     cookie_secure: bool
 
 
-def hash_password(plain: str) -> str:
-    return _password_hash.hash(plain)
-
-
-def verify_password(plain: str, hashed: str) -> bool:
-    return _password_hash.verify(plain, hashed)
-
-
 class AuthService:
-    def __init__(self, settings: Settings) -> None:
+    def __init__(
+        self,
+        settings: Settings,
+        hasher: PasswordHasher | None = None,
+    ) -> None:
         self.settings = settings
+        self._hasher: PasswordHasher = hasher or BcryptPasswordHasher()
 
     @property
     def session_cookie_name(self) -> str:
@@ -45,8 +55,8 @@ class AuthService:
             user = uow.users.get_by_username(username)
             # An unknown username still pays for a hash comparison, so the response
             # time does not reveal which usernames exist.
-            hashed = user.password_hash if user is not None else DUMMY_PASSWORD_HASH
-            password_ok = verify_password(password, hashed)
+            hashed = user.password_hash if user is not None else self._hasher.dummy_hash
+            password_ok = self._hasher.verify(password, hashed)
             if user is None or not password_ok:
                 raise AuthenticationError("Invalid username or password")
             now = utcnow()

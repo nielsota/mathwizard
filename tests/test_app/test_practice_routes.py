@@ -1,54 +1,15 @@
-from pathlib import Path
+from tests.app_client import make_test_client
+from tests.fakes import FakePasswordHasher, FakeUnitOfWorkFactory
 
-from fastapi import FastAPI
-from fastapi.testclient import TestClient
-from sqlalchemy import Engine
-
-from mathwizard.app.auth import router as auth_router
 from mathwizard.app.routes.practice import router as practice_router
-from mathwizard.db.base import Base
-from mathwizard.db.engine import create_db_engine, create_session_factory
-from mathwizard.db.unit_of_work import SqlAlchemyUnitOfWorkFactory
 from mathwizard.models.domain.question import QuestionDraft, QuestionSource
-from mathwizard.services.auth import AuthService, hash_password
-from mathwizard.services.question import QuestionService
-from mathwizard.services.user import UserService
-from mathwizard.settings import DatabaseSettings, Settings, WebSettings
+from mathwizard.ports.unit_of_work import UnitOfWorkFactory
 
 
-def make_uow_factory(tmp_path: Path) -> SqlAlchemyUnitOfWorkFactory:
-    engine: Engine = create_db_engine(f"sqlite:///{tmp_path / 'api.db'}")
-    Base.metadata.create_all(engine)
-    return SqlAlchemyUnitOfWorkFactory(create_session_factory(engine))
-
-
-def make_settings(tmp_path: Path) -> Settings:
-    return Settings(
-        db=DatabaseSettings(url=f"sqlite:///{tmp_path / 'api.db'}"),
-        web=WebSettings(cookie_secure=False, session_ttl_days=7),
-    )
-
-
-def make_client(
-    uow_factory: SqlAlchemyUnitOfWorkFactory,
-    tmp_path: Path,
-) -> TestClient:
-    app = FastAPI()
-    app.state.uow_factory = uow_factory
-    app.state.auth_service = AuthService(make_settings(tmp_path))
-    app.state.question_service = QuestionService()
-    app.state.user_service = UserService()
-    app.include_router(auth_router)
-    app.include_router(practice_router)
-    return TestClient(app)
-
-
-def authenticate(
-    client: TestClient,
-    uow_factory: SqlAlchemyUnitOfWorkFactory,
-) -> None:
+def authenticate(client, uow_factory: UnitOfWorkFactory) -> None:
+    hasher = FakePasswordHasher()
     with uow_factory() as uow:
-        user = uow.users.add(username="root", password_hash=hash_password("secret"))
+        user = uow.users.add(username="root", password_hash=hasher.hash("secret"))
         uow.roster.add_teacher(user.id)
         uow.commit()
     response = client.post(
@@ -59,7 +20,7 @@ def authenticate(
 
 
 def seed_question(
-    uow_factory: SqlAlchemyUnitOfWorkFactory,
+    uow_factory: UnitOfWorkFactory,
     *,
     topic: str,
     title: str,
@@ -81,8 +42,8 @@ def seed_question(
         uow.commit()
 
 
-def test_get_practice_topic_requires_authentication(tmp_path: Path) -> None:
-    client = make_client(make_uow_factory(tmp_path), tmp_path)
+def test_get_practice_topic_requires_authentication() -> None:
+    client = make_test_client(FakeUnitOfWorkFactory(), practice_router)
 
     response = client.get("/api/v1/practice/derivatives")
 
@@ -90,11 +51,11 @@ def test_get_practice_topic_requires_authentication(tmp_path: Path) -> None:
     assert response.json()["detail"] == "Not authenticated"
 
 
-def test_get_practice_topic_returns_the_filtered_response(tmp_path: Path) -> None:
-    uow_factory = make_uow_factory(tmp_path)
+def test_get_practice_topic_returns_the_filtered_response() -> None:
+    uow_factory = FakeUnitOfWorkFactory()
     seed_question(uow_factory, topic="derivatives", title="Hard", difficulty=5)
     seed_question(uow_factory, topic="derivatives", title="Easy", difficulty=1)
-    client = make_client(uow_factory, tmp_path)
+    client = make_test_client(uow_factory, practice_router)
     authenticate(client, uow_factory)
 
     response = client.get("/api/v1/practice/derivatives")
@@ -112,10 +73,10 @@ def test_get_practice_topic_returns_the_filtered_response(tmp_path: Path) -> Non
     assert data["questions"][0]["figure_images"] == []
 
 
-def test_get_practice_topic_omits_internal_fields(tmp_path: Path) -> None:
-    uow_factory = make_uow_factory(tmp_path)
+def test_get_practice_topic_omits_internal_fields() -> None:
+    uow_factory = FakeUnitOfWorkFactory()
     seed_question(uow_factory, topic="derivatives", title="Easy", difficulty=1)
-    client = make_client(uow_factory, tmp_path)
+    client = make_test_client(uow_factory, practice_router)
     authenticate(client, uow_factory)
 
     response = client.get("/api/v1/practice/derivatives")
@@ -127,11 +88,11 @@ def test_get_practice_topic_omits_internal_fields(tmp_path: Path) -> None:
     assert "part_details" not in question
 
 
-def test_get_practice_topic_can_disable_difficulty_sort(tmp_path: Path) -> None:
-    uow_factory = make_uow_factory(tmp_path)
+def test_get_practice_topic_can_disable_difficulty_sort() -> None:
+    uow_factory = FakeUnitOfWorkFactory()
     seed_question(uow_factory, topic="derivatives", title="Hard", difficulty=5)
     seed_question(uow_factory, topic="derivatives", title="Easy", difficulty=1)
-    client = make_client(uow_factory, tmp_path)
+    client = make_test_client(uow_factory, practice_router)
     authenticate(client, uow_factory)
 
     response = client.get("/api/v1/practice/derivatives?sort_by_difficulty=false")

@@ -1,6 +1,7 @@
 import pytest
 
 from mathwizard.ports.figure import FigureRepository
+from mathwizard.ports.password import PasswordHasher
 from mathwizard.ports.question import QuestionRepository
 from mathwizard.ports.roster import RosterRepository
 from mathwizard.ports.session import SessionRepository
@@ -15,6 +16,7 @@ PORTS = [
     FigureRepository,
     UnitOfWork,
     UnitOfWorkFactory,
+    PasswordHasher,
 ]
 
 

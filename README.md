@@ -98,7 +98,8 @@ curl "http://localhost:8001/api/v1/practice/derivatives?sort_by_difficulty=false
 Run backend tests:
 
 ```bash
-uv run --extra dev pytest -v
+uv run --extra dev pytest -m "not db"
+uv run --extra dev pytest
 ```
 
 Run frontend build and lint:
