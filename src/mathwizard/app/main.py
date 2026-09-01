@@ -9,6 +9,7 @@ from mathwizard.app.routes.figures import router as figures_router
 from mathwizard.app.routes.practice import router as practice_router
 from mathwizard.app.routes.roster import router as roster_router
 from mathwizard.db.engine import create_db_engine, create_session_factory
+from mathwizard.db.migrations import upgrade_schema
 from mathwizard.db.unit_of_work import SqlAlchemyUnitOfWorkFactory
 from mathwizard.services.auth import AuthService
 from mathwizard.services.bootstrap import BootstrapService
@@ -21,6 +22,7 @@ from mathwizard.settings import get_settings
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncGenerator[None]:
     settings = get_settings()
+    upgrade_schema(settings)
     engine = create_db_engine(settings.db.url)
     uow_factory = SqlAlchemyUnitOfWorkFactory(create_session_factory(engine))
 

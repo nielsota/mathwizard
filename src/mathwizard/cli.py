@@ -1,9 +1,8 @@
 import typer
-from alembic import command
 from rich import print as rprint
 
 from mathwizard.db.engine import create_db_engine, create_session_factory
-from mathwizard.db.migrations import alembic_config
+from mathwizard.db.migrations import upgrade_schema
 from mathwizard.db.unit_of_work import SqlAlchemyUnitOfWorkFactory
 from mathwizard.models.domain.question import QuestionSource
 from mathwizard.services.bootstrap import BootstrapService
@@ -28,7 +27,7 @@ def main() -> None:
 def db_upgrade() -> None:
     """Apply all pending Alembic migrations."""
     settings = get_settings()
-    command.upgrade(alembic_config(settings), "head")
+    upgrade_schema(settings)
     rprint(f"[green]Schema up to date.[/green] {settings.db.url}")
 
 

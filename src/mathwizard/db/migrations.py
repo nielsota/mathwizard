@@ -1,5 +1,7 @@
+from alembic import command
 from alembic.config import Config
 
+from mathwizard.db.engine import sqlalchemy_database_url
 from mathwizard.settings import Settings
 
 
@@ -8,5 +10,9 @@ def alembic_config(settings: Settings) -> Config:
     config.set_main_option(
         "script_location", str(settings.paths.repo_root / "migrations")
     )
-    config.set_main_option("sqlalchemy.url", settings.db.url)
+    config.set_main_option("sqlalchemy.url", sqlalchemy_database_url(settings.db.url))
     return config
+
+
+def upgrade_schema(settings: Settings) -> None:
+    command.upgrade(alembic_config(settings), "head")
