@@ -81,6 +81,10 @@ Postgres is listening on `127.0.0.1:5432` and that `pg_hba.conf` allows the
 `mathwizard` user from Docker's bridge (on Docker Desktop this is typically
 treated as a local connection).
 
+The first Postgres boot migrates an empty schema and re-seeds it from the YAML
+files and bootstrap settings. Existing roster data, sessions, and password
+changes in `data/db/mathwizard.db` are not migrated to Postgres.
+
 `WEB__COOKIE_SECURE` is also forced to `true` in `docker-compose.prod.yml`.
 
 The production image builds the React app and FastAPI serves it from the same origin as `/api` and `/auth`. In the Cloudflare dashboard (Zero Trust → Networks → Tunnels), create a tunnel, copy the token into `TUNNEL_TOKEN`, and add a public hostname whose origin is **`http://app:8080`**. Use the Docker service name `app`, not `localhost` — `cloudflared` runs in its own container. The health check is `/health`.

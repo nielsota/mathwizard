@@ -1,5 +1,6 @@
 import typer
 from rich import print as rprint
+from sqlalchemy import make_url
 
 from mathwizard.db.engine import create_db_engine, create_session_factory
 from mathwizard.db.migrations import upgrade_schema
@@ -28,7 +29,8 @@ def db_upgrade() -> None:
     """Apply all pending Alembic migrations."""
     settings = get_settings()
     upgrade_schema(settings)
-    rprint(f"[green]Schema up to date.[/green] {settings.db.url}")
+    database_url = make_url(settings.db.url).render_as_string(hide_password=True)
+    rprint(f"[green]Schema up to date.[/green] {database_url}")
 
 
 @app.command()

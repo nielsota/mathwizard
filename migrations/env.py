@@ -5,15 +5,18 @@ from sqlalchemy import engine_from_config, pool
 
 import mathwizard.db.tables  # noqa: F401  (registers every table on Base.metadata)
 from mathwizard.db.base import Base
+from mathwizard.db.engine import sqlalchemy_database_url
 from mathwizard.settings import get_settings
 
 config = context.config
 
 if config.config_file_name is not None:
-    fileConfig(config.config_file_name)
+    fileConfig(config.config_file_name, disable_existing_loggers=False)
 
 if not config.get_main_option("sqlalchemy.url", default=None):
-    config.set_main_option("sqlalchemy.url", get_settings().db.url)
+    config.set_main_option(
+        "sqlalchemy.url", sqlalchemy_database_url(get_settings().db.url)
+    )
 
 target_metadata = Base.metadata
 
