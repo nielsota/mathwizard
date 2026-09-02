@@ -11,7 +11,7 @@ uv sync --extra dev
 cd frontend && npm install
 ```
 
-Optional local settings can go in `.env`. By default, MathWizard uses `sqlite:///data/db/mathwizard.db`, seeds the `root` user with password `root`, and uses non-secure cookies for local development.
+Optional local settings can go in `.env`. By default, MathWizard uses SQLite at `sqlite:///data/db/mathwizard.db`, seeds teacher `niels` with password `root`, and uses non-secure cookies for local development. `./scripts/dev_deploy.sh` does not read `env.prod`.
 
 Start both local dev servers with hot reload:
 
@@ -33,17 +33,23 @@ cd frontend && npm run dev -- --host 0.0.0.0 --port 3001
 Development and production Compose setups are documented in [docs/docker.md](docs/docker.md).
 
 ```bash
-# API + built UI at http://localhost:8001
+# Local image: API + built UI at http://localhost:8001 (SQLite unless .env overrides DB__URL)
 docker compose up
 
-# Production behind a Cloudflare Tunnel
-docker compose -f docker-compose.prod.yml up -d
+# Production on the Mini (Cloudflare Tunnel + host Postgres)
+./scripts/prod_deploy.sh
+./scripts/prod_update.sh   # git pull main, rebuild, restart
 ```
 
-Production reads `TUNNEL_TOKEN` and `DB__URL` from `env.prod`. Local
-`./scripts/dev_deploy.sh` keeps SQLite. FastAPI serves the built React app from
-the same origin. In the Cloudflare dashboard, point the public hostname at
-`http://app:8080`.
+Production reads gitignored `env.prod`. The app container does not run Postgres; it connects to the Mini's Postgres daemon through one URL:
+
+```bash
+TUNNEL_TOKEN=eyJ...
+DB__URL=postgresql://mathwizard:change-me@host.docker.internal:5432/mathwizard
+WEB__COOKIE_SECURE=true
+```
+
+`host.docker.internal` is the host from inside Docker (`localhost` would be the container). FastAPI serves the built React app from the same origin as `/api` and `/auth`. On startup the app applies Alembic migrations, then seeds bootstrap users and practice YAML. Existing SQLite roster data is not migrated. In the Cloudflare dashboard, point the public hostname at `http://app:8080`.
 
 ## Authentication
 
@@ -141,8 +147,9 @@ src/mathwizard/
 frontend/                 React, TypeScript, and Vite frontend
 data/                     Tracked practice question YAML; local SQLite files in data/db/
 tests/                    Backend unit and route tests
+scripts/                  Local dev servers; prod deploy and update
 docker-compose.yml        Development stack with hot-reload
-docker-compose.prod.yml   Production stack with Cloudflare Tunnel
+docker-compose.prod.yml   Production stack with Cloudflare Tunnel (no Postgres service)
 ```
 
 ## Layering
